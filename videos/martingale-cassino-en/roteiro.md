@@ -250,6 +250,6 @@ Screen: transition from the wheel to a sheet of aged paper; chart with many smal
 **Fala 10:** It may be how much it loses when it finally goes wrong.
 
 ### A10 | Closing
-Screen: ivory background with a subtle paper texture; VORTTUM symbol in charcoal and sand [PREENCHER: logo file]; no glow; cut to black.
+Screen: ivory background with a subtle paper texture; the closing sentence written in two parts ("looking only at the results", then "understanding the math behind them"); no brand name; no glow; cut to black.
 
 **Fala 1:** That's the difference between looking only at the results and understanding the math behind them.

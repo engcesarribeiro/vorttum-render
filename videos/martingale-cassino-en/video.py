@@ -981,12 +981,17 @@ class A10_Encerramento(_Base):
     ESTILO = "v_marfim"
 
     def construct(self):
-        marca = T("VORTTUM", 88, INK)
-        risco = Line(LEFT, RIGHT).set_width(marca.width * 0.5).set_stroke(GOLD, 6)
-        g = VGroup(marca, risco).arrange(DOWN, buff=0.3).move_to(UP * 0.2)
+        # sem nome de marca: a frase final escrita em duas partes, cada uma na sua palavra
+        a = T("looking only at the results", 46, MUTED, negrito=False)
+        b = T("understanding the math behind them", 54, INK)
+        VGroup(a, b).arrange(DOWN, buff=0.55).move_to(UP * 0.2)
+        risco = Line(LEFT, RIGHT).set_width(b.width * 0.35).set_stroke(GOLD, 5).next_to(b, DOWN, buff=0.3)
         with self.narrate(F("A10", 1)) as n:
-            self.play(FadeIn(marca), run_time=0.8)
-            self.play(Create(risco), run_time=0.6)
+            n.wait_until("looking")
+            self.play(FadeIn(a, shift=UP * 0.1), run_time=0.6)
+            n.wait_until("understanding")
+            self.play(FadeIn(b, shift=UP * 0.1), run_time=0.6)
+            self.play(Create(risco), run_time=0.5)
         preto = Rectangle(width=config.frame_width + 1, height=config.frame_height + 1).set_fill("#000000", 1).set_stroke(width=0)
         self.play(FadeIn(preto), run_time=0.6)
         self.wait(0.4)
