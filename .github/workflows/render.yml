@@ -77,7 +77,7 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
-      max-parallel: 20
+      max-parallel: 5
       matrix:
         cena: ${{ fromJSON(needs.plano.outputs.cenas) }}
     steps:

@@ -616,7 +616,7 @@ class Narration:
 
 
 class ExplainerScene(Scene):
-    VOICE = "pt-BR-ThalitaMultilingualNeural"   # aprovada; Antonio e Francisca soaram piores
+    VOICE = "en-US-AndrewMultilingualNeural"    # VORTTUM EN-US (o pre_voz.py usa esta voz)
     RATE = "+0%"
     SAFE = 0.35                     # margem interna da tela (16:9)
     # 9:16: área coberta pela interface do Reels/Shorts (unidades do Manim; a tela tem 8 de largura)
