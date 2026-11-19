@@ -1,0 +1,6 @@
+voz=en-US-AndrewMultilingualNeural
+I found a strategy that wins ten dollars almost every single time it works. The problem is, when it fails, you can lose thousands.
+So I decided to test this strategy over one million spins of a roulette wheel. And the result reveals something really strange about the math of money.
+Here's how it works. You bet ten dollars on red. If you win, you keep ten dollars of profit.
+If you lose, you double your bet. Lost again? Double it again. And you keep going until you win.
+That was twenty thousand four hundred seventy dollars lost in one go. We had nineteen thousand four hundred ninety left, and the next bet would have been twenty thousand four hundred eighty. The session ended right there.

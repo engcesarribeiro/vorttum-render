@@ -1,0 +1,63 @@
+# Gera uma amostra de voz (edge-tts) das falas em amostras/pedido.txt e publica o MP3 no ramo "amostras".
+# Disparar: editar amostras/pedido.txt (1ª linha: voz=..., demais linhas: uma fala por linha) e dar push em main.
+name: Amostra de voz
+
+on:
+  push:
+    branches: [main]
+    paths: ["amostras/pedido.txt"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  amostra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: |
+          sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends ffmpeg
+          pip install -q edge-tts
+      - name: Gerar
+        run: |
+          python - <<'PY'
+          import asyncio, subprocess, edge_tts
+          import edge_tts.communicate as etc
+          linhas = [l.strip() for l in open("amostras/pedido.txt", encoding="utf-8") if l.strip()]
+          voz = linhas[0].split("=", 1)[1].strip()
+          falas = linhas[1:]
+          lang = "-".join(voz.split("-")[:2])
+          def mkssml(tc, et):
+              if isinstance(et, bytes): et = et.decode("utf-8")
+              return (f"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='{lang}'>"
+                      f"<voice name='{tc.voice}'><prosody pitch='{tc.pitch}' rate='{tc.rate}' volume='{tc.volume}'>{et}</prosody></voice></speak>")
+          etc.mkssml = mkssml
+          async def main():
+              for i, t in enumerate(falas):
+                  for tent in range(4):
+                      try:
+                          await edge_tts.Communicate(t, voz, rate="+0%").save(f"/tmp/f{i:02d}.mp3"); break
+                      except Exception as e:
+                          print("tentativa", tent, e); await asyncio.sleep(3)
+          asyncio.run(main())
+          # junta as falas com 0,5 s de respiro entre elas
+          subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", "0.5", "/tmp/pausa.mp3"], check=True)
+          lista = "".join(f"file '/tmp/f{i:02d}.mp3'\nfile '/tmp/pausa.mp3'\n" for i in range(len(falas)))
+          open("/tmp/lista.txt", "w").write(lista)
+          nome = voz.replace("-", "_") + ".mp3"
+          subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "/tmp/lista.txt",
+                          "-c:a", "libmp3lame", "-b:a", "128k", f"/tmp/{nome}"], check=True)
+          print(nome)
+          PY
+      - name: Publicar no ramo amostras
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp /tmp/*_*.mp3 /tmp/sai.mp3 2>/dev/null || true
+          mkdir -p /tmp/out && cp /tmp/en_US_*.mp3 /tmp/pt_BR_*.mp3 /tmp/out/ 2>/dev/null || true
+          if git ls-remote --exit-code origin amostras >/dev/null; then git fetch -q --depth 1 origin amostras && git checkout -q amostras
+          else git checkout -q --orphan amostras && git rm -rqf .; fi
+          cp /tmp/out/*.mp3 .
+          git add -A && git commit -qm "Amostra de voz" && git push -q origin amostras
