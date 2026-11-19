@@ -1,0 +1,709 @@
+{
+ "media_pct": -0.027220564907177346,
+ "min_pct": -0.041094270732364185,
+ "max_pct": 0.04469654188233368,
+ "positivos": 1,
+ "teorico_pct": -0.02702702702702703,
+ "experimentos": [
+  {
+   "semente": 1,
+   "resultado": -1604550,
+   "apostado": 60218450,
+   "pct": -0.02664548821831183,
+   "sessoes": 425
+  },
+  {
+   "semente": 2,
+   "resultado": -1066210,
+   "apostado": 62345210,
+   "pct": -0.017101714790919785,
+   "sessoes": 372
+  },
+  {
+   "semente": 3,
+   "resultado": -2280990,
+   "apostado": 59724570,
+   "pct": -0.03819181954763341,
+   "sessoes": 505
+  },
+  {
+   "semente": 4,
+   "resultado": -1507180,
+   "apostado": 59493980,
+   "pct": -0.025333319438370066,
+   "sessoes": 421
+  },
+  {
+   "semente": 5,
+   "resultado": -945460,
+   "apostado": 63477560,
+   "pct": -0.014894397327181449,
+   "sessoes": 373
+  },
+  {
+   "semente": 6,
+   "resultado": -1826050,
+   "apostado": 60923550,
+   "pct": -0.0299728101858805,
+   "sessoes": 450
+  },
+  {
+   "semente": 7,
+   "resultado": -1770080,
+   "apostado": 60310460,
+   "pct": -0.029349469395524425,
+   "sessoes": 452
+  },
+  {
+   "semente": 8,
+   "resultado": -1787090,
+   "apostado": 60536590,
+   "pct": -0.029520823686963536,
+   "sessoes": 456
+  },
+  {
+   "semente": 9,
+   "resultado": -901330,
+   "apostado": 61634570,
+   "pct": -0.014623773638722555,
+   "sessoes": 367
+  },
+  {
+   "semente": 10,
+   "resultado": -1472690,
+   "apostado": 58931210,
+   "pct": -0.024989984084833827,
+   "sessoes": 415
+  },
+  {
+   "semente": 11,
+   "resultado": -1965070,
+   "apostado": 59586090,
+   "pct": -0.03297867002181214,
+   "sessoes": 477
+  },
+  {
+   "semente": 12,
+   "resultado": -2126630,
+   "apostado": 59151630,
+   "pct": -0.0359521791707177,
+   "sessoes": 502
+  },
+  {
+   "semente": 13,
+   "resultado": -1534350,
+   "apostado": 58283930,
+   "pct": -0.02632543824687182,
+   "sessoes": 448
+  },
+  {
+   "semente": 14,
+   "resultado": -1960610,
+   "apostado": 59463990,
+   "pct": -0.03297138318501668,
+   "sessoes": 464
+  },
+  {
+   "semente": 15,
+   "resultado": -2080730,
+   "apostado": 60972330,
+   "pct": -0.03412580755893698,
+   "sessoes": 465
+  },
+  {
+   "semente": 16,
+   "resultado": -2339370,
+   "apostado": 59492950,
+   "pct": -0.0393218019950263,
+   "sessoes": 513
+  },
+  {
+   "semente": 17,
+   "resultado": -1416320,
+   "apostado": 61254380,
+   "pct": -0.02312193838220222,
+   "sessoes": 401
+  },
+  {
+   "semente": 18,
+   "resultado": -1254640,
+   "apostado": 61994440,
+   "pct": -0.020237943918841754,
+   "sessoes": 347
+  },
+  {
+   "semente": 19,
+   "resultado": -1488410,
+   "apostado": 59598010,
+   "pct": -0.024974156016283094,
+   "sessoes": 430
+  },
+  {
+   "semente": 20,
+   "resultado": -1858850,
+   "apostado": 60841410,
+   "pct": -0.030552382004296087,
+   "sessoes": 453
+  },
+  {
+   "semente": 21,
+   "resultado": -1562030,
+   "apostado": 61373390,
+   "pct": -0.025451258273333117,
+   "sessoes": 409
+  },
+  {
+   "semente": 22,
+   "resultado": -2021040,
+   "apostado": 62179760,
+   "pct": -0.03250318109944458,
+   "sessoes": 446
+  },
+  {
+   "semente": 23,
+   "resultado": -1521210,
+   "apostado": 60137410,
+   "pct": -0.025295568931219353,
+   "sessoes": 423
+  },
+  {
+   "semente": 24,
+   "resultado": -2289260,
+   "apostado": 60232980,
+   "pct": -0.03800675311100331,
+   "sessoes": 506
+  },
+  {
+   "semente": 25,
+   "resultado": -1674240,
+   "apostado": 59819700,
+   "pct": -0.02798810425328111,
+   "sessoes": 438
+  },
+  {
+   "semente": 26,
+   "resultado": -2113080,
+   "apostado": 59711120,
+   "pct": -0.03538838326931399,
+   "sessoes": 492
+  },
+  {
+   "semente": 27,
+   "resultado": -1697730,
+   "apostado": 61504590,
+   "pct": -0.027603305704501077,
+   "sessoes": 441
+  },
+  {
+   "semente": 28,
+   "resultado": -1899290,
+   "apostado": 60354450,
+   "pct": -0.031468930625662236,
+   "sessoes": 474
+  },
+  {
+   "semente": 29,
+   "resultado": -1304580,
+   "apostado": 62356760,
+   "pct": -0.02092122810742572,
+   "sessoes": 395
+  },
+  {
+   "semente": 30,
+   "resultado": -1523750,
+   "apostado": 60631910,
+   "pct": -0.02513115618491979,
+   "sessoes": 410
+  },
+  {
+   "semente": 31,
+   "resultado": -1042730,
+   "apostado": 61875950,
+   "pct": -0.016851943283295045,
+   "sessoes": 368
+  },
+  {
+   "semente": 32,
+   "resultado": -2042780,
+   "apostado": 59792220,
+   "pct": -0.034164645500702265,
+   "sessoes": 488
+  },
+  {
+   "semente": 33,
+   "resultado": 3936070,
+   "apostado": 88062070,
+   "pct": 0.04469654188233368,
+   "sessoes": 63
+  },
+  {
+   "semente": 34,
+   "resultado": -1897390,
+   "apostado": 59900790,
+   "pct": -0.03167554217565411,
+   "sessoes": 470
+  },
+  {
+   "semente": 35,
+   "resultado": -1973150,
+   "apostado": 60776490,
+   "pct": -0.032465678751767334,
+   "sessoes": 491
+  },
+  {
+   "semente": 36,
+   "resultado": -1737590,
+   "apostado": 59004030,
+   "pct": -0.029448666472442646,
+   "sessoes": 452
+  },
+  {
+   "semente": 37,
+   "resultado": -2042360,
+   "apostado": 59266400,
+   "pct": -0.03446067248896508,
+   "sessoes": 478
+  },
+  {
+   "semente": 38,
+   "resultado": -1249870,
+   "apostado": 61478690,
+   "pct": -0.02033013390493519,
+   "sessoes": 417
+  },
+  {
+   "semente": 39,
+   "resultado": -1579480,
+   "apostado": 63107540,
+   "pct": -0.025028388049985785,
+   "sessoes": 428
+  },
+  {
+   "semente": 40,
+   "resultado": -2046970,
+   "apostado": 59267330,
+   "pct": -0.03453791490185234,
+   "sessoes": 484
+  },
+  {
+   "semente": 41,
+   "resultado": -1148190,
+   "apostado": 63557490,
+   "pct": -0.018065376716418474,
+   "sessoes": 338
+  },
+  {
+   "semente": 42,
+   "resultado": -1581590,
+   "apostado": 63005450,
+   "pct": -0.025102431615042827,
+   "sessoes": 431
+  },
+  {
+   "semente": 43,
+   "resultado": -1641750,
+   "apostado": 60320570,
+   "pct": -0.027217083658194873,
+   "sessoes": 422
+  },
+  {
+   "semente": 44,
+   "resultado": -1771780,
+   "apostado": 59281140,
+   "pct": -0.029887751821236905,
+   "sessoes": 444
+  },
+  {
+   "semente": 45,
+   "resultado": -1716870,
+   "apostado": 62286730,
+   "pct": -0.02756397711037327,
+   "sessoes": 448
+  },
+  {
+   "semente": 46,
+   "resultado": -1470060,
+   "apostado": 61283240,
+   "pct": -0.023987961472010946,
+   "sessoes": 393
+  },
+  {
+   "semente": 47,
+   "resultado": -2079680,
+   "apostado": 59639140,
+   "pct": -0.0348710595089064,
+   "sessoes": 493
+  },
+  {
+   "semente": 48,
+   "resultado": -1639510,
+   "apostado": 60035330,
+   "pct": -0.027309086166429002,
+   "sessoes": 435
+  },
+  {
+   "semente": 49,
+   "resultado": -1819990,
+   "apostado": 62438990,
+   "pct": -0.029148293398083475,
+   "sessoes": 462
+  },
+  {
+   "semente": 50,
+   "resultado": -1303910,
+   "apostado": 62645370,
+   "pct": -0.020814147956983893,
+   "sessoes": 385
+  },
+  {
+   "semente": 51,
+   "resultado": -1786950,
+   "apostado": 61040570,
+   "pct": -0.02927479215872329,
+   "sessoes": 445
+  },
+  {
+   "semente": 52,
+   "resultado": -1916280,
+   "apostado": 60999860,
+   "pct": -0.03141449832835682,
+   "sessoes": 448
+  },
+  {
+   "semente": 53,
+   "resultado": -1890500,
+   "apostado": 58724440,
+   "pct": -0.03219272929635429,
+   "sessoes": 462
+  },
+  {
+   "semente": 54,
+   "resultado": -1921110,
+   "apostado": 59226830,
+   "pct": -0.03243648191199833,
+   "sessoes": 485
+  },
+  {
+   "semente": 55,
+   "resultado": -1580360,
+   "apostado": 63091620,
+   "pct": -0.02504865146908575,
+   "sessoes": 413
+  },
+  {
+   "semente": 56,
+   "resultado": -1643300,
+   "apostado": 58950740,
+   "pct": -0.02787581631714886,
+   "sessoes": 447
+  },
+  {
+   "semente": 57,
+   "resultado": -1066330,
+   "apostado": 63938230,
+   "pct": -0.016677502645913094,
+   "sessoes": 339
+  },
+  {
+   "semente": 58,
+   "resultado": -1681880,
+   "apostado": 60155680,
+   "pct": -0.02795878959393361,
+   "sessoes": 443
+  },
+  {
+   "semente": 59,
+   "resultado": -1794630,
+   "apostado": 61141190,
+   "pct": -0.029352225561851183,
+   "sessoes": 439
+  },
+  {
+   "semente": 60,
+   "resultado": -2439870,
+   "apostado": 59372510,
+   "pct": -0.041094270732364185,
+   "sessoes": 528
+  },
+  {
+   "semente": 61,
+   "resultado": -1844830,
+   "apostado": 60895450,
+   "pct": -0.03029503846346484,
+   "sessoes": 462
+  },
+  {
+   "semente": 62,
+   "resultado": -1283900,
+   "apostado": 59562840,
+   "pct": -0.021555385874817253,
+   "sessoes": 390
+  },
+  {
+   "semente": 63,
+   "resultado": -1952340,
+   "apostado": 60629700,
+   "pct": -0.03220104998045512,
+   "sessoes": 463
+  },
+  {
+   "semente": 64,
+   "resultado": -1869100,
+   "apostado": 62185100,
+   "pct": -0.030057039387248713,
+   "sessoes": 443
+  },
+  {
+   "semente": 65,
+   "resultado": -1668830,
+   "apostado": 60355550,
+   "pct": -0.027649984135676008,
+   "sessoes": 434
+  },
+  {
+   "semente": 66,
+   "resultado": -1870450,
+   "apostado": 59792110,
+   "pct": -0.03128255550774174,
+   "sessoes": 478
+  },
+  {
+   "semente": 67,
+   "resultado": -2060930,
+   "apostado": 60746910,
+   "pct": -0.03392649930671371,
+   "sessoes": 476
+  },
+  {
+   "semente": 68,
+   "resultado": -1506030,
+   "apostado": 60412970,
+   "pct": -0.02492891840940778,
+   "sessoes": 422
+  },
+  {
+   "semente": 69,
+   "resultado": -2015400,
+   "apostado": 59977780,
+   "pct": -0.0336024441051336,
+   "sessoes": 476
+  },
+  {
+   "semente": 70,
+   "resultado": -1705210,
+   "apostado": 60562150,
+   "pct": -0.02815636499034463,
+   "sessoes": 441
+  },
+  {
+   "semente": 71,
+   "resultado": -1816920,
+   "apostado": 60192240,
+   "pct": -0.030185286342558442,
+   "sessoes": 446
+  },
+  {
+   "semente": 72,
+   "resultado": -1658730,
+   "apostado": 60844850,
+   "pct": -0.027261633482537965,
+   "sessoes": 442
+  },
+  {
+   "semente": 73,
+   "resultado": -1292420,
+   "apostado": 61331820,
+   "pct": -0.021072585160525157,
+   "sessoes": 383
+  },
+  {
+   "semente": 74,
+   "resultado": -1431290,
+   "apostado": 64104270,
+   "pct": -0.022327529819776436,
+   "sessoes": 383
+  },
+  {
+   "semente": 75,
+   "resultado": -2040990,
+   "apostado": 60417110,
+   "pct": -0.03378165556081713,
+   "sessoes": 470
+  },
+  {
+   "semente": 76,
+   "resultado": -1376570,
+   "apostado": 61832890,
+   "pct": -0.02226274722077522,
+   "sessoes": 400
+  },
+  {
+   "semente": 77,
+   "resultado": -1976980,
+   "apostado": 60998480,
+   "pct": -0.032410315798033,
+   "sessoes": 460
+  },
+  {
+   "semente": 78,
+   "resultado": -2015900,
+   "apostado": 59651280,
+   "pct": -0.03379474841109864,
+   "sessoes": 476
+  },
+  {
+   "semente": 79,
+   "resultado": -1725590,
+   "apostado": 60452870,
+   "pct": -0.028544385072205837,
+   "sessoes": 431
+  },
+  {
+   "semente": 80,
+   "resultado": -1869770,
+   "apostado": 59957630,
+   "pct": -0.03118485503846633,
+   "sessoes": 452
+  },
+  {
+   "semente": 81,
+   "resultado": -2320460,
+   "apostado": 58870320,
+   "pct": -0.03941646656583487,
+   "sessoes": 515
+  },
+  {
+   "semente": 82,
+   "resultado": -2324840,
+   "apostado": 60163020,
+   "pct": -0.038642342089875145,
+   "sessoes": 489
+  },
+  {
+   "semente": 83,
+   "resultado": -2189540,
+   "apostado": 60658880,
+   "pct": -0.03609595165621258,
+   "sessoes": 500
+  },
+  {
+   "semente": 84,
+   "resultado": -1248930,
+   "apostado": 59912730,
+   "pct": -0.02084582024554715,
+   "sessoes": 377
+  },
+  {
+   "semente": 85,
+   "resultado": -1378440,
+   "apostado": 59908100,
+   "pct": -0.023009242489746794,
+   "sessoes": 390
+  },
+  {
+   "semente": 86,
+   "resultado": -1011580,
+   "apostado": 60098680,
+   "pct": -0.01683198366420028,
+   "sessoes": 358
+  },
+  {
+   "semente": 87,
+   "resultado": -924360,
+   "apostado": 62564640,
+   "pct": -0.014774479642174878,
+   "sessoes": 373
+  },
+  {
+   "semente": 88,
+   "resultado": -1791020,
+   "apostado": 60339620,
+   "pct": -0.029682321499538776,
+   "sessoes": 458
+  },
+  {
+   "semente": 89,
+   "resultado": -1770470,
+   "apostado": 59101510,
+   "pct": -0.029956425817208393,
+   "sessoes": 474
+  },
+  {
+   "semente": 90,
+   "resultado": -1656440,
+   "apostado": 61175800,
+   "pct": -0.02707671987942945,
+   "sessoes": 439
+  },
+  {
+   "semente": 91,
+   "resultado": -1966640,
+   "apostado": 59818720,
+   "pct": -0.032876664696268994,
+   "sessoes": 474
+  },
+  {
+   "semente": 92,
+   "resultado": -1710890,
+   "apostado": 60110910,
+   "pct": -0.028462220917966474,
+   "sessoes": 433
+  },
+  {
+   "semente": 93,
+   "resultado": -1574840,
+   "apostado": 60617380,
+   "pct": -0.025980007713959263,
+   "sessoes": 416
+  },
+  {
+   "semente": 94,
+   "resultado": -1370050,
+   "apostado": 60865450,
+   "pct": -0.02250948608775586,
+   "sessoes": 411
+  },
+  {
+   "semente": 95,
+   "resultado": -2074360,
+   "apostado": 60616640,
+   "pct": -0.034220966388107295,
+   "sessoes": 494
+  },
+  {
+   "semente": 96,
+   "resultado": -1513880,
+   "apostado": 62485480,
+   "pct": -0.024227708581257598,
+   "sessoes": 408
+  },
+  {
+   "semente": 97,
+   "resultado": -1389120,
+   "apostado": 61571040,
+   "pct": -0.022561256071035995,
+   "sessoes": 412
+  },
+  {
+   "semente": 98,
+   "resultado": -1337550,
+   "apostado": 61064650,
+   "pct": -0.021903834706331733,
+   "sessoes": 390
+  },
+  {
+   "semente": 99,
+   "resultado": -1208140,
+   "apostado": 61424780,
+   "pct": -0.01966860931370043,
+   "sessoes": 374
+  },
+  {
+   "semente": 100,
+   "resultado": -1504720,
+   "apostado": 61846740,
+   "pct": -0.02432981916265918,
+   "sessoes": 414
+  }
+ ]
+}

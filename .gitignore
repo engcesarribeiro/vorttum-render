@@ -1,0 +1,12 @@
+# Saídas do Manim (cache, cenas parciais, TTS)
+media/
+# Vídeos finais
+out/
+# Python
+__pycache__/
+*.pyc
+videos/*/sheets/
+# Remotion / Revideo
+node_modules/
+videos/*/quadros/
+videos/*/galeria/
