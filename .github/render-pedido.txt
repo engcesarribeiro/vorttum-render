@@ -1,3 +1,4 @@
 pasta=videos/martingale-cassino-en
 qualidade=rascunho
 vertical=false
+# tentativa 2
