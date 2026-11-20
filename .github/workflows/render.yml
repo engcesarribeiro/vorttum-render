@@ -55,12 +55,24 @@ jobs:
           echo "nome=$(basename "$PASTA")-$QUAL$SUF-${FPS}fps" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
+      - uses: actions/cache@v4
+        with:
+          path: ~/aptdebs
+          key: apt-manim-${{ runner.os }}-v1
       - name: Instalar LaTeX, ffmpeg e Manim
         run: |
-          sudo apt-get update -q
-          sudo apt-get install -y -q --no-install-recommends ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
-            texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended \
-            texlive-science texlive-lang-portuguese cm-super lmodern dvisvgm fonts-liberation
+          # pacotes .deb guardados no cache do GitHub: instala sem depender do servidor do Ubuntu (que às vezes leva 15 min)
+          if ls ~/aptdebs/*.deb >/dev/null 2>&1 && sudo dpkg -i ~/aptdebs/*.deb > /tmp/dpkg.log 2>&1; then
+            echo "instalado do cache ($(ls ~/aptdebs/*.deb | wc -l) pacotes)"
+          else
+            sudo apt-get update -q
+            mkdir -p ~/aptdebs/partial
+            sudo apt-get install -y -q --no-install-recommends -o dir::cache::archives="$HOME/aptdebs" \
+              ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
+              texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended \
+              texlive-science texlive-lang-portuguese cm-super lmodern dvisvgm fonts-liberation
+            sudo chown -R "$USER" ~/aptdebs; rm -rf ~/aptdebs/partial ~/aptdebs/lock
+          fi
           pip install -q "manim==0.20.1" "pillow<12" edge-tts
       - name: Gerar todas as vozes (em fila)
         working-directory: ${{ steps.p.outputs.pasta }}
@@ -97,12 +109,24 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
+      - uses: actions/cache/restore@v4
+        with:
+          path: ~/aptdebs
+          key: apt-manim-${{ runner.os }}-v1
       - name: Instalar LaTeX, ffmpeg e Manim
         run: |
-          sudo apt-get update -q
-          sudo apt-get install -y -q --no-install-recommends ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
-            texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended \
-            texlive-science texlive-lang-portuguese cm-super lmodern dvisvgm fonts-liberation
+          # pacotes .deb guardados no cache do GitHub: instala sem depender do servidor do Ubuntu (que às vezes leva 15 min)
+          if ls ~/aptdebs/*.deb >/dev/null 2>&1 && sudo dpkg -i ~/aptdebs/*.deb > /tmp/dpkg.log 2>&1; then
+            echo "instalado do cache ($(ls ~/aptdebs/*.deb | wc -l) pacotes)"
+          else
+            sudo apt-get update -q
+            mkdir -p ~/aptdebs/partial
+            sudo apt-get install -y -q --no-install-recommends -o dir::cache::archives="$HOME/aptdebs" \
+              ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
+              texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended \
+              texlive-science texlive-lang-portuguese cm-super lmodern dvisvgm fonts-liberation
+            sudo chown -R "$USER" ~/aptdebs; rm -rf ~/aptdebs/partial ~/aptdebs/lock
+          fi
           pip install -q "manim==0.20.1" "pillow<12" edge-tts
       - uses: actions/setup-node@v4
         if: matrix.t.fatia == '' && hashFiles(format('{0}/remotion/package.json', needs.vozes.outputs.pasta)) != ''
