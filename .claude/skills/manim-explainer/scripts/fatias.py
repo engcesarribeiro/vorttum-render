@@ -98,8 +98,15 @@ def juntar(args):
             partes.append(achados[0])
         tmp = media / f"_{cena}"
         tmp.mkdir(parents=True, exist_ok=True)
+        # cada fatia sai do Manim com o áudio das falas que começam nela, e esse áudio passa do fim do vídeo:
+        # emendando com áudio, a imagem congela até o áudio acabar. Tira o áudio de cada fatia antes.
+        mudas = []
+        for k, p in enumerate(partes):
+            m = tmp / f"p{k:03d}.mp4"
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(p), "-an", "-c:v", "copy", str(m)], check=True)
+            mudas.append(m)
         lista = tmp / "lista.txt"
-        lista.write_text("".join(f"file '{p.resolve()}'\n" for p in partes), "utf-8")
+        lista.write_text("".join(f"file '{p.resolve()}'\n" for p in mudas), "utf-8")
         mudo = tmp / "video.mp4"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lista),
                         "-an", "-c:v", "copy", str(mudo)], check=True)

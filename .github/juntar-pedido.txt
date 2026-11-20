@@ -3,3 +3,4 @@ pasta=videos/martingale-cassino-en
 sub=final
 args=--final --fps 60
 nome=martingale-cassino-en-final-60fps
+# junção 2: fatias sem áudio antes de emendar
