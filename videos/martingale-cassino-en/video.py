@@ -503,7 +503,7 @@ class A07_Milhao(_Base):
         ref = DashedLine(p0(0, 10000), p0(60, 10000)).set_stroke(MUTED, 1.5, opacity=0.6)
         r10 = T("$10,000", 22, MUTED).next_to(ref, LEFT, buff=0.1)
         with self.narrate(F("A07", 1)) as n:
-            n.wait_until("balance")
+            n.wait_until("Look")
             self.play(Create(e0), FadeIn(ylab), Create(ref), FadeIn(r10), run_time=0.7)
             n.wait_until("small")
             self.play(Create(l0), run_time=max(1.0, n.remaining - 0.2), rate_func=linear)
@@ -578,18 +578,20 @@ class A07_Milhao(_Base):
             col = self.coluna([a, b, c, d, e, f])
             self.play(FadeIn(f), run_time=0.4)
             cx = self.destacar(f, GOOD, buff=0.12)
-        self.clear_section()
 
-        # sessão 323
+        # sessão 323: o gráfico da sessão 1 fica até "worst" e sai junto da entrada do novo
         e3, l3, p3 = grafico(G["s323"], 40000, 210000)
         ref3 = DashedLine(p3(0, 10000), p3(40000, 10000)).set_stroke(MUTED, 1.5, opacity=0.6)
         ylab3 = T("balance", 26, MUTED).next_to(e3[1], UP, buff=0.12).align_to(e3[1], LEFT)
         xlab3 = T("spins", 24, MUTED).next_to(e3[0], DOWN, buff=0.12).align_to(e3[0], RIGHT)
         with self.narrate(F("A07", 8)) as n:
+            n.wait_until("worst")
+            antes = Group(*[m for m in self.mobjects if id(m) not in self._chrome])
+            self.play(FadeOut(antes), Create(e3), FadeIn(ylab3), FadeIn(xlab3), Create(ref3), run_time=0.7)
             n.wait_until("session")
             s = T("session 323", 34, INK)
             col = self.coluna([s])
-            self.play(Create(e3), FadeIn(ylab3), FadeIn(xlab3), Create(ref3), FadeIn(s), run_time=0.7)
+            self.play(FadeIn(s), run_time=0.4)
             self.play(Create(l3), run_time=max(1.0, n.until("reached")), rate_func=linear)
             n.wait_until("reached")
             tp3 = T("$203,440", 26, GOLD).next_to(p3(39795, 203440), LEFT, buff=0.2)
@@ -623,13 +625,13 @@ class A07_Milhao(_Base):
             self.play(FadeIn(g1), run_time=0.5)
             n.wait_until("profitable")
             self.play(FadeIn(g2), run_time=0.5)
-        self.clear_section()
 
-        # placar agregado
+        # placar agregado: o gráfico da sessão 323 fica até "completed"
         with self.narrate(F("A07", 12)) as n:
-            n.wait_until("million")
+            n.wait_until("completed")
+            antes = Group(*[m for m in self.mobjects if id(m) not in self._chrome])
             m = T("1,000,000 spins", 56, INK).move_to([0, 2.1, 0])
-            self.play(FadeIn(m, shift=DOWN * 0.1), run_time=0.6)
+            self.play(FadeOut(antes), FadeIn(m, shift=DOWN * 0.1), run_time=0.6)
             n.wait_until("eightyeight")
             s = T("488 sessions", 40, INK).next_to(m, DOWN, buff=0.45)
             self.play(FadeIn(s), run_time=0.5)
@@ -654,7 +656,7 @@ class A07_Milhao(_Base):
             self.play(FadeOut(antes), FadeIn(tit, shift=DOWN * 0.1), run_time=0.6)
         x0, Lmax = -6.6, 5.6
         with self.narrate(F("A07", 16)) as n:
-            n.wait_until("times")
+            n.wait_until("won")
             v1 = T("won $10 × 486,539 times", 32, GOLD).move_to([x0, 1.6, 0], aligned_edge=LEFT)
             self.play(FadeIn(v1), run_time=0.5)
             n.wait_until("percent")

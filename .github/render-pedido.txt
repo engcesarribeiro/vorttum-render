@@ -1,4 +1,4 @@
 pasta=videos/martingale-cassino-en
 qualidade=rascunho
 vertical=false
-# rascunho 4b: voz +5%, gancho e investidor +10%
+# rascunho 5: A07 sem trechos vazios com a voz real
