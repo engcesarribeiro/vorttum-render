@@ -1,4 +1,4 @@
 pasta=videos/martingale-cassino-en
 qualidade=rascunho
 vertical=false
-# rascunho 2: sem nome de marca no encerramento
+# rascunho 3: sem marca e sem trechos vazios

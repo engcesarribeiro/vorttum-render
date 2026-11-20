@@ -87,6 +87,16 @@ class _Base(ExplainerScene):
     RATE = "+0%"
     TITLE_AREA = False
 
+    def esmaece(self, op=0.15, run_time=0.5):
+        """Em vez de limpar a tela entre ideias: o quadro atual fica apagado até a ideia nova entrar
+        (aí sai com FadeOut junto da entrada do novo). Evita tela vazia só com voz."""
+        conteudo = [m for m in self.mobjects if id(m) not in self._chrome and m is not self._title
+                    and not isinstance(m, ValueTracker) and any(len(x.points) for x in m.get_family())]
+        g = Group(*conteudo)
+        if conteudo:
+            self.play(g.animate.set_opacity(op), run_time=run_time)
+        return g
+
 
 # ---------------------------------------------------------------- A01 gancho (Remotion)
 class A01_Gancho(RemotionScene):
@@ -125,11 +135,11 @@ class A02_Estrategia(_Base):
             return Rotate(roda, -TAU * 1.5, run_time=max(0.6, n.until(ate)), rate_func=smooth)
 
         with self.narrate(F("A02", 1)) as n:
+            n.wait_until("strategy")
+            self.play(FadeIn(mesa_g), run_time=0.6)
             n.wait_until("thousand")
             self.play(FadeIn(banca, shift=DOWN * 0.1))
         with self.narrate(F("A02", 2)) as n:
-            n.wait_until("betting")
-            self.play(FadeIn(mesa_g), run_time=0.6)
             n.wait_until("ten")
             ch = ficha(10).move_to(verm.get_center() + UP * 0.25)
             self.play(FadeIn(ch, shift=DOWN * 0.3), run_time=0.5)
@@ -187,13 +197,13 @@ class A02_Estrategia(_Base):
             self.play(Create(r4), run_time=0.6)
             n.wait_until("profit")
             self.play(VGroup(cx, conta).animate(rate_func=there_and_back).scale(1.08), run_time=0.6)
-        self.clear_section()
+        dim = self.esmaece()
 
         with self.narrate(F("A02", 8)) as n:
             n.wait_until("Martingale")
             nome = T("The Martingale", 72, INK).move_to([0, 2.0, 0])
             sub = T("around for centuries", 34, MUTED).next_to(nome, DOWN, buff=0.3)
-            self.play(FadeIn(nome, shift=DOWN * 0.15), run_time=0.7)
+            self.play(FadeOut(dim), FadeIn(nome, shift=DOWN * 0.15), run_time=0.7)
             n.wait_until("centuries")
             self.play(FadeIn(sub), run_time=0.6)
 
@@ -212,11 +222,11 @@ class A02_Estrategia(_Base):
             n.wait_until("once")
             ws = VGroup(*[s[0][-1] for s in seqs])
             self.play(*[Circumscribe(w, Circle, color=GOLD) for w in ws], run_time=0.9)
-        self.clear_section()
+        dim = self.esmaece()
         with self.narrate(F("A02", 10)) as n:
             n.wait_until("single")
             q1 = T("One win recovers every loss before it.", 40, INK).move_to([0, 0.8, 0])
-            self.play(FadeIn(q1), run_time=0.6)
+            self.play(FadeOut(dim), FadeIn(q1), run_time=0.6)
             n.wait_until("casinos")
             q2 = T("So why didn't casinos go broke?", 48, C1).next_to(q1, DOWN, buff=0.5)
             self.play(FadeIn(q2, shift=UP * 0.1), run_time=0.7)
@@ -259,7 +269,7 @@ class A04_Sequencia(_Base):
             self.play(*anim, run_time=0.45)
 
         with self.narrate(F("A04", 1)) as n:
-            for k, w in enumerate(["ten", "twenty", "forty", "eighty"]):
+            for k, w in enumerate(["betting", "twenty", "forty", "eighty"]):
                 n.wait_until(w)
                 entra(k)
         with self.narrate(F("A04", 2)) as n:
@@ -314,11 +324,11 @@ class A04_Sequencia(_Base):
             self.play(Create(teto), FadeIn(tt), run_time=0.8)
             n.wait_until("quickly")
             self.play(barras[10].animate.set_fill(BAD), Indicate(barras[10], color=BAD, scale_factor=1.04), run_time=0.8)
-        self.clear_section()
+        dim = self.esmaece()
         es = escada().move_to([-0.6, 0.1, 0])
         with self.narrate(F("A04", 9)) as n:
             n.wait_until("win")
-            self.play(Create(es[0]), run_time=0.4)
+            self.play(FadeOut(dim), Create(es[0]), run_time=0.4)
             self.play(Create(es[1]), run_time=n.until("times"), rate_func=linear)
             l1 = T("+$10, dozens of times", 30, GOLD).next_to(es[1], UP, buff=0.3).align_to(es[1], LEFT)
             self.play(FadeIn(l1), run_time=0.4)
@@ -326,10 +336,15 @@ class A04_Sequencia(_Base):
             self.play(Create(es[2]), run_time=0.6)
             l2 = T("one bad streak", 30, BAD).next_to(es[2], RIGHT, buff=0.3)
             self.play(FadeIn(l2), run_time=0.4)
-        self.clear_section()
         with self.narrate(F("A04", 10)) as n:
+            n.wait_until("money")
+            antes = Group(*[m for m in self.mobjects if id(m) not in self._chrome])
+            muito = Rectangle(width=1.2, height=4.8).set_fill(C2, 1).set_stroke(width=0).move_to([5.6, -0.3, 0])
+            tm = T("a lot of money", 30, C2).next_to(muito, LEFT, buff=0.3).align_to(muito, UP)
+            self.play(FadeOut(antes), GrowFromEdge(muito, DOWN), FadeIn(tm), run_time=0.9)
             n.wait_until("bankroll")
-            q = T("Would a big enough bankroll solve this problem?", 42, INK).move_to(ORIGIN)
+            q = VGroup(T("Would a big enough bankroll", 44, INK), T("solve this problem?", 44, INK)).arrange(DOWN, buff=0.3)
+            q.move_to([-1.6, -0.2, 0])
             self.play(FadeIn(q, shift=UP * 0.1), run_time=0.7)
         self.clear_section()
 
@@ -359,7 +374,7 @@ class A05_Banca(_Base):
             return T(f"{derrotas[k]} losses", 34, C1).next_to(q, RIGHT, buff=0.3)
 
         with self.narrate(F("A05", 1)) as n:
-            n.wait_until("thousand")
+            n.wait_until("First")
             n1, b1 = linha(0)
             self.play(FadeIn(n1), GrowFromEdge(b1, LEFT), run_time=0.6)
         q1 = quadros(0, 6)
@@ -409,12 +424,12 @@ class A05_Banca(_Base):
             b = VGroup(T("losses survived:", 32, C1), T("6 → 13", 32, C1)).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
             b.next_to(a, DOWN, buff=0.3).align_to(a, LEFT)
             self.play(FadeIn(b), run_time=0.6)
-        self.clear_section()
+        dim = self.esmaece()
         with self.narrate(F("A05", 7)) as n:
-            n.wait_until("maximum")
+            n.wait_until("limit")
             placa = caixa_texto("TABLE LIMIT: maximum bet per spin", INK, size=38, largura_max=7)
             placa.move_to([-2.2, 0.4, 0])
-            self.play(FadeIn(placa, shift=DOWN * 0.15), run_time=0.7)
+            self.play(FadeOut(dim), FadeIn(placa, shift=DOWN * 0.15), run_time=0.7)
         with self.narrate(F("A05", 8)) as n:
             n.wait_until("doubling")
             teto = Line([1.6, 1.6, 0], [6.6, 1.6, 0]).set_stroke(BAD, 4)
@@ -627,13 +642,13 @@ class A07_Milhao(_Base):
             tot = T("Total result: −$2,164,630", 48, BAD).next_to(b, DOWN, buff=0.55)
             self.play(FadeIn(tot), run_time=0.5)
             self.destacar(tot, BAD, buff=0.22)
-        self.clear_section()
 
         # distribuição
         with self.narrate(F("A07", 15)) as n:
             n.wait_until("distribution")
+            antes = Group(*[m for m in self.mobjects if id(m) not in self._chrome])
             tit = T("Distribution of the results", 44, INK).move_to([0, 2.55, 0])
-            self.play(FadeIn(tit, shift=DOWN * 0.1), run_time=0.6)
+            self.play(FadeOut(antes), FadeIn(tit, shift=DOWN * 0.1), run_time=0.6)
         x0, Lmax = -6.6, 5.6
         with self.narrate(F("A07", 16)) as n:
             n.wait_until("times")
@@ -713,7 +728,7 @@ class A08_Matematica(_Base):
     def construct(self):
         roda = roleta(1.25).move_to([-5.2, 1.4, 0])
         with self.narrate(F("A08", 1)) as n:
-            n.wait_until("single")
+            n.wait_until("understand")
             self.play(FadeIn(roda), run_time=0.6)
             n.wait_until("red")
             b = T("$10 on red", 34, C1).next_to(roda, DOWN, buff=0.3)
@@ -810,13 +825,13 @@ class A08_Matematica(_Base):
             c2_ = Circle(radius=0.2).set_stroke(GOOD, 3).move_to(melhor)
             tb = T("1 of 100 ended with a profit", 26, GOOD).next_to(c2_, UP, buff=0.25).align_to(c2_, RIGHT)
             self.play(Create(c2_), Write(tb), run_time=0.7)
-        self.clear_section()
+        dim = self.esmaece()
 
         # a probabilidade não muda
         roda = roleta(1.5).move_to([-4.6, 0.5, 0])
         with self.narrate(F("A08", 11)) as n:
             n.wait_until("double")
-            self.play(FadeIn(roda), run_time=0.5)
+            self.play(FadeOut(dim), FadeIn(roda), run_time=0.5)
             n.wait_until("probability")
             pr = MathTex(r"\mathrm{P(red)} = \tfrac{18}{37}", font_size=60, color=C1).move_to([1.2, 1.9, 0])
             self.play(Write(pr), run_time=0.9)
@@ -866,10 +881,11 @@ class A08_Matematica(_Base):
             n.wait_until("negative")
             neg = MathTex(r"\mathrm{E} < 0", font_size=64, color=BAD).move_to([4.4, -1.3, 0])
             self.play(Write(neg), run_time=0.8)
-        self.clear_section()
+        dim = self.esmaece()
         with self.narrate(F("A08", 17)) as n:
-            n.wait_until("happens")
+            n.wait_until("walk")
             h1 = T("Walking out a winner: it happens.", 38, INK).move_to([0, 1.3, 0])
+            self.play(FadeOut(dim), run_time=0.3)
             self.play(Write(h1), run_time=1.0)
             n.wait_until("doubling")
             h2 = T("unfavorable game + doubling", 38, INK).next_to(h1, DOWN, buff=0.6)
@@ -886,9 +902,13 @@ class A09_Consequencia(_Base):
 
     def construct(self):
         with self.narrate(F("A09", 1)) as n:
+            n.wait_until("know")
+            roda = roleta(1.6).move_to([0, -0.2, 0])
+            self.play(FadeIn(roda), run_time=0.6)
             n.wait_until("outside")
             t = T("The same flaw, outside casinos", 44, INK).move_to([0, 2.5, 0])
-            self.play(FadeIn(t, shift=DOWN * 0.1), run_time=0.7)
+            self.play(FadeIn(t, shift=DOWN * 0.1), roda.animate.scale(0.4).move_to([5.6, 2.5, 0]).set_opacity(0.35),
+                      run_time=0.8)
         semanas = [0.18, 0.25, 0.12, 0.3, 0.22, 0.15, 0.27, 0.2, 0.1, 0.24, 0.29, 0.16, 0.21,
                    0.26, 0.14, 0.23, 0.19, 0.28, 0.13, 0.25, 0.2, 0.17, 0.3, 0.22, 0.15, 0.24]
         bx0, by = -6.2, -0.2
@@ -897,7 +917,7 @@ class A09_Consequencia(_Base):
         eixo = Line([bx0 - 0.3, by, 0], [bx0 + 0.46 * 27 + 0.2, by, 0]).set_stroke(MUTED, 2)
         with self.narrate(F("A09", 2)) as n:
             n.wait_until("investment")
-            self.play(Create(eixo), run_time=0.4)
+            self.play(Create(eixo), FadeOut(roda), run_time=0.4)
             n.wait_until("six")
             self.play(LaggedStart(*[GrowFromEdge(b, DOWN) for b in bars], lag_ratio=0.08), run_time=n.until("week"))
             lw = T("26 weeks of gains (illustration)", 26, MUTED).next_to(eixo, DOWN, buff=0.2).align_to(eixo, LEFT)
@@ -945,11 +965,11 @@ class A09_Consequencia(_Base):
             n.wait_until("consistently")
             d2 = T("≠ making money consistently", 28, INK).next_to(d1, DOWN, buff=0.25)
             self.play(FadeIn(d2), run_time=0.5)
-        self.clear_section()
+        dim = self.esmaece()
         with self.narrate(F("A09", 7)) as n:
             n.wait_until("question")
             q = T("Can math beat the casino?", 46, INK).move_to([0, 1.6, 0])
-            self.play(FadeIn(q, shift=DOWN * 0.1), run_time=0.6)
+            self.play(FadeOut(dim), FadeIn(q, shift=DOWN * 0.1), run_time=0.6)
             n.wait_until("eliminate")
             r = T("This strategy can't remove the edge.", 40, BAD).next_to(q, DOWN, buff=0.5)
             self.play(FadeIn(r), run_time=0.6)
@@ -963,11 +983,13 @@ class A09_Consequencia(_Base):
             self.play(Create(es[2]), run_time=0.6)
             s2 = T("misleading", 30, BAD).next_to(es[2], RIGHT, buff=0.3)
             self.play(FadeIn(s2), run_time=0.4)
-        self.clear_section()
         with self.narrate(F("A09", 9)) as n:
+            n.wait_until("seems")
+            self.play(Indicate(s1, color=GOLD, scale_factor=1.1), run_time=0.8)
             n.wait_until("often")
+            antes = Group(*[m for m in self.mobjects if id(m) not in self._chrome])
             q1 = T("How often does it win?", 42, MUTED).move_to([0, 1.2, 0])
-            self.play(FadeIn(q1), run_time=0.6)
+            self.play(FadeOut(antes), FadeIn(q1), run_time=0.6)
         with self.narrate(F("A09", 10)) as n:
             n.wait_until("loses")
             q2 = T("How much does it lose when it goes wrong?", 44, INK).next_to(q1, DOWN, buff=0.7)

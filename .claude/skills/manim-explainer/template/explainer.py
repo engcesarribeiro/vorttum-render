@@ -628,6 +628,7 @@ class ExplainerScene(Scene):
     CAPTIONS = False                # sem legenda queimada (aula). True = karaokê; "reels"; "recortes" (anúncio retro)
     LEGENDA_CENTRAL = False         # True: frase falada no centro em espera longa com tela vazia (usuário pediu para tirar)
     MIN_GAP = 0.15                  # distância mínima entre dois elementos (aviso [espaço])
+    VAZIO_MAX = 2.0                 # tela sem conteúdo com voz tocando por mais que isso: aviso [vazio]
     ESTILO = "documentario"         # documentario | quadro | papel | colagem | bauhaus (ver estilos.py)
     MAO = None                      # None = o estilo decide (só o quadro usa); True/False força
 
@@ -641,6 +642,7 @@ class ExplainerScene(Scene):
         if hasattr(self.camera, "init_background"):
             self.camera.init_background()
         self._setup_zonas()
+        self._v0, self._vazios, self._falas_t = 0.0, [], []   # auditoria [vazio]
         self._decor = []
         top, bottom = self.content_box
         dec = estilos.decoracao(_E, config.frame_width, config.frame_height, VERTICAL, (top, bottom))
@@ -671,7 +673,9 @@ class ExplainerScene(Scene):
                     estilos.recolore(m, _TAB)
                     if _E.brilho:
                         estilos.brilho(m)
-        return super().add(*mobjects)
+        r = super().add(*mobjects)
+        self._marca_vazio()
+        return r
 
     def _chrome_ids(self):
         return {id(d) for d in getattr(self, "_decor", [])}
@@ -864,6 +868,8 @@ class ExplainerScene(Scene):
             orig = plain.split()
             words = list(zip(orig, _align_words(orig, words, duration)))
         start = self.renderer.time
+        if hasattr(self, "_falas_t"):
+            self._falas_t.append((start, start + duration, plain))
         if mp3:
             self.add_sound(str(mp3))
 
@@ -1115,7 +1121,41 @@ class ExplainerScene(Scene):
                 out.append(a)
         return tuple(out), trocas
 
+    def _marca_vazio(self):
+        """Auditoria [vazio]: guarda os intervalos em que a tela fica sem conteúdo (só fundo)."""
+        if not hasattr(self, "_vazios"):
+            return
+        agora = self.renderer.time
+        vazia = self._tela_vazia()
+        if vazia and self._v0 is None:
+            self._v0 = agora
+        elif not vazia and self._v0 is not None:
+            if agora > self._v0:
+                self._vazios.append((self._v0, agora))
+            self._v0 = None
+
+    def _audit_vazio(self):
+        """No fim da cena: avisa cada trecho de fala com a tela vazia por mais de VAZIO_MAX s."""
+        if self._v0 is not None:
+            self._vazios.append((self._v0, self.renderer.time))
+            self._v0 = None
+        for a, b in self._vazios:
+            for s0, s1, txt in self._falas_t:
+                ini, fim = max(a, s0), min(b, s1)
+                if fim - ini >= self.VAZIO_MAX:
+                    trecho = " ".join(txt.split()[:8])
+                    logger.warning(f"[vazio] {fim - ini:.1f}s só com voz em t={ini:.1f}s: \"{trecho}...\"")
+
+    def tear_down(self):
+        if hasattr(self, "_vazios") and not isinstance(self, RemotionScene):
+            self._audit_vazio()
+        super().tear_down()
+
     def play(self, *args, **kwargs):
+        if hasattr(self, "_vazios") and self._v0 is not None and args:
+            # o que a animação desenha começa a aparecer agora
+            self._vazios.append((self._v0, self.renderer.time)) if self.renderer.time > self._v0 else None
+            self._v0 = None
         args = self._com_mao(args)
         args, trocas = self._digitar(args)
         if self._leg is not None and self._leg in self.mobjects:
@@ -1127,6 +1167,7 @@ class ExplainerScene(Scene):
             self.remove(g)
             Scene.add(self, m)
         self._audit()
+        self._marca_vazio()
 
     def _audit(self):
         """Avisa no log ([layout]) quando algo sai da tela ou invade título/legenda."""

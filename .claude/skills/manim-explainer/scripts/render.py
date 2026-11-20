@@ -74,7 +74,7 @@ def render(src: Path, scene: str, args, media: Path) -> tuple[Path | None, list[
         log = (e.stdout or "") + (e.stderr or "") if isinstance(e.stdout, str) else ""
         log += f"\nTIMEOUT após {args.timeout}s (provável erro dentro da cena; rode só ela com --only)"
         ok = False
-    notes = sorted(set(re.findall(r"\[(?:layout|espaço|caixa)\][^\n│]*", log)))
+    notes = sorted(set(re.findall(r"\[(?:layout|espaço|caixa|vazio)\][^\n│]*", log)))
     # Manim grava em <media_dir>/videos/<arquivo>/<altura>p<fps>/<Cena>.mp4
     found = [p for p in (out_dir / "videos").rglob(f"{scene}.mp4") if "partial_movie_files" not in p.parts]
     video = max(found, key=lambda p: p.stat().st_mtime) if found else None

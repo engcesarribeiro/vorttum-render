@@ -61,7 +61,7 @@ export const A06_Experimento: React.FC<Props> = (props) => {
 
   return (
     <Papel>
-      <Roleta cx={480} cy={560} r={330} ang={ang} op={vis(s, t('virtual', 1) - 0.2)} destaque={foco}
+      <Roleta cx={480} cy={560} r={330} ang={ang} op={vis(s, t('strategy', 1))} destaque={foco}
         bola={s >= chega[0]} />
       {regras.map(([a, b, t0, cor], k) => (
         <React.Fragment key={a}>
