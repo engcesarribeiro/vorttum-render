@@ -1,4 +1,5 @@
 pasta=videos/martingale-cassino-en
-qualidade=rascunho
+qualidade=final
 vertical=false
-# rascunho 5: A07 sem trechos vazios com a voz real
+fps=60
+# final 1080p60

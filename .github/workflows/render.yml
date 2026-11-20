@@ -37,6 +37,7 @@ jobs:
       qualidade: ${{ steps.p.outputs.qualidade }}
       vertical: ${{ steps.p.outputs.vertical }}
       nome: ${{ steps.p.outputs.nome }}
+      fps: ${{ steps.p.outputs.fps }}
       sub: ${{ steps.p.outputs.sub }}
       cenas: ${{ steps.c.outputs.cenas }}
     steps:
@@ -46,11 +47,12 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
             get() { grep -E "^$1=" .github/render-pedido.txt | head -1 | cut -d= -f2- | tr -d '\r '; }
-            PASTA=$(get pasta); QUAL=$(get qualidade); VERT=$(get vertical)
+            PASTA=$(get pasta); QUAL=$(get qualidade); VERT=$(get vertical); FPS=$(get fps)
           else
             PASTA="${{ inputs.pasta }}"; QUAL="${{ inputs.qualidade }}"; VERT="${{ inputs.vertical }}"
           fi
-          QUAL=${QUAL:-final}; VERT=${VERT:-false}
+          QUAL=${QUAL:-final}; VERT=${VERT:-false}; FPS=${FPS:-30}
+          echo "fps=$FPS" >> "$GITHUB_OUTPUT"
           SUF=""; [ "$VERT" = "true" ] && SUF="-vertical"
           MODO=$QUAL; [ "$QUAL" = "previa" ] && MODO=preview
           SUB=$MODO; [ "$VERT" = "true" ] && SUB="${MODO}_v"
@@ -74,7 +76,7 @@ jobs:
   cena:
     needs: plano
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 350
     strategy:
       fail-fast: false
       max-parallel: 5
@@ -123,12 +125,12 @@ jobs:
         working-directory: ${{ needs.plano.outputs.pasta }}
         run: |
           ARGS=""
-          if [ "${{ needs.plano.outputs.qualidade }}" = "final" ]; then ARGS="$ARGS --final"; fi
+          if [ "${{ needs.plano.outputs.qualidade }}" = "final" ]; then ARGS="$ARGS --final --fps ${{ needs.plano.outputs.fps }}"; fi
           if [ "${{ needs.plano.outputs.qualidade }}" = "rascunho" ]; then ARGS="$ARGS --rascunho"; fi
           if [ "${{ needs.plano.outputs.vertical }}" = "true" ]; then ARGS="$ARGS --vertical"; fi
           R="$GITHUB_WORKSPACE/.claude/skills/manim-explainer/scripts/render.py"
           # refaz a cena até 3 vezes se a voz ou o Manim falharem
-          python "$R" video.py $ARGS --only "${{ matrix.cena }}" --timeout 2700 --tentativas 3 2>&1 | tee log.txt
+          python "$R" video.py $ARGS --only "${{ matrix.cena }}" --timeout 19000 --tentativas 2 2>&1 | tee log.txt
           test "${PIPESTATUS[0]}" -eq 0
 
       - name: Separar o vídeo da cena
@@ -148,7 +150,7 @@ jobs:
   juntar:
     needs: [plano, cena]
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
 
@@ -170,7 +172,7 @@ jobs:
         working-directory: ${{ needs.plano.outputs.pasta }}
         run: |
           ARGS=""
-          if [ "${{ needs.plano.outputs.qualidade }}" = "final" ]; then ARGS="$ARGS --final"; fi
+          if [ "${{ needs.plano.outputs.qualidade }}" = "final" ]; then ARGS="$ARGS --final --fps ${{ needs.plano.outputs.fps }}"; fi
           if [ "${{ needs.plano.outputs.qualidade }}" = "rascunho" ]; then ARGS="$ARGS --rascunho"; fi
           if [ "${{ needs.plano.outputs.vertical }}" = "true" ]; then ARGS="$ARGS --vertical"; fi
           python "$GITHUB_WORKSPACE/.claude/skills/manim-explainer/scripts/render.py" video.py $ARGS --concat-only

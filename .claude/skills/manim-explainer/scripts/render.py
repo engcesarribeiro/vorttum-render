@@ -3,6 +3,7 @@
 Uso:
     python render.py video.py                 # prévia rápida (480p15)
     python render.py video.py --final         # 1080p30
+    python render.py video.py --final --fps 60   # 1080p60 (o _celular.mp4 sai em 60 fps também)
     python render.py video.py --rascunho      # 540p30 com voz: revisar antes do final (bem mais rápido)
     python render.py video.py --jobs 3        # renderiza 3 cenas ao mesmo tempo
     python render.py video.py --vertical      # 9:16 (1080x1920 no final, 540x960 na prévia)
@@ -51,7 +52,7 @@ def modo(args) -> str:
 
 def render(src: Path, scene: str, args, media: Path) -> tuple[Path | None, list[str]]:
     if args.final:
-        quality = ["--resolution", "1080,1920" if args.vertical else "1920,1080", "--frame_rate", "30"]
+        quality = ["--resolution", "1080,1920" if args.vertical else "1920,1080", "--frame_rate", str(args.fps or 30)]
     elif args.rascunho:
         quality = ["--resolution", "540,960" if args.vertical else "960,540", "--frame_rate", "30"]
     else:
@@ -261,11 +262,11 @@ def concat(videos: list[Path], dest: Path, musica: tuple[Path | None, float] = (
         p.unlink()
 
 
-def celular(master: Path) -> Path:
+def celular(master: Path, fps: int = 30) -> Path:
     """Cópia para celular: 30 fps, AAC 44,1 kHz estéreo, volume normalizado."""
     dest = master.with_name(master.stem + "_celular.mp4")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(master), "-c:v", "libx264", "-preset", "veryfast",
-                    "-profile:v", "high", "-level", "4.2", "-pix_fmt", "yuv420p", "-r", "30", "-crf", "20",
+                    "-profile:v", "high", "-level", "4.2", "-pix_fmt", "yuv420p", "-r", str(fps), "-crf", "20",
                     "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "160k", "-ar", "44100", "-ac", "2",
                     "-movflags", "+faststart", str(dest)], check=True)
     return dest
@@ -275,6 +276,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("file", type=Path)
     ap.add_argument("--final", action="store_true")
+    ap.add_argument("--fps", type=int, help="quadros por segundo do final (padrão 30; ex.: 60)")
     ap.add_argument("--vertical", action="store_true")
     ap.add_argument("--rascunho", action="store_true", help="540p30 com voz, para revisar antes do final")
     ap.add_argument("--jobs", type=int, default=1, help="cenas renderizadas ao mesmo tempo")
@@ -307,7 +309,7 @@ def main():
         concat(vids, out, musica_do_video(src, args))
         print(f"VÍDEO: {out}")
         if args.final or args.rascunho:
-            print(f"CELULAR: {celular(out)}")
+            print(f"CELULAR: {celular(out, (args.fps or 30) if args.final else 30)}")
         return
 
     results, failed = {}, []
@@ -344,7 +346,7 @@ def main():
     concat(rendered, out, musica_do_video(src, args))
     print(f"\nVÍDEO: {out}")
     if args.final or args.rascunho:
-        print(f"CELULAR: {celular(out)}")
+        print(f"CELULAR: {celular(out, (args.fps or 30) if args.final else 30)}")
 
 
 if __name__ == "__main__":
