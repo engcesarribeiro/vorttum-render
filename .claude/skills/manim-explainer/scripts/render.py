@@ -59,9 +59,11 @@ def render(src: Path, scene: str, args, media: Path) -> tuple[Path | None, list[
         quality = ["--resolution", "540,960" if args.vertical else "854,480", "--frame_rate", "15"]
     sub = modo(args) + ("_v" if args.vertical else "")
     inicio = __import__("time").time()
-    out_dir = media / sub / scene       # pasta própria por cena: cenas em paralelo não disputam o cache do LaTeX
+    fatia = getattr(args, "fatia", None)
+    nome_saida = scene + (f"__{int(fatia.split(',')[0]):04d}" if fatia else "")
+    out_dir = media / sub / nome_saida  # pasta própria por cena (e por fatia): não disputam o cache do LaTeX
     cmd = [sys.executable, "-m", "manim", "render", *quality, "--media_dir", str(out_dir),
-           "--disable_caching", str(src.name), scene]
+           "--disable_caching", *(["-n", fatia] if fatia else []), str(src.name), scene]
     # COLUMNS largo: o log do Manim (rich) quebra linhas e cortaria os avisos [layout]
     env = {**os.environ, "PYTHONIOENCODING": "utf-8", "COLUMNS": "300"}
     if args.no_tts:
@@ -83,6 +85,10 @@ def render(src: Path, scene: str, args, media: Path) -> tuple[Path | None, list[
         tail = "\n".join(l for l in log.splitlines() if l.strip())[-2500:]
         notes.append(f"FALHOU:\n{tail}")
         return None, notes
+    if fatia:   # fatia de cena (fatias.py): o arquivo leva o número da 1ª animação; o áudio é montado na junção
+        dest = video.with_name(f"{nome_saida}.mp4")
+        video.replace(dest)
+        return dest, notes
     tempos = src.parent / "media" / "remotion" / f"{scene}.json"
     if tempos.exists() and tempos.stat().st_mtime >= inicio:
         ok, msg = remotion(src, scene, video, tempos, args)
@@ -277,6 +283,7 @@ def main():
     ap.add_argument("file", type=Path)
     ap.add_argument("--final", action="store_true")
     ap.add_argument("--fps", type=int, help="quadros por segundo do final (padrão 30; ex.: 60)")
+    ap.add_argument("--fatia", help="só as animações a,b da cena (manim -n a,b); use com --only e uma cena (ver fatias.py)")
     ap.add_argument("--vertical", action="store_true")
     ap.add_argument("--rascunho", action="store_true", help="540p30 com voz, para revisar antes do final")
     ap.add_argument("--jobs", type=int, default=1, help="cenas renderizadas ao mesmo tempo")

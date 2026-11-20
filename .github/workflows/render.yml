@@ -1,8 +1,9 @@
-# Renderiza um vídeo com narração (voz Thalita) em várias máquinas do GitHub ao mesmo tempo:
-# uma máquina por cena, e uma última que junta as cenas no MP4 final.
-# Disparar: (1) aba Actions > "Renderizar vídeo" > Run workflow, ou
-#           (2) editar .github/render-pedido.txt (linhas: pasta=..., qualidade=final|rascunho|previa, vertical=true|false).
-# O MP4 final fica em "Artifacts" no resumo da execução (guardado por 14 dias).
+# Renderiza um vídeo com narração em até 20 máquinas ao mesmo tempo:
+#   vozes  -> gera todas as vozes uma vez (em fila) e planeja as fatias das cenas longas
+#   cena   -> uma máquina por fatia (cenas Manim longas) ou por cena (Remotion e cenas curtas), lendo as vozes prontas
+#   juntar -> emenda as fatias, monta o áudio de cada cena, junta tudo e publica no ramo "renders"
+# Disparar: editar .github/render-pedido.txt (pasta=..., qualidade=final|rascunho|previa, vertical=true|false,
+#           fps=60 opcional, alvo=35 opcional: segundos de vídeo por fatia) e dar push em main.
 name: Renderizar vídeo
 
 on:
@@ -10,188 +11,167 @@ on:
     branches: [main]
     paths: [".github/render-pedido.txt"]
   workflow_dispatch:
-    inputs:
-      pasta:
-        description: "Pasta do vídeo (ex.: videos/price-sac)"
-        required: true
-        default: "videos/price-sac"
-      qualidade:
-        description: "final (1080p30), rascunho (540p30 com voz) ou previa (480p15)"
-        type: choice
-        options: [final, rascunho, previa]
-        default: final
-      vertical:
-        description: "Formato 9:16 (Reels)"
-        type: boolean
-        default: false
 
 permissions:
   contents: write
   actions: read
 
+env:
+  SKILL: .claude/skills/manim-explainer
+
 jobs:
-  plano:
+  vozes:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     outputs:
       pasta: ${{ steps.p.outputs.pasta }}
       qualidade: ${{ steps.p.outputs.qualidade }}
       vertical: ${{ steps.p.outputs.vertical }}
-      nome: ${{ steps.p.outputs.nome }}
       fps: ${{ steps.p.outputs.fps }}
+      nome: ${{ steps.p.outputs.nome }}
       sub: ${{ steps.p.outputs.sub }}
-      cenas: ${{ steps.c.outputs.cenas }}
+      args: ${{ steps.p.outputs.args }}
+      tarefas: ${{ steps.f.outputs.tarefas }}
     steps:
       - uses: actions/checkout@v4
       - name: Ler pedido
         id: p
         run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
-            get() { grep -E "^$1=" .github/render-pedido.txt | head -1 | cut -d= -f2- | tr -d '\r '; }
-            PASTA=$(get pasta); QUAL=$(get qualidade); VERT=$(get vertical); FPS=$(get fps)
-          else
-            PASTA="${{ inputs.pasta }}"; QUAL="${{ inputs.qualidade }}"; VERT="${{ inputs.vertical }}"
-          fi
-          QUAL=${QUAL:-final}; VERT=${VERT:-false}; FPS=${FPS:-30}
-          echo "fps=$FPS" >> "$GITHUB_OUTPUT"
-          SUF=""; [ "$VERT" = "true" ] && SUF="-vertical"
+          get() { grep -E "^$1=" .github/render-pedido.txt | head -1 | cut -d= -f2- | tr -d '\r '; }
+          PASTA=$(get pasta); QUAL=$(get qualidade); VERT=$(get vertical); FPS=$(get fps); ALVO=$(get alvo)
+          QUAL=${QUAL:-final}; VERT=${VERT:-false}
+          if [ -z "$FPS" ]; then FPS=30; [ "$QUAL" = "previa" ] && FPS=15; fi
           MODO=$QUAL; [ "$QUAL" = "previa" ] && MODO=preview
           SUB=$MODO; [ "$VERT" = "true" ] && SUB="${MODO}_v"
-          echo "pasta=$PASTA" >> "$GITHUB_OUTPUT"
-          echo "qualidade=$QUAL" >> "$GITHUB_OUTPUT"
-          echo "vertical=$VERT" >> "$GITHUB_OUTPUT"
-          echo "sub=$SUB" >> "$GITHUB_OUTPUT"
-          echo "nome=$(basename "$PASTA")-$QUAL$SUF" >> "$GITHUB_OUTPUT"
-      - name: Listar cenas
-        id: c
+          ARGS=""
+          [ "$QUAL" = "final" ] && ARGS="--final --fps $FPS"
+          [ "$QUAL" = "rascunho" ] && ARGS="--rascunho"
+          [ "$VERT" = "true" ] && ARGS="$ARGS --vertical"
+          SUF=""; [ "$VERT" = "true" ] && SUF="-vertical"
+          echo "pasta=$PASTA" >> "$GITHUB_OUTPUT"; echo "qualidade=$QUAL" >> "$GITHUB_OUTPUT"
+          echo "vertical=$VERT" >> "$GITHUB_OUTPUT"; echo "fps=$FPS" >> "$GITHUB_OUTPUT"
+          echo "sub=$SUB" >> "$GITHUB_OUTPUT"; echo "args=$ARGS" >> "$GITHUB_OUTPUT"
+          echo "alvo=${ALVO:-35}" >> "$GITHUB_OUTPUT"
+          echo "nome=$(basename "$PASTA")-$QUAL$SUF-${FPS}fps" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Instalar LaTeX, ffmpeg e Manim
         run: |
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import json, sys
-          sys.path.insert(0, ".claude/skills/manim-explainer/scripts")
-          from pathlib import Path
-          from render import scene_names
-          cenas = scene_names(Path("${{ steps.p.outputs.pasta }}") / "video.py")
-          print("cenas=" + json.dumps(cenas))
-          PY
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
+            texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended \
+            texlive-science texlive-lang-portuguese cm-super lmodern dvisvgm fonts-liberation
+          pip install -q "manim==0.20.1" "pillow<12" edge-tts
+      - name: Gerar todas as vozes (em fila)
+        working-directory: ${{ steps.p.outputs.pasta }}
+        run: python "$GITHUB_WORKSPACE/$SKILL/scripts/pre_voz.py"
+      - name: Planejar as fatias
+        id: f
+        working-directory: ${{ steps.p.outputs.pasta }}
+        run: |
+          R=""; [ "${{ steps.p.outputs.vertical }}" = "true" ] && R="--vertical"
+          python "$GITHUB_WORKSPACE/$SKILL/scripts/fatias.py" plano video.py --fps ${{ steps.p.outputs.fps }} \
+            --alvo ${{ steps.p.outputs.alvo }} --out planos $R > /tmp/tarefas.json
+          echo "tarefas=$(cat /tmp/tarefas.json)" >> "$GITHUB_OUTPUT"
+          cat /tmp/tarefas.json
+          rm -rf planos/_m
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vozes
+          path: |
+            ${{ steps.p.outputs.pasta }}/media/tts
+            ${{ steps.p.outputs.pasta }}/planos
+          retention-days: 2
+          if-no-files-found: error
 
   cena:
-    needs: plano
+    needs: vozes
     runs-on: ubuntu-latest
     timeout-minutes: 350
     strategy:
       fail-fast: false
-      max-parallel: 5
+      max-parallel: 20
       matrix:
-        cena: ${{ fromJSON(needs.plano.outputs.cenas) }}
+        t: ${{ fromJSON(needs.vozes.outputs.tarefas) }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Instalar LaTeX, ffmpeg e bibliotecas do Manim
+        with: {python-version: "3.12"}
+      - name: Instalar LaTeX, ffmpeg e Manim
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q --no-install-recommends \
-            ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
-            texlive-latex-base texlive-latex-extra texlive-latex-recommended \
-            texlive-fonts-recommended texlive-science texlive-lang-portuguese \
-            cm-super lmodern dvisvgm fonts-liberation
-
-      - name: Instalar Manim e edge-tts
-        run: pip install -q "manim==0.20.1" "pillow<12" edge-tts
-
-      # Cenas RemotionScene: o render.py chama o Remotion (usa o Chrome que já vem na máquina do GitHub)
+          sudo apt-get install -y -q --no-install-recommends ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
+            texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended \
+            texlive-science texlive-lang-portuguese cm-super lmodern dvisvgm fonts-liberation
+          pip install -q "manim==0.20.1" "pillow<12" edge-tts
       - uses: actions/setup-node@v4
-        if: hashFiles(format('{0}/remotion/package.json', needs.plano.outputs.pasta)) != ''
-        with:
-          node-version: 22
-
+        if: matrix.t.fatia == '' && hashFiles(format('{0}/remotion/package.json', needs.vozes.outputs.pasta)) != ''
+        with: {node-version: 22}
       - name: Instalar o Remotion do vídeo
-        if: hashFiles(format('{0}/remotion/package.json', needs.plano.outputs.pasta)) != ''
-        working-directory: ${{ needs.plano.outputs.pasta }}/remotion
+        if: matrix.t.fatia == '' && hashFiles(format('{0}/remotion/package.json', needs.vozes.outputs.pasta)) != ''
+        working-directory: ${{ needs.vozes.outputs.pasta }}/remotion
+        run: npm ci --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: vozes
+          path: ${{ needs.vozes.outputs.pasta }}
+      - name: Renderizar
+        working-directory: ${{ needs.vozes.outputs.pasta }}
         run: |
-          if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi
-
-      - name: Gerar a voz desta cena
-        working-directory: ${{ needs.plano.outputs.pasta }}
-        run: |
-          if [ "${{ needs.plano.outputs.qualidade }}" != "previa" ]; then
-            ID=$(echo "${{ matrix.cena }}" | cut -d_ -f1)
-            timeout 900 python "$GITHUB_WORKSPACE/.claude/skills/manim-explainer/scripts/pre_voz.py" "$ID" || true
-          fi
-
-      - name: Renderizar a cena
-        working-directory: ${{ needs.plano.outputs.pasta }}
-        run: |
-          ARGS=""
-          if [ "${{ needs.plano.outputs.qualidade }}" = "final" ]; then ARGS="$ARGS --final --fps ${{ needs.plano.outputs.fps }}"; fi
-          if [ "${{ needs.plano.outputs.qualidade }}" = "rascunho" ]; then ARGS="$ARGS --rascunho"; fi
-          if [ "${{ needs.plano.outputs.vertical }}" = "true" ]; then ARGS="$ARGS --vertical"; fi
-          R="$GITHUB_WORKSPACE/.claude/skills/manim-explainer/scripts/render.py"
-          # refaz a cena até 3 vezes se a voz ou o Manim falharem
-          python "$R" video.py $ARGS --only "${{ matrix.cena }}" --timeout 19000 --tentativas 2 2>&1 | tee log.txt
+          F=""; [ -n "${{ matrix.t.fatia }}" ] && F="--fatia ${{ matrix.t.fatia }}"
+          python "$GITHUB_WORKSPACE/$SKILL/scripts/render.py" video.py ${{ needs.vozes.outputs.args }} \
+            --only "${{ matrix.t.cena }}" $F --timeout 19000 --tentativas 2 2>&1 | tee log.txt
           test "${PIPESTATUS[0]}" -eq 0
-
-      - name: Separar o vídeo da cena
-        working-directory: ${{ needs.plano.outputs.pasta }}
+      - name: Separar o vídeo
+        working-directory: ${{ needs.vozes.outputs.pasta }}
         run: |
-          mkdir -p saida_cena
-          F=$(find "media/${{ needs.plano.outputs.sub }}/${{ matrix.cena }}" -name "${{ matrix.cena }}.mp4" -not -path "*partial_movie_files*" | head -1)
-          cp "$F" "saida_cena/${{ matrix.cena }}.mp4"
-
+          mkdir -p saida
+          F=$(find "media/${{ needs.vozes.outputs.sub }}" -name "${{ matrix.t.id }}.mp4" -not -path "*partial_movie_files*" | head -1)
+          cp "$F" "saida/${{ matrix.t.id }}.mp4"
       - uses: actions/upload-artifact@v4
         with:
-          name: cena-${{ matrix.cena }}
-          path: ${{ needs.plano.outputs.pasta }}/saida_cena/${{ matrix.cena }}.mp4
+          name: cena-${{ matrix.t.id }}
+          path: ${{ needs.vozes.outputs.pasta }}/saida/${{ matrix.t.id }}.mp4
           retention-days: 2
           if-no-files-found: error
 
   juntar:
-    needs: [plano, cena]
+    needs: [vozes, cena]
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends ffmpeg
+      - uses: actions/download-artifact@v4
         with:
-          python-version: "3.12"
-
-      - name: Instalar ffmpeg
-        run: |
-          sudo apt-get update -q
-          sudo apt-get install -y -q --no-install-recommends ffmpeg
-
+          name: vozes
+          path: ${{ needs.vozes.outputs.pasta }}
       - uses: actions/download-artifact@v4
         with:
           pattern: cena-*
-          path: ${{ needs.plano.outputs.pasta }}/media/${{ needs.plano.outputs.sub }}
-
-      - name: Juntar as cenas
-        working-directory: ${{ needs.plano.outputs.pasta }}
+          path: ${{ needs.vozes.outputs.pasta }}/media/${{ needs.vozes.outputs.sub }}
+      - name: Emendar as fatias e juntar as cenas
+        working-directory: ${{ needs.vozes.outputs.pasta }}
         run: |
-          ARGS=""
-          if [ "${{ needs.plano.outputs.qualidade }}" = "final" ]; then ARGS="$ARGS --final --fps ${{ needs.plano.outputs.fps }}"; fi
-          if [ "${{ needs.plano.outputs.qualidade }}" = "rascunho" ]; then ARGS="$ARGS --rascunho"; fi
-          if [ "${{ needs.plano.outputs.vertical }}" = "true" ]; then ARGS="$ARGS --vertical"; fi
-          python "$GITHUB_WORKSPACE/.claude/skills/manim-explainer/scripts/render.py" video.py $ARGS --concat-only
-
+          S="$GITHUB_WORKSPACE/$SKILL/scripts"
+          python "$S/fatias.py" juntar video.py --sub ${{ needs.vozes.outputs.sub }} --planos planos
+          python "$S/render.py" video.py ${{ needs.vozes.outputs.args }} --concat-only
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ needs.plano.outputs.nome }}
-          path: ${{ needs.plano.outputs.pasta }}/out/*.mp4
+          name: ${{ needs.vozes.outputs.nome }}
+          path: ${{ needs.vozes.outputs.pasta }}/out/*.mp4
           retention-days: 14
-          if-no-files-found: error
-
       - name: Publicar no ramo renders (para baixar com git)
         run: |
           set -e
-          mkdir -p /tmp/v && cp ${{ needs.plano.outputs.pasta }}/out/*.mp4 /tmp/v/
-          N="${{ needs.plano.outputs.nome }}"
+          mkdir -p /tmp/v && cp ${{ needs.vozes.outputs.pasta }}/out/*.mp4 /tmp/v/
+          N="${{ needs.vozes.outputs.nome }}"
           git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git ls-remote --exit-code origin renders >/dev/null; then git fetch -q --depth 1 origin renders && git checkout -q renders
+          if git ls-remote --exit-code origin renders >/dev/null; then git fetch -q --depth 1 origin renders && git checkout -q -f renders
           else git checkout -q --orphan renders && git rm -rqf .; fi
+          git clean -fdq
           mkdir -p videos
           for f in /tmp/v/*.mp4; do cp "$f" "videos/$N-$(basename "$f")"; done
           git add videos && git commit -qm "Render $N (execução ${{ github.run_id }})" && git push -q origin renders

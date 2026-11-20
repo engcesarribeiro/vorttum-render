@@ -644,6 +644,7 @@ class ExplainerScene(Scene):
             self.camera.init_background()
         self._setup_zonas()
         self._v0, self._vazios, self._falas_t = 0.0, [], []   # auditoria [vazio]
+        self._plano_plays, self._plano_falas = [], []         # EXPLAINER_PLANO: duração de cada play e falas
         self._decor = []
         top, bottom = self.content_box
         dec = estilos.decoracao(_E, config.frame_width, config.frame_height, VERTICAL, (top, bottom))
@@ -871,6 +872,8 @@ class ExplainerScene(Scene):
         start = self.renderer.time
         if hasattr(self, "_falas_t"):
             self._falas_t.append((start, start + duration, plain))
+        if hasattr(self, "_plano_falas"):
+            self._plano_falas.append([start, str(mp3) if mp3 else None, duration])
         if mp3:
             self.add_sound(str(mp3))
 
@@ -1150,6 +1153,14 @@ class ExplainerScene(Scene):
     def tear_down(self):
         if hasattr(self, "_vazios") and not isinstance(self, RemotionScene):
             self._audit_vazio()
+        plano = os.environ.get("EXPLAINER_PLANO")
+        if plano and hasattr(self, "_plano_plays"):
+            # usado pelo render em fatias: quantos plays a cena tem, quanto dura cada um e onde cai cada fala
+            Path(plano).mkdir(parents=True, exist_ok=True)
+            (Path(plano) / f"{type(self).__name__}.json").write_text(json.dumps({
+                "cena": type(self).__name__, "fps": config.frame_rate, "duracao": self.renderer.time,
+                "plays": self._plano_plays, "falas": self._plano_falas,
+                "num_plays": self.renderer.num_plays}, ensure_ascii=False), "utf-8")
         super().tear_down()
 
     def play(self, *args, **kwargs):
@@ -1163,7 +1174,10 @@ class ExplainerScene(Scene):
             args = (*args, FadeOut(self._tira_legenda()))   # o desenho entra e a legenda sai junto (fade)
         else:
             self._tira_legenda()
+        _t0 = self.renderer.time
         super().play(*args, **kwargs)
+        if hasattr(self, "_plano_plays"):
+            self._plano_plays.append(self.renderer.time - _t0)
         for g, m in trocas:     # o grupo de letras volta a ser o objeto original (para Transform, FadeOut...)
             self.remove(g)
             Scene.add(self, m)
