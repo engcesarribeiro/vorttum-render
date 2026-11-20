@@ -1,6 +1,6 @@
 # VORTTUM 001 (EN-US) | I Tried to Beat a Casino With Math. Did It Work?
 
-Format: YouTube 16:9 (1920x1080). Voice: en-US-AndrewMultilingualNeural, +0%.
+Format: YouTube 16:9 (1920x1080). Voice: en-US-AndrewMultilingualNeural, +5% (A01 and A09 at +10%).
 Currency: US dollars. Same rules and same numbers as the Portuguese script (simulacao.py, seed 2026).
 
 ## Numbers checked in code

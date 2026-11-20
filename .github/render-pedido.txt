@@ -1,4 +1,4 @@
 pasta=videos/martingale-cassino-en
 qualidade=rascunho
 vertical=false
-# rascunho 3: sem marca e sem trechos vazios
+# rascunho 4: voz +5%, gancho e investidor +10%

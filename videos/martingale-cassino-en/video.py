@@ -84,7 +84,7 @@ def escada(n=30, passo=0.09, queda=3.6, largura=8.0):
 
 class _Base(ExplainerScene):
     VOICE = "en-US-AndrewMultilingualNeural"
-    RATE = "+0%"
+    RATE = "+5%"                 # vídeo inteiro 5% mais rápido; gancho (A01) e investidor (A09) a +10%
     TITLE_AREA = False
 
     def esmaece(self, op=0.15, run_time=0.5):
@@ -101,6 +101,7 @@ class _Base(ExplainerScene):
 # ---------------------------------------------------------------- A01 gancho (Remotion)
 class A01_Gancho(RemotionScene):
     VOICE = _Base.VOICE
+    RATE = "+10%"
     ESTILO = "v_remotion"
     FALAS = [F("A01", k) for k in range(1, 7)]
     CAUDA = 0.5
@@ -239,6 +240,7 @@ class A02_Estrategia(_Base):
 # ---------------------------------------------------------------- A03 37 casas (Remotion)
 class A03_Detalhe(RemotionScene):
     VOICE = _Base.VOICE
+    RATE = _Base.RATE
     ESTILO = "v_remotion"
     FALAS = [F("A03", k) for k in range(1, 8)]
     CAUDA = 0.5
@@ -468,6 +470,7 @@ class A05_Banca(_Base):
 # ---------------------------------------------------------------- A06 primeiros giros (Remotion)
 class A06_Experimento(RemotionScene):
     VOICE = _Base.VOICE
+    RATE = _Base.RATE
     ESTILO = "v_remotion"
     FALAS = [F("A06", k) for k in range(1, 9)]
     CAUDA = 0.5
@@ -899,6 +902,7 @@ class A08_Matematica(_Base):
 # ---------------------------------------------------------------- A09 consequência (papel)
 class A09_Consequencia(_Base):
     ESTILO = "v_papel"
+    RATE = "+10%"
 
     def construct(self):
         with self.narrate(F("A09", 1)) as n:
