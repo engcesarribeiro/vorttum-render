@@ -1,0 +1,32 @@
+# Cancela todas as execuções em andamento do "Renderizar vídeo".
+# Disparar: escrever uma linha nova em .github/cancelar-pedido.txt e dar push em main
+# (a sessão do Claude não tem permissão de cancelar pela API; por isso o pedido é por arquivo).
+name: Cancelar renders
+
+on:
+  push:
+    branches: [main]
+    paths: [".github/cancelar-pedido.txt"]
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  cancelar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancelar execuções em andamento
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          for wf in "Renderizar vídeo" "Renderizar vídeo (Remotion + Motion Canvas)"; do
+          for st in in_progress queued; do
+            gh run list -R "$REPO" --workflow "$wf" --status "$st" --json databaseId --jq '.[].databaseId' |
+            while read -r id; do
+              echo "Cancelando $id"
+              gh run cancel "$id" -R "$REPO" || true
+            done
+          done
+          done

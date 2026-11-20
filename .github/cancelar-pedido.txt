@@ -1,0 +1,2 @@
+# Escreva uma linha nova aqui e dê push em main para cancelar os renders em andamento.
+2026-11-20T01:29:12Z cancelar rascunho 4 travado na voz da A05

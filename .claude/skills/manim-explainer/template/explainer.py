@@ -236,7 +236,8 @@ def _tts(text: str, voice: str, rate: str, mp3: Path):
                     words.append((chunk["text"], chunk["offset"] / 1e7))
         return words
 
-    return asyncio.run(run())
+    # o serviço às vezes para de responder no meio da fala: sem limite, o render fica parado para sempre
+    return asyncio.run(asyncio.wait_for(run(), timeout=float(os.environ.get("EXPLAINER_TTS_TIMEOUT", "90"))))
 
 
 def _probe(path: Path) -> float:

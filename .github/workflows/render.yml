@@ -116,7 +116,7 @@ jobs:
         run: |
           if [ "${{ needs.plano.outputs.qualidade }}" != "previa" ]; then
             ID=$(echo "${{ matrix.cena }}" | cut -d_ -f1)
-            python "$GITHUB_WORKSPACE/.claude/skills/manim-explainer/scripts/pre_voz.py" "$ID" || true
+            timeout 900 python "$GITHUB_WORKSPACE/.claude/skills/manim-explainer/scripts/pre_voz.py" "$ID" || true
           fi
 
       - name: Renderizar a cena
