@@ -1,5 +1,6 @@
 pasta=videos/tunel-terra-en
-qualidade=rascunho
+qualidade=final
 vertical=false
-fps=30
-# rascunho 540p30 com voz (Andrew)
+fps=60
+alvo=30
+# final 1080p60 com voz (Andrew), ~20 máquinas em paralelo
