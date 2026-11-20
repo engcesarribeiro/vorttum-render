@@ -1,0 +1,5 @@
+run_id=44670861594
+pasta=videos/martingale-cassino-en
+sub=final
+args=--final --fps 60
+nome=martingale-cassino-en-final-60fps
