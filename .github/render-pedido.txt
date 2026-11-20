@@ -1,6 +1,5 @@
-pasta=videos/martingale-cassino-en
-qualidade=final
+pasta=videos/tunel-terra-en
+qualidade=rascunho
 vertical=false
-fps=60
-alvo=35
-# final 1080p60 em fatias
+fps=30
+# rascunho 540p30 com voz (Andrew)
