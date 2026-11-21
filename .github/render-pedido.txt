@@ -1,6 +1,6 @@
-pasta=videos/tunel-terra-en
+pasta=videos/martingale-cassino-en
 qualidade=final
 vertical=false
 fps=60
-alvo=30
-# final 1080p60 com voz (Andrew), ~20 máquinas em paralelo
+alvo=35
+# final 1080p60 do VORTTUM 001 com abertura A00 e voz expressiva
