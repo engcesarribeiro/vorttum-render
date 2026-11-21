@@ -35,7 +35,7 @@ jobs:
       - name: Publicar no ramo amostras
         run: |
           git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git ls-remote --exit-code origin amostras >/dev/null; then git fetch -q --depth 1 origin amostras && git checkout -q -f amostras
+          if git ls-remote --exit-code origin amostras >/dev/null; then git fetch -q --depth 1 origin +amostras:refs/remotes/origin/amostras && git checkout -q -f -B amostras origin/amostras
           else git checkout -q --orphan amostras && git rm -rqf .; fi
           git clean -fdq
           cp /tmp/out/*.mp3 .
