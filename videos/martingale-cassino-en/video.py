@@ -98,6 +98,41 @@ class _Base(ExplainerScene):
         return g
 
 
+# ---------------------------------------------------------------- A00 abertura fria (Manim escuro)
+class A00_Abertura(_Base):
+    """Abre com a cena mais forte: o saldo real da sessão 323 subindo e despencando, em tela cheia."""
+    ESTILO = "v_doc"
+    RATE = "+0%"
+
+    def construct(self):
+        ox, oy, w, h = -6.7, -3.2, 13.4, 5.6
+        pts = G["s323"]
+        xmax, ymax = 40000, 210000
+
+        def p(x, y):
+            return np.array([ox + w * x / xmax, oy + h * y / ymax, 0])
+
+        pico_i = max(range(len(pts)), key=lambda i: pts[i][1])
+        sobe = VMobject().set_points_as_corners([p(x, y) for x, y in pts[:pico_i + 1]]).set_stroke(GOLD, 4)
+        cai = Line(p(*pts[pico_i]), p(*pts[-1])).set_stroke(BAD, 8)
+        base = Line(p(0, 0), p(xmax, 0)).set_stroke(MUTED, 2)
+        nota = T("balance of one real session (no. 323)", 24, MUTED).next_to(base, UP, buff=0.2).set_x(1.2)
+        ganhos = T("won $10 \u00d7 486,539 times", 60, GOLD).move_to([-6.6, 2.85, 0], aligned_edge=LEFT)
+        perda = T("\u2212$2,164,630", 104, BAD).move_to([-2.9, 1.25, 0])
+        sub = T("total, after 1,000,000 spins", 32, MUTED).next_to(perda, DOWN, buff=0.25)
+        with self.narrate(F("A00", 1)) as n:
+            self.play(Create(base), FadeIn(nota), run_time=0.4)
+            n.wait_until("won")
+            self.play(FadeIn(ganhos, shift=DOWN * 0.1), Create(sobe), run_time=max(1.5, n.until("And") - 0.15),
+                      rate_func=linear)
+            n.wait_until("And")
+            self.play(Create(cai), run_time=0.35, rate_func=rush_into)
+            n.wait_until("lost")
+            self.play(FadeIn(perda, scale=1.08), run_time=0.45)
+            self.play(FadeIn(sub), run_time=0.4)
+        self.wait(0.3)
+
+
 # ---------------------------------------------------------------- A01 gancho (Remotion)
 class A01_Gancho(RemotionScene):
     VOICE = _Base.VOICE

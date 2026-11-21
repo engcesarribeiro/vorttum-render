@@ -1,0 +1,42 @@
+# Amostra da voz expressiva (pausas e ênfase do roteiro) contra a voz de antes, para comparar de ouvido.
+# Disparar: editar amostras/expressiva-pedido.txt (1ª linha: pasta do vídeo; 2ª: falas, ex. "A00:1 A07:13") e dar push.
+name: Amostra de voz expressiva
+
+on:
+  push:
+    branches: [main]
+    paths: ["amostras/expressiva-pedido.txt"]
+
+permissions:
+  contents: write
+
+jobs:
+  amostra:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - uses: actions/cache/restore@v4
+        with:
+          path: ~/aptdebs
+          key: apt-manim-${{ runner.os }}-v1
+      - name: Instalar
+        run: |
+          if ls ~/aptdebs/*.deb >/dev/null 2>&1 && sudo dpkg -i ~/aptdebs/*.deb > /tmp/dpkg.log 2>&1; then echo "do cache"
+          else sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends ffmpeg libcairo2-dev libpango1.0-dev pkg-config; fi
+          pip install -q "manim==0.20.1" "pillow<12" edge-tts
+      - name: Gerar
+        run: |
+          PASTA=$(sed -n 1p amostras/expressiva-pedido.txt | tr -d '\r')
+          FALAS=$(sed -n 2p amostras/expressiva-pedido.txt | tr -d '\r')
+          python amostras/expressiva.py "$PASTA" $FALAS
+      - name: Publicar no ramo amostras
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code origin amostras >/dev/null; then git fetch -q --depth 1 origin amostras && git checkout -q -f amostras
+          else git checkout -q --orphan amostras && git rm -rqf .; fi
+          git clean -fdq
+          cp /tmp/out/*.mp3 .
+          git add -A && git commit -qm "Amostra de voz expressiva" && git push -q origin amostras

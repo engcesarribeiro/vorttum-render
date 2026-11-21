@@ -41,56 +41,56 @@ export const A01_Gancho: React.FC<Props> = (props) => {
 
   return (
     <Papel>
-      <Roleta cx={520} cy={560} r={300} ang={ang} op={roda} bola={s > t10 + 0.9} />
+      <Roleta cx={545} cy={560} r={415} ang={ang} op={roda} bola={s > t10 + 0.9} />
 
       {/* fala 1 */}
-      <Recorte x={1060} y={250} w={300} h={180} cor={V.C1} p={vis(s, t10 - 0.4, f1)}>
-        <span style={{font: `700 44px ${LM}`, color: V.SHEET, letterSpacing: 2, marginTop: 100}}>RED</span>
+      <Recorte x={1080} y={150} w={370} h={230} cor={V.C1} p={vis(s, t10 - 0.4, f1)}>
+        <span style={{font: `700 54px ${LM}`, color: V.SHEET, letterSpacing: 2, marginTop: 120}}>RED</span>
       </Recorte>
-      <Ficha x={1210} y={305} valor={10} p={vis(s, t10, f1)} />
-      <Txt x={1420} y={300} p={pop(s, t10 + 1.0) * vis(s, t10, f1)} size={72} cor={V.GOLD} serif>+$10</Txt>
+      <Ficha x={1265} y={230} valor={10} r={72} p={vis(s, t10, f1)} />
+      <Txt x={1500} y={200} p={pop(s, t10 + 1.0) * vis(s, t10, f1)} size={110} cor={V.GOLD} serif>+$10</Txt>
       {escada.map((v, k) => (
-        <Ficha key={v} x={1100 + (k % 5) * 150} y={560 + Math.floor(k / 5) * 150} valor={v} r={58}
+        <Ficha key={v} x={1150 + (k % 5) * 168} y={540 + Math.floor(k / 5) * 168} valor={v} r={74}
           cor={k < 4 ? V.C1 : V.BAD} p={vis(s, tf + k * 0.17, f1)} />
       ))}
-      <Txt x={1475} y={800} p={vis(s, t('thousands', 1), f1)} size={64} cor={V.BAD} serif>{usd(-5110)}</Txt>
+      <Txt x={1490} y={800} p={vis(s, t('thousands', 1), f1)} size={110} cor={V.BAD} serif ancora="centro">{usd(-5110)}</Txt>
 
       {/* fala 2 */}
       {(() => {
         const tm = t('million', 2);
         const n = Math.round(1_000_000 * prog(s, tm - 0.6, 1.2));
         return <>
-          <Txt x={1380} y={380} p={vis(s, tm - 0.6, fim(2))} size={96} serif ancora="centro">{n.toLocaleString('en-US')}</Txt>
-          <Txt x={1380} y={510} p={vis(s, tm, fim(2))} size={48} cor={V.MUTED} ancora="centro">spins</Txt>
+          <Txt x={1460} y={360} p={vis(s, tm - 0.6, fim(2))} size={140} serif ancora="centro">{n.toLocaleString('en-US')}</Txt>
+          <Txt x={1460} y={540} p={vis(s, tm, fim(2))} size={64} cor={V.MUTED} ancora="centro">spins</Txt>
         </>;
       })()}
 
       {/* falas 3 a 5 */}
-      <Recorte x={1060} y={200} w={300} h={170} cor={V.C1} p={quadro}>
-        <span style={{font: `700 44px ${LM}`, color: V.SHEET, letterSpacing: 2}}>RED</span>
+      <Recorte x={1075} y={150} w={370} h={210} cor={V.C1} p={quadro}>
+        <span style={{font: `700 54px ${LM}`, color: V.SHEET, letterSpacing: 2}}>RED</span>
       </Recorte>
-      <Recorte x={1400} y={200} w={300} h={170} cor={V.INK} p={quadro}>
-        <span style={{font: `700 44px ${LM}`, color: V.SHEET, letterSpacing: 2}}>BLACK</span>
+      <Recorte x={1485} y={150} w={370} h={210} cor={V.INK} p={quadro}>
+        <span style={{font: `700 54px ${LM}`, color: V.SHEET, letterSpacing: 2}}>BLACK</span>
       </Recorte>
-      <Txt x={1210} y={390} p={vis(s, t('keep', 3), t('double', 4) - 0.1)} size={64} cor={V.GOLD} serif ancora="centro">+$10</Txt>
+      <Txt x={1260} y={385} p={vis(s, t('keep', 3), t('double', 4) - 0.1)} size={88} cor={V.GOLD} serif ancora="centro">+$10</Txt>
       {passos.map((st, k) => (
         <React.Fragment key={st.v}>
-          <Ficha x={1130 + k * 190} y={560} valor={st.v} r={62} cor={k === 3 ? V.GOLD : V.C1} p={vis(s, st.t, fim(5))} />
-          {k > 0 && <Txt x={1130 + k * 190 - 95} y={540} p={vis(s, st.t, fim(5))} size={26} cor={V.MUTED} ancora="centro">{'×2'}</Txt>}
-          <Txt x={1130 + k * 190} y={650} p={vis(s, t('everything', 5) + k * 0.15, fim(5))} size={40}
+          <Ficha x={1160 + k * 215} y={610} valor={st.v} r={82} cor={k === 3 ? V.GOLD : V.C1} p={vis(s, st.t, fim(5))} />
+          {k > 0 && <Txt x={1160 + k * 215 - 108} y={588} p={vis(s, st.t, fim(5))} size={34} cor={V.MUTED} ancora="centro">{'×2'}</Txt>}
+          <Txt x={1160 + k * 215} y={715} p={vis(s, t('everything', 5) + k * 0.15, fim(5))} size={54}
             cor={k === 3 ? V.GOLD : V.BAD} ancora="centro">{k === 3 ? '+$80' : usd(-st.v)}</Txt>
         </React.Fragment>
       ))}
       {(() => {
         const p = vis(s, t('ten', 5), fim(5));
-        return <div style={{position: 'absolute', left: 1415, top: 760, transform: `translateX(-50%) scale(${0.9 + 0.1 * pop(s, t('ten', 5))})`,
+        return <div style={{position: 'absolute', left: 1482, top: 830, transform: `translateX(-50%) scale(${0.9 + 0.1 * pop(s, t('ten', 5))})`,
           opacity: p, background: '#EADCBE', border: `3px solid ${V.GOLD}`, padding: '10px 34px'}}>
-          <span style={{font: `700 66px ${LM}`, color: V.GOLD}}>= +$10</span>
+          <span style={{font: `700 84px ${LM}`, color: V.GOLD}}>= +$10</span>
         </div>;
       })()}
 
       {/* fala 6 */}
-      <Txt x={1380} y={400} p={vis(s, t('casino', 6) - 0.2)} size={74} serif ancora="centro" largura={820}>
+      <Txt x={1470} y={330} p={vis(s, t('casino', 6) - 0.2)} size={96} serif ancora="centro" largura={800}>
         Can you really beat a casino this way?
       </Txt>
       <AbsoluteFill style={{background: '#000', opacity: preto}} />

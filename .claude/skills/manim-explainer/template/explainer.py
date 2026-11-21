@@ -202,11 +202,11 @@ WORDS_PER_SEC = 2.6     # ritmo usado quando a narração está desligada
 
 
 def clean_text(text: str) -> str:
-    """Texto falado normalizado (espaços simples)."""
-    return re.sub(r"\s+", " ", text).strip()
+    """Texto falado normalizado (espaços simples), sem as marcações de voz (<break>, <emphasis>, <prosody>)."""
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", text)).strip()
 
 
-def _tts(text: str, voice: str, rate: str, mp3: Path):
+def _tts(text: str, voice: str, rate: str, mp3: Path, volume: str = "+0%", pitch: str = "+0Hz"):
     import edge_tts
     import edge_tts.communicate as etc
 
@@ -227,7 +227,7 @@ def _tts(text: str, voice: str, rate: str, mp3: Path):
     async def run():
         words = []
         proxy = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy") or None
-        com = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary", proxy=proxy)
+        com = edge_tts.Communicate(text, voice, rate=rate, volume=volume, pitch=pitch, boundary="WordBoundary", proxy=proxy)
         with open(mp3, "wb") as f:
             async for chunk in com.stream():
                 if chunk["type"] == "audio":
@@ -283,6 +283,115 @@ def _sem_acento(w: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFD", w) if unicodedata.category(c) != "Mn")
 
 
+# --- voz expressiva (SSML simplificado) ----------------------------------------------------
+# O serviço grátis de voz (edge-tts) recusa <break> e <emphasis>. Então a skill entende estas marcações no
+# roteiro e faz o trabalho ela mesma: gera cada pedaço separado, corta o silêncio que o serviço põe no começo
+# e no fim de cada pedaço e emenda com as pausas pedidas.
+#   <break time="1.2s"/>                pausa (s ou ms)
+#   <emphasis>two million</emphasis>    pedaço mais lento e mais alto (ênfase)
+#   <prosody rate="-10%">...</prosody>  pedaço com ritmo/tom/volume próprios (soma ao RATE da cena)
+# Sem marcação nenhuma, a fala também passa por aqui (VOZ_EXPRESSIVA=True): o silêncio do fim é cortado e a
+# pausa depois da fala depende do jeito que ela termina, em vez do mesmo meio segundo para todas.
+VOZ_EXPRESSIVA = os.environ.get("EXPLAINER_VOZ_EXPRESSIVA", "on").lower() not in ("off", "0", "false")
+PAUSA_FRASE = 0.32       # entre frases dentro da mesma fala (o serviço punha ~0,5 s em todas)
+PAUSA_JUNTA = 0.06       # emenda no meio da frase (ex.: antes de um <emphasis>)
+CAUDA_FALA = {".": 0.22, "!": 0.22, "?": 0.45, "…": 0.4}   # silêncio depois da fala, pelo último sinal
+ENFASE = {"rate": -10, "volume": "+18%", "pitch": "-2Hz"}
+_TAG = re.compile(r"<break\s+time=\"([\d.]+)(ms|s)\"\s*/>|<(emphasis|prosody)([^>]*)>(.*?)</\3>", re.S)
+
+
+def _pct(r: str) -> int:
+    m = re.match(r"\s*([+-]?\d+)\s*%", r or "")
+    return int(m.group(1)) if m else 0
+
+
+def _pedacos(text: str):
+    """Divide a fala marcada em [('voz', texto, rate_rel, volume, pitch) | ('pausa', s)]."""
+    out, pos = [], 0
+    for m in _TAG.finditer(text):
+        antes = clean_text(text[pos:m.start()])
+        if antes:
+            out.append(("voz", antes, 0, "+0%", "+0Hz"))
+        if m.group(1):
+            out.append(("pausa", float(m.group(1)) / (1000 if m.group(2) == "ms" else 1)))
+        else:
+            attrs = dict(re.findall(r'(\w+)="([^"]*)"', m.group(4) or ""))
+            corpo = clean_text(m.group(5))
+            if m.group(3) == "emphasis":
+                out.append(("voz", corpo, ENFASE["rate"], ENFASE["volume"], ENFASE["pitch"]))
+            else:
+                out.append(("voz", corpo, _pct(attrs.get("rate")), attrs.get("volume", "+0%"), attrs.get("pitch", "+0Hz")))
+        pos = m.end()
+    resto = clean_text(text[pos:])
+    if resto:
+        out.append(("voz", resto, 0, "+0%", "+0Hz"))
+    return out
+
+
+def _bordas(mp3: Path) -> tuple[float, float]:
+    """Onde a voz começa e termina no arquivo (corta o silêncio que o serviço põe nas pontas)."""
+    total = _probe(mp3)
+    p = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(mp3), "-af", "silencedetect=n=-42dB:d=0.04", "-f", "null", "-"],
+                       capture_output=True, text=True)
+    ini, fim = 0.0, total
+    starts = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", p.stderr)]
+    ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", p.stderr)]
+    if starts and starts[0] <= 0.01 and ends:
+        ini = ends[0]
+    if starts and starts[-1] > ini and (len(ends) < len(starts) or ends[-1] >= total - 0.02):
+        fim = starts[-1]
+    return max(0.0, ini - 0.02), min(total, fim + 0.05)
+
+
+def _sintetiza_expressiva(text: str, voice: str, rate: str, mp3: Path) -> list[tuple[str, float]]:
+    """Gera a fala pedaço por pedaço e emenda num mp3 só; devolve o tempo de cada palavra no arquivo final."""
+    pedacos = _pedacos(text)
+    base = _pct(rate)
+    tmp = mp3.with_suffix(".partes")
+    tmp.mkdir(exist_ok=True)
+    trechos, words, t = [], [], 0.0      # trechos: ('voz', arquivo, ini, fim) | ('pausa', s)
+    pend = None                          # pausa entre o pedaço anterior e o próximo
+    for k, pc in enumerate(pedacos):
+        if pc[0] == "pausa":
+            pend = (pend or 0) + pc[1] if pend is not None and pend > 0.1 else pc[1]
+            continue
+        _, txt, rel, vol, pit = pc
+        if trechos and pend is None:
+            ant = next((x for x in reversed(pedacos[:k]) if x[0] == "voz"), None)
+            pend = PAUSA_FRASE if ant and ant[1].rstrip()[-1:] in ".!?…:;" else PAUSA_JUNTA
+        if pend:
+            trechos.append(("pausa", pend))
+            t += pend
+        pend = None
+        r = base + rel
+        arq = tmp / f"{k:02d}.mp3"
+        ws = _tts(para_voz(txt), voice, f"{r:+d}%", arq, volume=vol, pitch=pit)
+        a, b = _bordas(arq)
+        trechos.append(("voz", arq, a, b))
+        words += [(w, t + max(0.0, off - a)) for w, off in ws]
+        t += b - a
+    fim = clean_text(text)[-1:]
+    cauda = pend if pend is not None else CAUDA_FALA.get(fim, 0.22)
+    trechos.append(("pausa", cauda))
+    # emenda: cada pedaço cortado nas bordas + silêncio, 24 kHz mono (o formato do serviço)
+    entradas, filtros, n = [], [], 0
+    for tr in trechos:
+        if tr[0] == "voz":
+            entradas += ["-i", str(tr[1])]
+            filtros.append(f"[{n}:a]atrim={tr[2]:.3f}:{tr[3]:.3f},asetpts=PTS-STARTPTS,aresample=24000,aformat=channel_layouts=mono[s{len(filtros)}]")
+        else:
+            entradas += ["-f", "lavfi", "-t", f"{tr[1]:.3f}", "-i", "anullsrc=r=24000:cl=mono"]
+            filtros.append(f"[{n}:a]asetpts=PTS-STARTPTS[s{len(filtros)}]")
+        n += 1
+    junta = "".join(f"[s{i}]" for i in range(len(filtros))) + f"concat=n={len(filtros)}:v=0:a=1[out]"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", *entradas, "-filter_complex", ";".join(filtros + [junta]),
+                    "-map", "[out]", "-c:a", "libmp3lame", "-b:a", "96k", str(mp3)], check=True)
+    for f in tmp.iterdir():
+        f.unlink()
+    tmp.rmdir()
+    return words
+
+
 def _synthesize(text: str, voice: str, rate: str) -> tuple[Path | None, float, list[tuple[str, float]]]:
     """Gera (ou lê do cache) o mp3 da fala inteira e o tempo de cada palavra."""
     plain = clean_text(text)
@@ -290,6 +399,14 @@ def _synthesize(text: str, voice: str, rate: str) -> tuple[Path | None, float, l
         words = plain.split()
         return None, max(1.0, len(words) / WORDS_PER_SEC), [(w, i / WORDS_PER_SEC) for i, w in enumerate(words)]
     TTS_DIR.mkdir(parents=True, exist_ok=True)
+    if VOZ_EXPRESSIVA:
+        key = hashlib.sha1(f"v4x|{voice}|{rate}|{PAUSA_FRASE}|{ENFASE}|{clean_text(re.sub(r'<', ' <', text))}|{text}".encode()).hexdigest()[:16]
+        mp3, meta = TTS_DIR / f"{key}.mp3", TTS_DIR / f"{key}.json"
+        if not (mp3.exists() and meta.exists()):
+            words = _sintetiza_expressiva(text, voice, rate, mp3)
+            meta.write_text(json.dumps({"duration": _probe(mp3), "words": words}, ensure_ascii=False), "utf-8")
+        data = json.loads(meta.read_text("utf-8"))
+        return mp3, data["duration"], [tuple(w) for w in data["words"]]
     plain = para_voz(plain)
     key = hashlib.sha1(f"v3|{voice}|{rate}|{plain}".encode()).hexdigest()[:16]
     mp3, meta = TTS_DIR / f"{key}.mp3", TTS_DIR / f"{key}.json"

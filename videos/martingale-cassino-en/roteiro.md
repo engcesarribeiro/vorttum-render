@@ -1,6 +1,6 @@
 # VORTTUM 001 (EN-US) | I Tried to Beat a Casino With Math. Did It Work?
 
-Format: YouTube 16:9 (1920x1080). Voice: en-US-AndrewMultilingualNeural, +5% (A01 and A09 at +10%).
+Format: YouTube 16:9 (1920x1080). Voice: en-US-AndrewMultilingualNeural, +5% (A01 and A09 at +10%, A00 at +0%). Voice markup (simplified SSML, handled by the skill): <break time="…s"/>, <emphasis>…</emphasis>, <prosody rate="…%">…</prosody>.
 Currency: US dollars. Same rules and same numbers as the Portuguese script (simulacao.py, seed 2026).
 
 ## Numbers checked in code
@@ -24,10 +24,15 @@ Currency: US dollars. Same rules and same numbers as the Portuguese script (simu
 
 ---
 
+### A00 | Cold open
+Screen: full-screen dark chart, real balance of session 323 rising slowly to $203,440, then the cliff (14 losses in a row); "won $10 × 486,539 times" in gold; then "−$2,164,630" big in red, "total, after 1,000,000 spins". No brand name.
+
+**Fala 1:** I won <emphasis>four hundred eighty-six thousand, five hundred thirty-nine times.</emphasis> <break time="1.2s"/> <prosody rate="-10%">And I still lost two million dollars.</prosody>
+
 ### A01 | The hook
 Screen: black for a split second; editorial European roulette on aged paper. A $10 chip lands on red, disappears; $20, $40, $80 appear. In the first 10 s: a sequence that ends in a win (+10), then right away a losing streak where the bet explodes.
 
-**Fala 1:** I found a strategy that wins ten dollars almost every single time it works. The problem is, when it fails, you can lose thousands.
+**Fala 1:** I found a strategy that wins ten dollars almost every single time it works. The problem is, when it fails, <break time="0.5s"/> <prosody rate="-8%">you can lose thousands.</prosody>
 
 **Fala 2:** So I decided to test this strategy over one million spins of a roulette wheel. And the result reveals something really strange about the math of money.
 
@@ -50,7 +55,7 @@ Screen: simplified roulette table; $1,000 bankroll (only to explain). Rounds: 10
 
 **Fala 4:** So far, you've lost thirty dollars. In the third round, you bet forty. And you lose again.
 
-**Fala 5:** Now you're down seventy dollars. But in the fourth round, you bet eighty. And this time, you win.
+**Fala 5:** Now you're down seventy dollars. But in the fourth round, you bet eighty. And this time, <break time="0.4s"/> you win.
 
 **Fala 6:** Since the bet pays one to one, you make eighty dollars of profit on that round. Take away the seventy you had lost, and you're left with exactly ten dollars.
 
@@ -71,7 +76,7 @@ Screen: European roulette from above; separate 18 red, 18 black and 1 green; pro
 
 **Fala 3:** When you bet on red, you win if the ball lands in one of the eighteen red pockets. But you lose if it lands in any of the other nineteen.
 
-**Fala 4:** That means your chance of winning is a little less than fifty percent. More precisely, about forty-eight point six five percent.
+**Fala 4:** That means your chance of winning is a little less than fifty percent. More precisely, <break time="0.4s"/> about <emphasis>forty-eight point six five percent.</emphasis>
 
 **Fala 5:** And your chance of losing is about fifty-one point three five percent. It looks like a small difference. And it really is.
 
@@ -90,7 +95,7 @@ Screen: geometric progression in Manim: 10, 20, 40, 80, 160, 320, 640, 1,280, 2,
 
 **Fala 4:** And now you have to risk more than twenty-five hundred dollars just to get back what you lost and win the same ten dollars.
 
-**Fala 5:** If you lose eight times in a row, you'll be down twenty-five hundred fifty dollars. And your next bet will have to be twenty-five hundred sixty.
+**Fala 5:** If you lose eight times in a row, you'll be down <emphasis>twenty-five hundred fifty dollars.</emphasis> And your next bet will have to be twenty-five hundred sixty.
 
 **Fala 6:** But what if you lose again? The next bet would be fifty-one hundred twenty dollars. And after that, ten thousand two hundred forty.
 
@@ -111,7 +116,7 @@ Screen: three discreet horizontal bars ($1,000, $10,000, $100,000) and, next to 
 
 **Fala 3:** Now let's raise the bankroll to ten thousand dollars. Ten times more money. How many losses can we survive?
 
-**Fala 4:** Nine. The bankroll got ten times bigger. But our endurance only went up by three rounds.
+**Fala 4:** <emphasis>Nine.</emphasis> <break time="0.6s"/> The bankroll got ten times bigger. But our endurance only went up by <emphasis>three rounds.</emphasis>
 
 **Fala 5:** Now let's go to one hundred thousand dollars. Ten times more again. With that amount, we can survive thirteen losses in a row.
 
@@ -163,7 +168,7 @@ Screen: balance chart of session 1 (Manim), first at normal speed and then speed
 
 **Fala 8:** The worst streak came in session three hundred twenty-three. After almost forty thousand spins, the balance had reached two hundred three thousand dollars.
 
-**Fala 9:** Then came fourteen losses in a row. The last bet was eighty-one thousand nine hundred twenty dollars. And one hundred sixty-three thousand dollars vanished in a single streak.
+**Fala 9:** Then came <emphasis>fourteen losses in a row.</emphasis> The last bet was eighty-one thousand nine hundred twenty dollars. <break time="0.8s"/> <prosody rate="-10%">And one hundred sixty-three thousand dollars vanished in a single streak.</prosody>
 
 **Fala 10:** Look at what happened here. We started out trying to win ten dollars. But after several losses in a row, we had to risk thousands.
 
@@ -171,9 +176,9 @@ Screen: balance chart of session 1 (Manim), first at normal speed and then speed
 
 **Fala 12:** We've now completed one million spins. In total, there were four hundred eighty-eight sessions.
 
-**Fala 13:** Of those, four hundred eighty-seven ended because there wasn't enough money to keep the strategy going. The last one was cut off when the millionth spin arrived.
+**Fala 13:** Of those, <break time="1s"/> <emphasis>four hundred eighty-seven</emphasis> ended because there wasn't enough money to keep the strategy going. The last one was cut off when the millionth spin arrived.
 
-**Fala 14:** The aggregate financial result was a loss of two million one hundred sixty-four thousand six hundred thirty dollars.
+**Fala 14:** The aggregate financial result was <break time="1.2s"/> <prosody rate="-10%">a loss of two million one hundred sixty-four thousand six hundred thirty dollars.</prosody>
 
 **Fala 15:** But there's something even more important than the final balance. It's the distribution of the results.
 
@@ -181,7 +186,7 @@ Screen: balance chart of session 1 (Manim), first at normal speed and then speed
 
 **Fala 17:** Add it all up, and that's four million eight hundred sixty-five thousand dollars of profit, in small pieces.
 
-**Fala 18:** But the four hundred eighty-seven busts took away seven million thirty thousand dollars. On average, more than fourteen thousand dollars each.
+**Fala 18:** But the four hundred eighty-seven busts took away <break time="0.7s"/> <emphasis>seven million thirty thousand dollars.</emphasis> On average, more than fourteen thousand dollars each.
 
 **Fala 19:** Of the sessions that ran out of money, fifty-two closed with a profit. The other four hundred thirty-five closed with a loss.
 
@@ -198,7 +203,7 @@ Screen: back to the 37-pocket wheel; expected value equation written step by ste
 
 **Fala 3:** We can calculate the average expected result of this bet. We multiply the probability of winning by the profit. Then we subtract the probability of losing times the loss.
 
-**Fala 4:** The result is about minus twenty-seven cents. That means for every ten dollars you bet, the expected loss is about twenty-seven cents.
+**Fala 4:** The result is about <break time="0.5s"/> <emphasis>minus twenty-seven cents.</emphasis> That means for every ten dollars you bet, the expected loss is about twenty-seven cents.
 
 **Fala 5:** It doesn't mean you'll lose twenty-seven cents on every spin. On any given spin, you either win ten dollars or lose ten.
 
@@ -210,11 +215,11 @@ Screen: back to the 37-pocket wheel; expected value equation written step by ste
 
 **Fala 9:** So we ran the entire experiment one hundred more times, each with a different sequence of spins. On average, the loss was two point seven two percent of the amount bet. Almost exactly what the math says.
 
-**Fala 10:** The worst run lost four point one one percent. And one, out of the hundred, ended with a profit.
+**Fala 10:** The worst run lost four point one one percent. And one, <break time="0.3s"/> out of the hundred, <break time="0.3s"/> ended with a profit.
 
 **Fala 11:** And here's the key point. When you double your bet after a loss, the probability of the next spin doesn't change.
 
-**Fala 12:** The wheel still has eighteen red pockets out of thirty-seven. It doesn't know you just lost five times in a row. There's no automatic balancing out.
+**Fala 12:** The wheel still has eighteen red pockets out of thirty-seven. <prosody rate="-10%">It doesn't know you just lost five times in a row.</prosody> There's no automatic balancing out.
 
 **Fala 13:** Every new spin has the same probability of winning. And when you raise the amount you bet, you also raise the amount of money exposed to the wheel's mathematical edge.
 
@@ -224,7 +229,7 @@ Screen: back to the 37-pocket wheel; expected value equation written step by ste
 
 **Fala 16:** That's why a strategy can seem to work for a long time and still have a negative expected profit.
 
-**Fala 17:** The math isn't saying it's impossible to walk out of a casino a winner. That happens. It's saying that doubling your bets doesn't turn an unfavorable game into a favorable one.
+**Fala 17:** The math isn't saying it's impossible to walk out of a casino a winner. That happens. <break time="0.5s"/> <prosody rate="-10%">It's saying that doubling your bets doesn't turn an unfavorable game into a favorable one.</prosody>
 
 ### A09 | The unexpected consequence
 Screen: transition from the wheel to a sheet of aged paper; chart with many small gains and one big loss; then a simple picture of risk and return (how often it wins x how much it loses). No dramatic effects.
@@ -247,9 +252,9 @@ Screen: transition from the wheel to a sheet of aged paper; chart with many smal
 
 **Fala 9:** Maybe that's the most important discovery of this experiment. When someone shows you a strategy that seems to work almost every time, the most important question may not be how often it wins.
 
-**Fala 10:** It may be how much it loses when it finally goes wrong.
+**Fala 10:** <break time="0.6s"/> <prosody rate="-12%">It may be how much it loses when it finally goes wrong.</prosody>
 
 ### A10 | Closing
 Screen: ivory background with a subtle paper texture; the closing sentence written in two parts ("looking only at the results", then "understanding the math behind them"); no brand name; no glow; cut to black.
 
-**Fala 1:** That's the difference between looking only at the results and understanding the math behind them.
+**Fala 1:** <prosody rate="-8%">That's the difference between looking only at the results and understanding the math behind them.</prosody>
