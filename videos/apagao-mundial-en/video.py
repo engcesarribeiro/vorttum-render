@@ -191,219 +191,21 @@ class _Quadro(_Base):
 
 
 # ---------------------------------------------------------------- V01 gancho (colagem)
-class V01_Gancho(_Base):
-    """Gancho: noite com as luzes de 50 milhões, a árvore no fio, o apagão em onda em 7 s;
-    o mostrador do Texas afundando com o relógio de 9:00 a 4:37; o globo apagando e o clarão do Sol."""
-    ESTILO = "v_doc"
-
-    def construct(self):
-        rng = np.random.default_rng(11)
-        # mapa noturno: aglomerados de cidades (luzes) na metade direita, visível já no quadro 0
-        centros = [(1.2, 1.4, 0.9), (3.4, 2.0, 0.7), (5.3, 1.1, 0.8), (2.4, -0.4, 1.0), (4.6, -1.0, 0.9),
-                   (0.6, -1.9, 0.6), (3.0, -2.4, 0.7), (5.9, -2.4, 0.5), (-0.4, 0.4, 0.5)]
-        luzes = VGroup()
-        for cx, cy, r in centros:
-            for _ in range(int(150 * r)):
-                ang, d = rng.uniform(0, TAU), abs(rng.normal(0, r * 0.45))
-                p = [cx + d * np.cos(ang), cy + d * np.sin(ang), 0]
-                luzes.add(Dot(p, radius=rng.uniform(0.018, 0.05), color=GOLD).set_opacity(rng.uniform(0.55, 1.0)))
-        brilho = VGroup(*[Dot([cx, cy, 0], radius=r * k, color=GOLD).set_opacity(0.05) for cx, cy, r in centros for k in (0.35, 0.6)])
-        luzes.sort(lambda p: p[0])                         # a onda de apagão vai do oeste (Ohio) para o leste
-        t1 = torre(2.3).move_to([-5.9, -1.5, 0])
-        t2 = torre(2.3).move_to([-2.6, -1.5, 0])
-        a, b = t1[1].get_right(), t2[1].get_left()
-        fio = cabo(a, b, 0.35, MUTED, 4)
-        arv = arvore(2.0).move_to([-4.25, -2.2, 0])
-        arv[0].set_fill(MUTED, 1)
-        self.add(brilho, luzes, t1, t2, fio, arv)        # quadro 0 já é a cena
-        with self.narrate(F("V01", 1)) as n:
-            n.wait_until("tree")
-            self.play(Transform(fio, cabo(a, b, 1.0, C1, 5)), run_time=0.35)
-            faisca = Star(8, outer_radius=0.45, inner_radius=0.15).set_fill(GOLD, 1).set_stroke(C1, 3)
-            faisca.move_to(arv[1].get_top() + DOWN * 0.15)
-            self.som("risco")
-            self.play(FadeIn(faisca, scale=3), Flash(faisca.get_center(), color=GOLD, line_length=0.5, num_lines=14),
-                      run_time=0.35)
-            n.wait_until("seven")
-            tempo = ValueTracker(0.0)
-            relo = always_redraw(lambda: T(f"{tempo.get_value():.1f} s", 84, C1).move_to([-4.2, 2.6, 0]))
-            self.add(relo)
-            self.som("whoosh")
-            self.play(tempo.animate.set_value(7.0),
-                      LaggedStart(*[d.animate.set_opacity(0.06) for d in luzes], lag_ratio=0.004),
-                      brilho.animate.set_opacity(0.0), run_time=n.until("fifty") + 0.1, rate_func=linear)
-            relo.clear_updaters()
-            n.wait_until("fifty")
-            gente = T("50,000,000 people", 60, INK).move_to([3.0, 0.1, 0])
-            sub = T("in the dark", 40, C1).next_to(gente, DOWN, buff=0.3)
-            self.play(FadeIn(gente, scale=1.25), FadeIn(sub, shift=UP * 0.15), run_time=0.5)
-        self.play(FadeOut(Group(*self.mobjects)), run_time=0.25)
-        # Texas: o mostrador afunda, o interruptor desliga, o relógio corre de 9:00 até 4:37
-        med, tr, pont = medidor(r=2.3)
-        VGroup(med).move_to([-3.4, -0.3, 0])
-        with self.narrate(F("V01", 2)) as n:
-            self.add(med, pont)
-            self.play(FadeIn(med), run_time=0.3)
-            self.play(tr.animate.set_value(59.3), run_time=1.0, rate_func=rush_into)
-            self.play(Wiggle(VGroup(med, pont), scale_value=1.03, rotation_angle=0.02 * TAU, n_wiggles=6), run_time=0.5)
-            n.wait_until("purpose")
-            sw = interruptor(True, 1.6).move_to([1.2, 0.2, 0])
-            self.play(FadeIn(sw, scale=0.8), run_time=0.25)
-            self.som("clique")
-            self.play(Transform(sw, interruptor(False, 1.6).move_to(sw)), run_time=0.2)
-            n.wait_until("four")
-            seg = ValueTracker(540)
-            cont = always_redraw(lambda: T(f"{int(seg.get_value()) // 60}:{int(seg.get_value()) % 60:02d}", 120, GOLD)
-                                 .move_to([4.6, 0.5, 0]))
-            self.add(cont)
-            self.som("tique")
-            self.play(seg.animate.set_value(277), run_time=1.0, rate_func=rate_functions.ease_out_cubic)
-            cont.clear_updaters()
-            sub = T("from losing everything", 34, INK).next_to(cont, DOWN, buff=0.3)
-            self.play(FadeIn(sub), run_time=0.3)
-        self.play(FadeOut(Group(*self.mobjects)), run_time=0.25)
-        # o mundo: globo noturno apagando por regiões, "not a hacker", clarão do Sol e corte para preto
-        gl = globo(2.7, n=140, seed=5).move_to([-2.6, 0, 0])
-        gl[0].set_fill(BG, 1).set_stroke(MUTED, 3)
-        for d in gl[3]:
-            d.set_color(GOLD)
-        with self.narrate(F("V01", 3)) as n:
-            self.play(FadeIn(gl, scale=0.9), run_time=0.5)
-            n.wait_until("entire")
-            self.play(LaggedStart(*[d.animate.set_opacity(0.08) for d in sorted(gl[3], key=lambda m: m.get_y())],
-                                  lag_ratio=0.01), run_time=1.2)
-            n.wait_until("hacker")
-            hk = T("NOT A HACKER", 54, INK).move_to([2.9, 1.7, 0]).rotate(-0.06)
-            self.som("carimbo")
-            self.play(FadeIn(hk, scale=1.6), run_time=0.25)
-            n.wait_until("before")
-            sol = Circle(radius=3.2).set_fill(GOLD, 1).set_stroke(width=0).move_to([11.0, 0, 0])
-            halo = Circle(radius=4.6).set_fill(GOLD, 0.25).set_stroke(width=0).move_to(sol)
-            self.som("whoosh")
-            self.play(FadeIn(halo), sol.animate.move_to([7.6, -0.6, 0]), halo.animate.move_to([7.6, -0.6, 0]),
-                      gl[0].animate.set_stroke(GOLD, 5), run_time=0.6)
-            self.wait(0.5)
-        self.play(FadeOut(Group(*self.mobjects)), run_time=0.2)
+class V01_Gancho(RemotionScene):
+    VOICE = _Base.VOICE
+    RATE = _Base.RATE
+    ESTILO = "v_remotion"
+    FALAS = [F("V01", k) for k in range(1, 4)]
+    CAUDA = 1.1
 
 
 # ---------------------------------------------------------------- V02 uma árvore (papel envelhecido)
-class V02_Arvore(_Base):
-    ESTILO = "v_papel"
-
-    def construct(self):
-        data = T("August 14, 2003", 46, INK).to_edge(UP, buff=0.5).to_edge(LEFT, buff=0.7)
-        with self.narrate(F("V02", 1)) as n:
-            n.wait_until("august")
-            self.play(Write(data), run_time=0.8)
-            n.wait_until("ohio")
-            lo = T("Ohio, 3:05 p.m.", 34, MUTED).next_to(data, DOWN, aligned_edge=LEFT, buff=0.2)
-            self.play(FadeIn(lo), run_time=0.4)
-            n.wait_until("conditioners")
-            ac = cartao(["demand near", "record levels"], C1, 30).move_to([4.6, 2.3, 0])
-            self.play(FadeIn(ac, shift=LEFT * 0.2), run_time=0.5)
-        sala = RoundedRectangle(corner_radius=0.1, width=4.2, height=2.6).set_fill(SHEET, 1).set_stroke(INK, 3).move_to([-3.7, -0.8, 0])
-        tela = Rectangle(width=2.6, height=1.3).set_fill(FAINT, 1).set_stroke(INK, 2).move_to(sala.get_center() + UP * 0.2)
-        with self.narrate(F("V02", 2)) as n:
-            n.wait_until("control")
-            rot = T("control room", 30, INK).next_to(sala, DOWN, buff=0.15)
-            self.play(FadeIn(sala), FadeIn(tela), FadeIn(rot), run_time=0.6)
-            n.wait_until("alarm")
-            al = T("ALARMS", 34, C1).move_to(tela)
-            self.play(FadeIn(al), run_time=0.3)
-            n.wait_until("stopped")
-            x = VGroup(Line(tela.get_corner(UL), tela.get_corner(DR)), Line(tela.get_corner(DL), tela.get_corner(UR))).set_stroke(C1, 6)
-            self.play(Create(x), run_time=0.5)
-        with self.narrate(F("V02", 3)) as n:
-            n.wait_until("bug")
-            bug = T("software bug", 34, C1).move_to([1.6, -0.2, 0], aligned_edge=LEFT)
-            self.play(FadeIn(bug, shift=LEFT * 0.2), run_time=0.4)
-            n.wait_until("minute")
-            ref = linhas("screen refresh:", "59 s  instead of  1 to 3 s", size=30).next_to(bug, DOWN, aligned_edge=LEFT, buff=0.3)
-            self.play(FadeIn(ref), run_time=0.5)
-        self.clear_section(run_time=0.5)
-        t1, t2, t3 = [torre(2.6).move_to([x, -1.0, 0]) for x in (-5.4, -0.6, 4.2)]
-        fio1 = cabo(t1[1].get_right(), t2[1].get_left(), 0.3)
-        fio2 = cabo(t2[1].get_right(), t3[1].get_left(), 0.3)
-        arv = arvore(2.4).move_to([-3.0, -1.85, 0])
-        with self.narrate(F("V02", 4)) as n:
-            self.play(FadeIn(VGroup(t1, t2, t3)), FadeIn(arv), run_time=0.6)
-            n.wait_until("line")
-            self.play(Create(fio1), Create(fio2), run_time=0.6)
-            n.wait_until("heats")
-            self.play(fio1.animate.set_stroke(C1, 5), run_time=0.4)
-            n.wait_until("sags")
-            self.play(Transform(fio1, cabo(t1[1].get_right(), t2[1].get_left(), 1.0, C1, 5)), run_time=n.until("touches"))
-            n.wait_until("tree")
-            fa = Star(7, outer_radius=0.34, inner_radius=0.13).set_fill(GOLD, 1).set_stroke(C1, 2).move_to(arv[1][2].get_top() + DOWN * 0.1)
-            self.play(FadeIn(fa, scale=2.2), run_time=0.3)
-            nt = T("a tree nobody trimmed", 30, INK).move_to([-3.0, 1.9, 0])
-            self.play(FadeIn(nt), run_time=0.4)
-        with self.narrate(F("V02", 5)) as n:
-            n.wait_until("shuts")
-            self.play(fio1.animate.set_stroke(MUTED, 2, opacity=0.4), FadeOut(fa), run_time=0.4)
-            n.wait_until("jumps")
-            s = seta(t2.get_top() + UP * 0.3 + LEFT * 1.2, t2.get_top() + UP * 0.3 + RIGHT * 1.2, GOLD)
-            self.play(GrowArrow(s), run_time=0.5)
-            n.wait_until("overheat")
-            self.play(fio2.animate.set_stroke(C1, 5), run_time=0.4)
-            n.wait_until("sagging")
-            self.play(Transform(fio2, cabo(t2[1].get_right(), t3[1].get_left(), 0.9, C1, 5)), run_time=0.8)
-        self.clear_section(run_time=0.5)
-        x0, x1, y = -5.8, 5.8, 0.6
-        eixo = Line([x0, y, 0], [x1, y, 0]).set_stroke(INK, 3)
-        with self.narrate(F("V02", 6)) as n:
-            n.wait_until("hour")
-            m1 = VGroup(Line([x0, y - 0.15, 0], [x0, y + 0.15, 0]).set_stroke(INK, 3), T("3:05 p.m.", 28, MUTED).move_to([x0, y - 0.5, 0]))
-            m2 = VGroup(Line([x1, y - 0.15, 0], [x1, y + 0.15, 0]).set_stroke(INK, 3), T("4:10 p.m.", 28, MUTED).move_to([x1 - 0.3, y + 0.55, 0]))
-            hr = T("about one hour", 34, INK).move_to([0, y + 0.55, 0])
-            self.play(Create(eixo), FadeIn(m1), FadeIn(m2), FadeIn(hr), run_time=n.until("slowly") + 0.3)
-            n.wait_until("seven")
-            fim = Rectangle(width=0.5, height=0.5).set_fill(C1, 1).set_stroke(width=0).move_to([x1 - 0.25, y, 0])
-            sete = T("the last 7 seconds", 40, C1).move_to([2.6, -1.4, 0])
-            self.play(FadeIn(fim), FadeIn(sete), Create(seta(sete.get_right() + RIGHT * 0.15, fim.get_bottom() + DOWN * 0.1, C1, 4)), run_time=0.6)
-        self.clear_section(run_time=0.5)
-        with self.narrate(F("V02", 7)) as n:
-            n.wait_until("five")
-            c1 = VGroup(T("508", 80, GOLD), T("generating units", 30, INK)).arrange(DOWN, buff=0.15).move_to([-4.4, 1.2, 0])
-            self.play(FadeIn(c1, shift=UP * 0.2), run_time=0.5)
-            n.wait_until("two")
-            c2 = VGroup(T("265", 80, GOLD), T("power plants", 30, INK)).arrange(DOWN, buff=0.15).move_to([0, 1.2, 0])
-            self.play(FadeIn(c2, shift=UP * 0.2), run_time=0.5)
-            n.wait_until("york")
-            c3 = VGroup(T("80% in 6 s", 64, C1), T("New York's power", 30, INK)).arrange(DOWN, buff=0.15).move_to([4.4, 1.2, 0])
-            self.play(FadeIn(c3, shift=UP * 0.2), run_time=0.5)
-        with self.narrate(F("V02", 8)) as n:
-            n.wait_until("fifty")
-            big = T("50,000,000 people", 66, INK).move_to([0, -1.3, 0])
-            self.play(FadeIn(big, scale=1.15), run_time=0.6)
-            n.wait_until("eight")
-            sub = T("8 states + Ontario, Canada", 34, MUTED).next_to(big, DOWN, buff=0.3)
-            self.play(FadeIn(sub), run_time=0.4)
-            n.wait_until("four")
-            d4 = T("some: up to 4 days", 34, C1).next_to(sub, DOWN, buff=0.2)
-            self.play(FadeIn(d4), run_time=0.4)
-        self.clear_section(run_time=0.5)
-        tomada = VGroup(RoundedRectangle(corner_radius=0.25, width=1.6, height=2.3).set_fill(SHEET, 1).set_stroke(INK, 4),
-                        *[RoundedRectangle(corner_radius=0.04, width=0.14, height=0.42).set_fill(INK, 1).move_to([x, 0.3, 0]) for x in (-0.3, 0.3)],
-                        Circle(radius=0.12).set_fill(INK, 1).move_to([0, -0.45, 0])).move_to([-3.0, 0, 0])
-        with self.narrate(F("V02", 9)) as n:
-            n.wait_until("tree")
-            arv2 = arvore(1.6).move_to([-5.6, 0, 0])
-            sete = T("7 s", 40, C1).next_to(arv2, DOWN, buff=0.25)
-            self.play(FadeIn(arv2), FadeIn(sete), run_time=0.5)
-            n.wait_until("outlet")
-            self.play(FadeIn(tomada), run_time=0.5)
-            n.wait_until("spinning")
-            ger = gerador(0.9).move_to([1.2, 0, 0])
-            vel = ValueTracker(2.5)
-            gira(ger, vel)
-            self.add(vel)
-            self.play(FadeIn(ger), Create(Line(tomada.get_right(), ger.get_left()).set_stroke(MUTED, 3)), run_time=0.6)
-            n.wait_until("spare")
-            q = T("how much time?", 40, GOLD).move_to([4.4, 0, 0])
-            self.play(FadeIn(q), run_time=0.5)
-        ger.clear_updaters()
-        self.clear_section(run_time=0.5)
+class V02_Arvore(RemotionScene):
+    VOICE = _Base.VOICE
+    RATE = _Base.RATE
+    ESTILO = "v_remotion"
+    FALAS = [F("V02", k) for k in range(1, 10)]
+    CAUDA = 0.5
 
 
 # ---------------------------------------------------------------- V03 a máquina de 5 segundos (Manim escuro)
@@ -643,308 +445,39 @@ class V04_Cascata(_Base):
 
 
 # ---------------------------------------------------------------- V05 por um triz (colagem)
-class V05_PorUmTriz(_Base):
-    ESTILO = "v_colagem"
-
-    def construct(self):
-        tit = T("Texas, February 15, 2021", 44, INK).to_edge(UP, buff=0.5).to_edge(LEFT, buff=0.7)
-        with self.narrate(F("V05", 1)) as n:
-            n.wait_until("texas")
-            self.play(FadeIn(tit, shift=DOWN * 0.2), run_time=0.5)
-        with self.narrate(F("V05", 2)) as n:
-            n.wait_until("froze")
-            neve = T("winter storm", 32, C2).next_to(tit, DOWN, aligned_edge=LEFT, buff=0.3)
-            self.play(FadeIn(neve), run_time=0.4)
-            n.wait_until("half")
-            b = Rectangle(width=4.0, height=0.45).set_fill(GOOD, 1).set_stroke(INK, 2).move_to([3.4, 2.1, 0])
-            bp = Rectangle(width=4.0 * 0.486, height=0.45).set_fill(C1, 1).set_stroke(INK, 2).align_to(b, RIGHT).move_to(b, coor_mask=[0, 1, 0])
-            lb = T("48.6% of generation lost", 28, C1).next_to(b, DOWN, buff=0.25)
-            self.play(FadeIn(b), FadeIn(bp), FadeIn(lb), run_time=0.6)
-        # minutos depois de 1:40 a.m.
-        ax, p2s = eixos(-6.0, -3.0, 6.2, 4.2, 9, 24, 59.2, 60.2)
-        my = VGroup(*[T(f"{v:.1f}", 22, MUTED).next_to(p2s(9, v), LEFT, buff=0.1) for v in (59.3, 59.6, 59.9)])
-        mx = VGroup(*[T(lab, 22, MUTED).next_to(p2s(m, 59.2), DOWN, buff=0.1) for m, lab in ((11, "1:51"), (17, "1:57"), (23, "2:03"))])
-        xs = [9, 11, 12.5, 14, 15.4, 17, 20, 23]
-        ys = [59.55, 59.4, 59.33, 59.302, 59.36, 59.7, 60.1, 60.0]
-        with self.narrate(F("V05", 3)) as n:
-            n.wait_until("frequency")
-            self.play(Create(ax), FadeIn(my), FadeIn(mx), run_time=0.6)
-            lim = tracejada(p2s(9, 59.4), p2s(24, 59.4), C1, 3)
-            ll = T("59.4 Hz", 26, C1).move_to(p2s(21, 59.4) + DOWN * 0.3)
-            self.play(Create(lim), FadeIn(ll), run_time=0.4)
-            cv = VMobject().set_points_smoothly([p2s(x, y) for x, y in zip(xs[:4], ys[:4])]).set_stroke(GOLD, 6)
-            self.play(Create(cv), run_time=1.0)
-            n.wait_until("nine")
-            nove = linhas("max 9 minutes", "below 59.4 Hz", size=30, color=C1).move_to([3.8, 0.75, 0])
-            self.play(FadeIn(nove), run_time=0.4)
-        with self.narrate(F("V05", 4)) as n:
-            n.wait_until("cut")
-            cv2 = VMobject().set_points_smoothly([p2s(x, y) for x, y in zip(xs[3:], ys[3:])]).set_stroke(GOLD, 6)
-            self.play(Create(cv2), run_time=n.until("worked") + 0.2)
-            n.wait_until("four")
-            barra = Rectangle(width=4.4, height=0.4).set_stroke(INK, 2).move_to([3.9, -0.45, 0])
-            usado = Rectangle(width=4.4 * 263 / 540, height=0.4).set_fill(C1, 1).set_stroke(width=0).align_to(barra, LEFT).move_to(barra, coor_mask=[0, 1, 0])
-            sobra = T("4:37 left", 44, GOLD).next_to(barra, DOWN, buff=0.2).align_to(barra, RIGHT)
-            self.play(FadeIn(barra), GrowFromEdge(usado, LEFT), FadeIn(sobra), run_time=0.7)
-        with self.narrate(F("V05", 5)) as n:
-            n.wait_until("zero")
-            w = cartao(["restart from zero:", "possibly weeks"], C1, 28).move_to([3.9, -2.5, 0])
-            self.play(FadeIn(w), run_time=0.5)
-        self.clear_section(run_time=0.5)
-        es = cartao(["less than 90 s to collapse", "about 60 million people", "up to 16 h to restore"], C1, 30,
-                    titulo="Spain + Portugal, 2025").move_to([-3.4, 0.9, 0])
-        with self.narrate(F("V05", 6)) as n:
-            n.wait_until("spain")
-            self.play(FadeIn(es, shift=RIGHT * 0.2), run_time=0.6)
-        with self.narrate(F("V05", 7)) as n:
-            n.wait_until("voltage")
-            v = T("cause: voltage surge, plants disconnect one after another", 28, INK).next_to(es, DOWN, buff=0.35).align_to(es, LEFT)
-            self.play(FadeIn(v), run_time=0.5)
-        ind = cartao(["620 million people", "about 9% of everyone on Earth"], GOLD, 30, titulo="India, 2012").move_to([3.6, 0.9, 0])
-        with self.narrate(F("V05", 8)) as n:
-            n.wait_until("india")
-            self.play(FadeIn(ind, shift=LEFT * 0.2), run_time=0.6)
-        with self.narrate(F("V05", 9)) as n:
-            n.wait_until("border")
-            bd = T("every one stopped at a border", 44, GOLD).move_to([0, -2.9, 0])
-            self.play(FadeIn(bd, shift=UP * 0.2), run_time=0.6)
-        self.clear_section(run_time=0.5)
+class V05_PorUmTriz(RemotionScene):
+    VOICE = _Base.VOICE
+    RATE = _Base.RATE
+    ESTILO = "v_remotion"
+    FALAS = [F("V05", k) for k in range(1, 10)]
+    CAUDA = 0.5
 
 
 # ---------------------------------------------------------------- V06 existe um botão? (Bauhaus)
-class V06_Botao(_Base):
-    ESTILO = "v_bauhaus"
-
-    def construct(self):
-        q = T("Could anyone turn off the entire world?", 44, INK).to_edge(UP, buff=0.6)
-        with self.narrate(F("V06", 1)) as n:
-            self.play(FadeIn(q), run_time=0.6)
-
-        def bloco(txt, w, h, cor, pos, forma="r"):
-            if forma == "c":
-                f = Circle(radius=w / 2).set_fill(cor, 1).set_stroke(INK, 3)
-            else:
-                f = Rectangle(width=w, height=h).set_fill(cor, 1).set_stroke(INK, 3)
-            return VGroup(f, T(txt, 28, INK if cor in (GOLD, GOOD) else SHEET)).move_to(pos)
-        na = VGroup(bloco("West", 1.6, 2.0, C2, [-5.6, 0.2, 0]), bloco("East", 2.2, 2.0, GOLD, [-3.6, 0.2, 0]),
-                    bloco("Texas", 1.4, 1.0, C1, [-4.6, -1.6, 0]))
-        outros = VGroup(bloco("Europe", 1.7, 0, C2, [-0.5, 0.7, 0], "c"), bloco("China", 1.7, 1.4, GOLD, [1.8, 0.7, 0]),
-                        bloco("India", 1.5, 0, C1, [4.0, 0.7, 0], "c"), bloco("Brazil", 1.6, 1.2, GOOD, [0.6, -1.6, 0]),
-                        bloco("Australia", 2.2, 1.0, C2, [3.6, -1.6, 0]))
-        with self.narrate(F("V06", 2)) as n:
-            n.wait_until("three")
-            self.play(FadeOut(q), LaggedStart(*[FadeIn(b, scale=0.8) for b in na], lag_ratio=0.25), run_time=0.9)
-            n.wait_until("europe")
-            self.play(LaggedStart(*[FadeIn(b, scale=0.8) for b in outros], lag_ratio=0.2), run_time=n.until("own") + 0.2)
-        with self.narrate(F("V06", 3)) as n:
-            n.wait_until("cascade")
-            tx = na[2][0]
-            onda = Circle(radius=0.1).move_to(tx).set_stroke(SHEET, 6)
-            self.play(onda.animate.scale(6.0).set_stroke(opacity=0), tx.animate.set_fill(INK, 1), run_time=0.9)
-            n.wait_until("california")
-            ok = T("still on", 26, INK).next_to(na[0], UP, buff=0.15)
-            self.play(FadeIn(ok), Indicate(na[0], color=GOOD, scale_factor=1.05), run_time=0.6)
-        with self.narrate(F("V06", 4)) as n:
-            n.wait_until("edge")
-            borda = SurroundingRectangle(na[2], color=INK, buff=0.08, stroke_width=6)
-            self.play(Create(borda), run_time=0.5)
-        self.clear_section(run_time=0.5)
-        with self.narrate(F("V06", 5)) as n:
-            n.wait_until("hacker")
-            hk = T("a hacker", 48, INK).move_to([-4.4, 1.5, 0])
-            self.play(FadeIn(hk), run_time=0.4)
-            n.wait_until("dozens")
-            cad = VGroup(*[Square(0.5).set_fill([C2, GOLD, C1][k % 3], 1).set_stroke(INK, 2) for k in range(24)]).arrange_in_grid(4, 6, buff=0.2)
-            cad.move_to([2.6, 0.6, 0])
-            self.play(LaggedStart(*[FadeIn(c, scale=0.6) for c in cad], lag_ratio=0.05), run_time=1.0)
-            n.wait_until("moment")
-            nao = T("all at the same moment?", 36, INK).next_to(cad, DOWN, buff=0.4)
-            risco = Line(hk.get_left(), hk.get_right()).set_stroke(C1, 7)
-            self.play(FadeIn(nao), Create(risco), run_time=0.5)
-        self.clear_section(run_time=0.5)
-        with self.narrate(F("V06", 6)) as n:
-            mini = VGroup(*[Circle(radius=0.38).set_fill([C2, GOLD, C1, GOOD][k % 4], 1).set_stroke(INK, 2) for k in range(8)])
-            mini.arrange_in_grid(2, 4, buff=0.4).move_to([-2.2, 0, 0])
-            self.play(LaggedStart(*[FadeIn(m) for m in mini], lag_ratio=0.08), run_time=0.7)
-            n.wait_until("bigger")
-            grande = Circle(radius=2.6).move_to(mini).set_stroke(INK, 8)
-            self.play(Create(grande), run_time=0.8)
-        with self.narrate(F("V06", 7)) as n:
-            n.wait_until("miles")
-            sol = Circle(radius=2.2).set_fill(GOLD, 1).set_stroke(INK, 4).move_to([7.0, 0, 0])
-            dist = T("93 million miles", 38, INK).move_to([3.0, -2.6, 0])
-            self.play(FadeIn(sol, shift=LEFT * 0.6), FadeIn(dist), run_time=0.8)
-        self.clear_section(run_time=0.5)
+class V06_Botao(RemotionScene):
+    VOICE = _Base.VOICE
+    RATE = _Base.RATE
+    ESTILO = "v_remotion"
+    FALAS = [F("V06", k) for k in range(1, 8)]
+    CAUDA = 0.5
 
 
 # ---------------------------------------------------------------- V07 o Sol (papel envelhecido)
-class V07_Sol(_Base):
-    ESTILO = "v_papel"
-
-    def construct(self):
-        sol = VGroup(Circle(radius=1.5).set_fill(GOLD, 1).set_stroke(INK, 3),
-                     *[Line(UP * 1.7, UP * 2.1).rotate(k * TAU / 16, about_point=ORIGIN).set_stroke(INK, 3) for k in range(16)]).move_to([-4.8, 0.6, 0])
-        terra = Circle(radius=0.5).set_fill(C2, 1).set_stroke(INK, 3).move_to([4.8, 0.6, 0])
-        with self.narrate(F("V07", 1)) as n:
-            n.wait_until("september")
-            data = T("September 1, 1859", 44, INK).to_edge(UP, buff=0.5)
-            self.play(FadeIn(data), run_time=0.5)
-            n.wait_until("carrington")
-            rc = T("Richard Carrington", 30, MUTED).next_to(data, DOWN, buff=0.25)
-            self.play(FadeIn(rc), run_time=0.4)
-            n.wait_until("sun")
-            self.play(FadeIn(sol), run_time=0.6)
-        with self.narrate(F("V07", 2)) as n:
-            n.wait_until("cloud")
-            nuvem = VGroup(*[Circle(radius=r).set_fill(C1, 0.8).set_stroke(INK, 2).move_to(sol[0].get_right() + RIGHT * x + UP * y)
-                             for x, y, r in [(0.4, 0.2, 0.35), (0.7, -0.1, 0.4), (0.5, -0.4, 0.3)]])
-            self.play(FadeIn(nuvem, scale=0.6), FadeIn(terra), run_time=0.6)
-            n.wait_until("two")
-            v = T("up to 2,000 km/s", 32, C1).move_to([0, 2.0, 0])
-            self.play(FadeIn(v), nuvem.animate.shift(RIGHT * 3.0), run_time=0.8)
-            n.wait_until("day")
-            conta = M(r"\frac{150{,}000{,}000\ \text{km}}{2{,}000\ \text{km/s}} \approx 21\ \text{h}", 44).move_to([0, -2.2, 0])
-            self.play(Write(conta), nuvem.animate.move_to(terra.get_left() + LEFT * 0.5), run_time=1.0)
-        with self.narrate(F("V07", 3)) as n:
-            n.wait_until("largest")
-            self.play(FadeOut(nuvem), FadeOut(conta), FadeOut(v), terra.animate.scale(2.2).move_to([3.6, 0.2, 0]), run_time=0.7)
-            n.wait_until("auroras")
-            aur = VGroup(*[Arc(radius=1.3 + 0.15 * k, start_angle=0.3, angle=PI - 0.6).move_to(terra.get_top() + UP * (0.2 + 0.12 * k)).set_stroke(GOOD, 4)
-                           for k in range(3)])
-            self.play(Create(aur), run_time=0.8)
-            n.wait_until("havana")
-            hv = T("as far south as Havana", 32, INK).next_to(terra, DOWN, buff=0.3)
-            self.play(FadeIn(hv), run_time=0.4)
-        self.clear_section(run_time=0.5)
-        p1, p2 = Dot([-5.6, 0.6, 0], color=INK), Dot([5.6, 0.6, 0], color=INK)
-        fio = Line(p1.get_center(), p2.get_center()).set_stroke(INK, 4)
-        with self.narrate(F("V07", 4)) as n:
-            n.wait_until("storm")
-            self.play(Create(fio), FadeIn(p1), FadeIn(p2), run_time=0.6)
-            corr = VGroup(*[seta([-5.0 + 2.2 * k, 0.95, 0], [-3.9 + 2.2 * k, 0.95, 0], C1, 4) for k in range(5)])
-            self.play(LaggedStart(*[GrowArrow(c) for c in corr], lag_ratio=0.15), run_time=0.8)
-            n.wait_until("telegraph")
-            tg = T("telegraph lines: damaged", 34, C1).move_to([0, -0.4, 0])
-            self.play(FadeIn(tg), fio.animate.set_stroke(C1, 4), run_time=0.5)
-        with self.narrate(F("V07", 5)) as n:
-            n.wait_until("today")
-            hoje = VGroup(*[Line([-6.0, y, 0], [6.0, y, 0]).set_stroke(INK, 3) for y in (-1.6, -2.0, -2.4)])
-            lh = T("today: high-voltage lines, hundreds of miles long", 30, INK).next_to(hoje, UP, buff=0.2)
-            self.play(Create(hoje), FadeIn(lh), run_time=0.8)
-            n.wait_until("needs")
-            self.play(hoje.animate.set_stroke(C1), run_time=0.5)
-        self.clear_section(run_time=0.5)
-        with self.narrate(F("V07", 6)) as n:
-            n.wait_until("warning")
-            qb = cartao(["a smaller storm", "knocked out Quebec's grid"], C2, 30, titulo="March 1989").move_to([-3.6, 1.4, 0])
-            self.play(FadeIn(qb, shift=RIGHT * 0.2), run_time=0.6)
-        with self.narrate(F("V07", 7)) as n:
-            n.wait_until("dst")
-            cab = T("Dst index (nT):", 34, INK).move_to([1.0, 2.6, 0], aligned_edge=LEFT)
-            self.play(FadeIn(cab), run_time=0.4)
-            n.wait_until("quebec")
-            bq = Rectangle(width=5.0 * 589 / 850, height=0.5).set_fill(C2, 1).set_stroke(INK, 2).move_to([1.0, 1.8, 0], aligned_edge=LEFT)
-            lq = T("Quebec: −589", 28, INK).next_to(bq, RIGHT, buff=0.15)
-            self.play(GrowFromEdge(bq, LEFT), FadeIn(lq), run_time=0.6)
-            n.wait_until("carrington")
-            bc = Rectangle(width=5.0, height=0.5).set_fill(C1, 1).set_stroke(INK, 2).move_to([1.0, 1.05, 0], aligned_edge=LEFT)
-            lc = T("Carrington: ≈ −850", 28, INK).next_to(bc, DOWN, buff=0.22).align_to(bc, RIGHT)
-            self.play(GrowFromEdge(bc, LEFT), FadeIn(lc), run_time=0.6)
-            n.wait_until("half")
-            x15 = T("about 1.5 × stronger", 34, GOLD).move_to([3.4, -0.4, 0])
-            self.play(FadeIn(x15), run_time=0.4)
-        self.clear_section(run_time=0.5)
-        ax, p2s = eixos(-5.6, -2.6, 7.4, 4.6, 0, 60, 0, 0.6)
-        mx = VGroup(*[T(f"{v}", 22, MUTED).next_to(p2s(v, 0), DOWN, buff=0.1) for v in (0, 10, 20, 30, 40, 50, 60)])
-        my = VGroup(*[T(f"{int(v*100)}%", 22, MUTED).next_to(p2s(0, v), LEFT, buff=0.1) for v in (0.2, 0.4, 0.6)])
-        lx = T("years from now", 24, MUTED).next_to(ax[0], DOWN, buff=0.5)
-        anos = np.arange(61)
-        alta = np.array(G["prob"]["curva_alta"])
-        baixa = np.array(G["prob"]["curva_baixa"])
-        with self.narrate(F("V07", 8)) as n:
-            n.wait_until("likely")
-            self.play(Create(ax), FadeIn(mx), FadeIn(my), FadeIn(lx), run_time=0.6)
-            n.wait_until("twelve")
-            r12 = cartao(["Riley, 2012:", "12% per decade"], C1, 28).move_to([4.8, 1.8, 0])
-            self.play(FadeIn(r12), run_time=0.5)
-        with self.narrate(F("V07", 9)) as n:
-            n.wait_until("thirty")
-            ca = VMobject().set_points_smoothly([p2s(x, y) for x, y in zip(anos, alta)]).set_stroke(C1, 6)
-            self.play(Create(ca), run_time=1.0)
-            d30 = Dot(p2s(30, alta[30]), radius=0.1, color=C1)
-            g30 = tracejada(p2s(30, 0), p2s(30, alta[30]))
-            l30 = T("32% in 30 years", 30, C1).next_to(d30, LEFT, buff=0.2).shift(UP * 0.25)
-            self.play(Create(g30), FadeIn(d30), FadeIn(l30), run_time=0.5)
-            n.wait_until("three")
-            u3 = T("≈ 1 in 3", 40, C1).next_to(r12, DOWN, buff=0.3)
-            self.play(FadeIn(u3), run_time=0.4)
-        with self.narrate(F("V07", 10)) as n:
-            n.wait_until("zero")
-            r07 = cartao(["later analysis:", "0.7% per decade"], C2, 28).move_to([4.8, -0.8, 0])
-            cb = VMobject().set_points_smoothly([p2s(x, y) for x, y in zip(anos, baixa)]).set_stroke(C2, 6)
-            self.play(FadeIn(r07), Create(cb), run_time=0.8)
-            n.wait_until("two")
-            l2 = T("2% in 30 years", 28, C2).move_to(p2s(45, 0.12))
-            self.play(FadeIn(l2), run_time=0.4)
-        with self.narrate(F("V07", 11)) as n:
-            n.wait_until("fifty")
-            faixa = T("between 1 in 50 and 1 in 3", 40, GOLD).move_to([0.2, 3.1, 0])
-            self.play(FadeIn(faixa), run_time=0.5)
-            n.wait_until("zero")
-            z = T("nobody says zero", 34, INK).move_to([4.8, -2.4, 0])
-            self.play(FadeIn(z), run_time=0.4)
-        self.clear_section(run_time=0.5)
+class V07_Sol(RemotionScene):
+    VOICE = _Base.VOICE
+    RATE = _Base.RATE
+    ESTILO = "v_remotion"
+    FALAS = [F("V07", k) for k in range(1, 12)]
+    CAUDA = 0.5
 
 
 # ---------------------------------------------------------------- V08 hora a hora (Manim escuro)
-class V08_HoraHora(_Base):
-    ESTILO = "v_doc"
-
-    def construct(self):
-        relo = {"m": None}
-        lista = VGroup()
-        atual = {"c": None}
-
-        def passo(n, palavra, rel_txt, cor, cartao_txt, curto):
-            n.wait_until(palavra)
-            novo_rel = T(rel_txt, 96, cor).move_to([3.4, 2.0, 0])
-            c = cartao(cartao_txt, cor, 34).move_to([3.4, -0.4, 0])
-            anims = [FadeIn(c, shift=UP * 0.2)]
-            if relo["m"] is None:
-                relo["m"] = novo_rel
-                anims.append(FadeIn(novo_rel))
-            else:
-                anims.append(Transform(relo["m"], novo_rel))
-            if atual["c"] is not None:
-                anims.append(FadeOut(atual["c"]))
-            linha = VGroup(T(rel_txt, 30, cor), T(curto, 28, INK)).arrange(RIGHT, buff=0.3)
-            linha.move_to([-6.2, 2.1 - 0.62 * len(lista), 0], aligned_edge=LEFT)
-            lista.add(linha)
-            anims.append(FadeIn(linha, shift=RIGHT * 0.15))
-            self.play(*anims, run_time=0.6)
-            atual["c"] = c
-
-        with self.narrate(F("V08", 1)) as n:
-            topo = T("Your next 96 hours:", 44, INK).move_to([-6.2, 3.1, 0], aligned_edge=LEFT)
-            self.play(FadeIn(topo), run_time=0.5)
-        with self.narrate(F("V08", 2)) as n:
-            passo(n, "zero", "0 s", C1, ["lights, screens, fridges", "and traffic lights: off"], "lights off")
-        with self.narrate(F("V08", 3)) as n:
-            passo(n, "ten", "10 s", GOOD, ["hospital generators start", "(by code: within 10 s)"], "hospital generators on")
-        with self.narrate(F("V08", 4)) as n:
-            passo(n, "two", "2 h", GOLD, ["cell towers on battery", "(typical: 2 to 4 h)"], "towers on battery")
-        with self.narrate(F("V08", 5)) as n:
-            passo(n, "four", "4 h", C1, ["towers go silent", "fridge food: no longer safe"], "no signal, fridge unsafe")
-        with self.narrate(F("V08", 6)) as n:
-            passo(n, "hour", "48 h", C1, ["full freezer thawed", "gas pumps: no power"], "freezer thawed, no gas")
-        with self.narrate(F("V08", 7)) as n:
-            passo(n, "hospitals", "96 h", C1, ["hospital fuel on site", "runs out"], "hospital fuel out")
-        with self.narrate(F("V08", 8)) as n:
-            passo(n, "zero", "then", C2, ["black start:", "one plant at a time", "normal blackout: hours to days"], "black start")
-        with self.narrate(F("V08", 9)) as n:
-            n.wait_until("years")
-            self.play(Transform(relo["m"], T("years?", 96, C1).move_to([3.4, 2.0, 0])), run_time=0.6)
-        self.clear_section(run_time=0.5)
+class V08_HoraHora(RemotionScene):
+    VOICE = _Base.VOICE
+    RATE = _Base.RATE
+    ESTILO = "v_remotion"
+    FALAS = [F("V08", k) for k in range(1, 10)]
+    CAUDA = 0.5
 
 
 # ---------------------------------------------------------------- V09 por que não voltaria (quadro com a mão)
@@ -1006,37 +539,9 @@ class V09_Transformador(_Quadro):
 
 
 # ---------------------------------------------------------------- V10 encerramento (marfim)
-class V10_Fim(_Base):
-    ESTILO = "v_marfim"
-
-    def construct(self):
-        med, tr, pont = medidor()
-        g = VGroup(med).move_to([-3.6, -0.2, 0])
-        with self.narrate(F("V10", 1)) as n:
-            n.wait_until("world")
-            t1 = linhas("no off switch for the world:", "no hacker, no tree, no single mistake", size=32).move_to([2.6, 1.6, 0])
-            self.play(FadeIn(t1), run_time=0.6)
-        with self.narrate(F("V10", 2)) as n:
-            n.wait_until("local")
-            t2 = T("every blackout so far: local", 32, INK).next_to(t1, DOWN, aligned_edge=LEFT, buff=0.45)
-            self.play(FadeIn(t2), run_time=0.5)
-            n.wait_until("back")
-            self.add(med, pont)
-            tr.set_value(57.6)
-            self.play(FadeIn(med), tr.animate.set_value(60.0), run_time=1.4)
-        with self.narrate(F("V10", 3)) as n:
-            n.wait_until("seconds")
-            t3 = T("a few seconds of spinning metal", 36, GOLD).next_to(t2, DOWN, aligned_edge=LEFT, buff=0.45)
-            self.play(FadeIn(t3), run_time=0.5)
-            n.wait_until("day")
-            t4 = T("and one thing up there", 32, C1).next_to(t3, DOWN, aligned_edge=LEFT, buff=0.3)
-            self.play(FadeIn(t4), run_time=0.5)
-        with self.narrate(F("V10", 4)) as n:
-            n.wait_until("hours")
-            self.play(FadeOut(VGroup(t1, t2, t3, t4)), run_time=0.4)
-            q = linhas("If your power went out tonight,", "how many hours would you last?", size=40).move_to([2.6, 0.4, 0])
-            self.play(FadeIn(q, shift=UP * 0.2), run_time=0.6)
-            n.wait_until("comments")
-            c = T("tell me in the comments", 32, MUTED).next_to(q, DOWN, buff=0.4)
-            self.play(FadeIn(c), run_time=0.4)
-        self.clear_section(run_time=0.6)
+class V10_Fim(RemotionScene):
+    VOICE = _Base.VOICE
+    RATE = _Base.RATE
+    ESTILO = "v_remotion"
+    FALAS = [F("V10", k) for k in range(1, 5)]
+    CAUDA = 1.2

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" width="600" height="760">
+  <!-- Retrato original da skill (cavalheiro do século XIX em traço de gravura), livre para uso.
+       Corte da boca para o RetratoFalante: boca = {y: 0.58, y1: 0.75, x0: 0.34, x1: 0.66} (frações da imagem). -->
+  <defs>
+    <pattern id="h1" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(40)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#161616" stroke-width="1.5"/>
+    </pattern>
+    <pattern id="h2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#161616" stroke-width="1.8"/>
+      <line x1="0" y1="0" x2="5" y2="0" stroke="#161616" stroke-width="1.1"/>
+    </pattern>
+    <pattern id="h3" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(70)">
+      <line x1="0" y1="0" x2="0" y2="4" stroke="#F2ECDF" stroke-width="1"/>
+    </pattern>
+    <pattern id="cabelo" width="14" height="10" patternUnits="userSpaceOnUse">
+      <path d="M0,8 C3,0 7,0 9,6 C11,10 14,6 14,3" fill="none" stroke="#EDE6D8" stroke-width="1.3"/>
+    </pattern>
+  </defs>
+  <g stroke="#161616" stroke-linejoin="round" stroke-linecap="round">
+    <!-- casaco -->
+    <path d="M40,760 C50,640 120,590 210,570 L300,640 L390,570 C480,590 550,640 560,760 Z" fill="#1A1A1A" stroke-width="4"/>
+    <path d="M60,760 C70,660 130,610 210,588 L250,620 C190,640 150,690 140,760 Z" fill="url(#h3)" stroke="none" opacity="0.5"/>
+    <path d="M210,570 L262,700 L300,640 Z M390,570 L338,700 L300,640 Z" fill="#2A2A2A" stroke-width="3"/>
+    <!-- camisa, colarinho e gravata -->
+    <path d="M232,560 L300,640 L368,560 L340,700 L260,700 Z" fill="#F2ECDF" stroke-width="3"/>
+    <path d="M232,560 L272,612 L246,628 Z M368,560 L328,612 L354,628 Z" fill="#F2ECDF" stroke-width="3"/>
+    <path d="M300,608 L258,590 L262,632 Z M300,608 L342,590 L338,632 Z" fill="#1A1A1A" stroke-width="3"/>
+    <circle cx="300" cy="610" r="10" fill="#1A1A1A"/>
+    <!-- pescoço -->
+    <path d="M250,500 L250,575 C270,595 330,595 350,575 L350,500 Z" fill="#EFE8DA" stroke-width="3"/>
+    <path d="M318,500 L350,500 L350,575 C340,585 330,590 318,592 Z" fill="url(#h1)" stroke="none"/>
+    <!-- orelhas -->
+    <path d="M184,320 C160,310 156,360 172,382 C182,394 192,388 194,376" fill="#EFE8DA" stroke-width="3"/>
+    <path d="M416,320 C440,310 444,360 428,382 C418,394 408,388 406,376" fill="#EFE8DA" stroke-width="3"/>
+    <path d="M410,330 C430,330 432,362 420,374" fill="url(#h1)" stroke="none"/>
+    <!-- rosto -->
+    <path d="M190,280 C190,190 240,160 300,160 C360,160 410,190 410,280 L410,380 C410,450 360,500 300,505 C240,500 190,450 190,380 Z" fill="#EFE8DA" stroke-width="3.5"/>
+    <path d="M360,180 C400,210 410,260 410,300 L410,390 C405,440 380,470 350,490 C380,420 385,300 360,180 Z" fill="url(#h2)" stroke="none" opacity="0.85"/>
+    <path d="M200,300 C196,250 210,215 230,195 C214,240 210,280 214,330 Z" fill="url(#h1)" stroke="none" opacity="0.6"/>
+    <!-- cabelo -->
+    <path d="M182,300 C170,200 220,128 300,128 C385,128 432,195 418,300 C410,250 392,212 360,196 C330,210 280,212 236,196 C210,214 194,250 182,300 Z" fill="#1A1A1A" stroke-width="3.5"/>
+    <path d="M200,250 C214,200 250,170 300,166 C350,170 386,196 404,246 C390,214 360,196 330,198 C300,210 268,206 240,196 C220,210 208,228 200,250 Z" fill="url(#cabelo)" stroke="none" opacity="0.7"/>
+    <!-- sobrancelhas, olhos, nariz -->
+    <path d="M226,280 C246,266 270,266 284,276 L282,286 C266,280 248,282 230,290 Z" fill="#1A1A1A" stroke-width="2"/>
+    <path d="M374,280 C354,266 330,266 316,276 L318,286 C334,280 352,282 370,290 Z" fill="#1A1A1A" stroke-width="2"/>
+    <path d="M234,310 C246,298 270,298 282,310 C270,320 246,320 234,310 Z" fill="#F7F2E8" stroke-width="2.5"/>
+    <path d="M318,310 C330,298 354,298 366,310 C354,320 330,320 318,310 Z" fill="#F7F2E8" stroke-width="2.5"/>
+    <circle cx="258" cy="309" r="7" fill="#161616"/>
+    <circle cx="342" cy="309" r="7" fill="#161616"/>
+    <path d="M232,326 C248,334 270,334 284,326 M316,326 C330,334 352,334 368,326" fill="none" stroke-width="1.6"/>
+    <path d="M300,300 C298,340 292,370 282,386 C292,396 310,396 320,388" fill="none" stroke-width="3"/>
+    <path d="M304,320 C312,350 318,372 320,388 C312,394 302,394 296,392 Z" fill="url(#h1)" stroke="none"/>
+    <!-- costeletas e bigode (ficam na parte de cima) -->
+    <path d="M192,330 C190,380 196,420 214,440 L230,420 C214,400 208,370 208,330 Z" fill="#1A1A1A" stroke-width="2"/>
+    <path d="M408,330 C410,380 404,420 386,440 L370,420 C386,400 392,370 392,330 Z" fill="#1A1A1A" stroke-width="2"/>
+    <path d="M300,402 C280,394 250,396 226,416 C214,426 212,438 220,440 C240,428 266,422 300,428 C334,422 360,428 380,440 C388,438 386,426 374,416 C350,396 320,394 300,402 Z" fill="#1A1A1A" stroke-width="2.5"/>
+    <path d="M232,424 C252,412 276,408 298,412 M302,412 C324,408 348,412 368,424" fill="none" stroke="#EDE6D8" stroke-width="1.2" opacity="0.7"/>
+    <!-- barba (parte de baixo: é o queixo que mexe) -->
+    <path d="M214,440 C230,446 262,448 300,446 C338,448 370,446 386,440 C392,480 370,540 300,560 C230,540 208,480 214,440 Z" fill="#1A1A1A" stroke-width="3"/>
+    <path d="M236,460 C250,500 270,530 300,540 C330,530 350,500 364,460" fill="none" stroke="#EDE6D8" stroke-width="1.2" opacity="0.55"/>
+    <path d="M256,456 C266,490 282,516 300,524 M344,456 C334,490 318,516 300,524" fill="none" stroke="#EDE6D8" stroke-width="1.2" opacity="0.5"/>
+    <path d="M276,446 C284,452 316,452 324,446" fill="#8C2A22" stroke-width="2"/>
+  </g>
+</svg>
