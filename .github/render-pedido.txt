@@ -3,4 +3,4 @@ qualidade=rascunho
 vertical=false
 fps=30
 alvo=35
-# rascunho 540p com voz do VORTTUM 003 (apagão)
+# rascunho 540p com voz do VORTTUM 003 (apagão), V01 com abertura noturna

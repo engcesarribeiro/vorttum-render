@@ -192,52 +192,98 @@ class _Quadro(_Base):
 
 # ---------------------------------------------------------------- V01 gancho (colagem)
 class V01_Gancho(_Base):
-    ESTILO = "v_colagem"
+    """Gancho: noite com as luzes de 50 milhões, a árvore no fio, o apagão em onda em 7 s;
+    o mostrador do Texas afundando com o relógio de 9:00 a 4:37; o globo apagando e o clarão do Sol."""
+    ESTILO = "v_doc"
 
     def construct(self):
-        t1, t2 = torre(2.4).move_to([-5.6, -1.2, 0]), torre(2.4).move_to([-2.0, -1.2, 0])
+        rng = np.random.default_rng(11)
+        # mapa noturno: aglomerados de cidades (luzes) na metade direita, visível já no quadro 0
+        centros = [(1.2, 1.4, 0.9), (3.4, 2.0, 0.7), (5.3, 1.1, 0.8), (2.4, -0.4, 1.0), (4.6, -1.0, 0.9),
+                   (0.6, -1.9, 0.6), (3.0, -2.4, 0.7), (5.9, -2.4, 0.5), (-0.4, 0.4, 0.5)]
+        luzes = VGroup()
+        for cx, cy, r in centros:
+            for _ in range(int(150 * r)):
+                ang, d = rng.uniform(0, TAU), abs(rng.normal(0, r * 0.45))
+                p = [cx + d * np.cos(ang), cy + d * np.sin(ang), 0]
+                luzes.add(Dot(p, radius=rng.uniform(0.018, 0.05), color=GOLD).set_opacity(rng.uniform(0.55, 1.0)))
+        brilho = VGroup(*[Dot([cx, cy, 0], radius=r * k, color=GOLD).set_opacity(0.05) for cx, cy, r in centros for k in (0.35, 0.6)])
+        luzes.sort(lambda p: p[0])                         # a onda de apagão vai do oeste (Ohio) para o leste
+        t1 = torre(2.3).move_to([-5.9, -1.5, 0])
+        t2 = torre(2.3).move_to([-2.6, -1.5, 0])
         a, b = t1[1].get_right(), t2[1].get_left()
-        fio = cabo(a, b, 0.35)
-        arv = arvore(2.1).move_to([-3.8, -1.95, 0])
-        mapa = cidades(80, 5.4, 3.6).move_to([3.4, 0.4, 0])
+        fio = cabo(a, b, 0.35, MUTED, 4)
+        arv = arvore(2.0).move_to([-4.25, -2.2, 0])
+        arv[0].set_fill(MUTED, 1)
+        self.add(brilho, luzes, t1, t2, fio, arv)        # quadro 0 já é a cena
         with self.narrate(F("V01", 1)) as n:
-            self.play(FadeIn(VGroup(t1, t2)), Create(fio), FadeIn(arv, shift=UP * 0.3), run_time=0.8)
+            n.wait_until("tree")
+            self.play(Transform(fio, cabo(a, b, 1.0, C1, 5)), run_time=0.35)
+            faisca = Star(8, outer_radius=0.45, inner_radius=0.15).set_fill(GOLD, 1).set_stroke(C1, 3)
+            faisca.move_to(arv[1].get_top() + DOWN * 0.15)
+            self.som("risco")
+            self.play(FadeIn(faisca, scale=3), Flash(faisca.get_center(), color=GOLD, line_length=0.5, num_lines=14),
+                      run_time=0.35)
             n.wait_until("seven")
-            faisca = Star(7, outer_radius=0.32, inner_radius=0.12).set_fill(GOLD, 1).set_stroke(C1, 2).move_to(arv[1].get_top() + DOWN * 0.15)
-            relo = T("7 seconds", 44, C1).move_to([-3.8, 2.6, 0])
-            self.play(Transform(fio, cabo(a, b, 0.95, C1)), FadeIn(faisca, scale=2), FadeIn(relo, shift=DOWN * 0.2), run_time=0.6)
+            tempo = ValueTracker(0.0)
+            relo = always_redraw(lambda: T(f"{tempo.get_value():.1f} s", 84, C1).move_to([-4.2, 2.6, 0]))
+            self.add(relo)
+            self.som("whoosh")
+            self.play(tempo.animate.set_value(7.0),
+                      LaggedStart(*[d.animate.set_opacity(0.06) for d in luzes], lag_ratio=0.004),
+                      brilho.animate.set_opacity(0.0), run_time=n.until("fifty") + 0.1, rate_func=linear)
+            relo.clear_updaters()
             n.wait_until("fifty")
-            self.add(mapa)
-            num = T("50,000,000 people", 44, INK).move_to([3.4, -2.6, 0])
-            self.play(LaggedStart(*[d.animate.set_color(FAINT) for d in mapa], lag_ratio=0.02),
-                      FadeIn(num, shift=UP * 0.2), run_time=n.remaining + 0.2)
-        self.clear_section(run_time=0.4)
-        med, tr, pont = medidor()
-        g = VGroup(med, pont).move_to([-3.0, 0.2, 0])
+            gente = T("50,000,000 people", 60, INK).move_to([3.0, 0.1, 0])
+            sub = T("in the dark", 40, C1).next_to(gente, DOWN, buff=0.3)
+            self.play(FadeIn(gente, scale=1.25), FadeIn(sub, shift=UP * 0.15), run_time=0.5)
+        self.play(FadeOut(Group(*self.mobjects)), run_time=0.25)
+        # Texas: o mostrador afunda, o interruptor desliga, o relógio corre de 9:00 até 4:37
+        med, tr, pont = medidor(r=2.3)
+        VGroup(med).move_to([-3.4, -0.3, 0])
         with self.narrate(F("V01", 2)) as n:
             self.add(med, pont)
-            self.play(FadeIn(med), run_time=0.4)
+            self.play(FadeIn(med), run_time=0.3)
+            self.play(tr.animate.set_value(59.3), run_time=1.0, rate_func=rush_into)
+            self.play(Wiggle(VGroup(med, pont), scale_value=1.03, rotation_angle=0.02 * TAU, n_wiggles=6), run_time=0.5)
             n.wait_until("purpose")
-            sw = interruptor(True, 1.4).move_to([2.2, 0.6, 0])
-            self.play(FadeIn(sw), tr.animate.set_value(59.3), run_time=0.6)
-            self.play(Transform(sw, interruptor(False, 1.4).move_to(sw)), run_time=0.3)
+            sw = interruptor(True, 1.6).move_to([1.2, 0.2, 0])
+            self.play(FadeIn(sw, scale=0.8), run_time=0.25)
+            self.som("clique")
+            self.play(Transform(sw, interruptor(False, 1.6).move_to(sw)), run_time=0.2)
             n.wait_until("four")
-            cont = T("4:37", 96, GOLD).move_to([4.6, 0.6, 0])
-            sub = T("from losing everything", 32, INK).next_to(cont, DOWN, buff=0.25)
-            self.play(FadeIn(cont, scale=1.3), FadeIn(sub), run_time=0.6)
-        self.clear_section(run_time=0.4)
-        gl = globo(2.4).move_to([-2.6, 0, 0])
+            seg = ValueTracker(540)
+            cont = always_redraw(lambda: T(f"{int(seg.get_value()) // 60}:{int(seg.get_value()) % 60:02d}", 120, GOLD)
+                                 .move_to([4.6, 0.5, 0]))
+            self.add(cont)
+            self.som("tique")
+            self.play(seg.animate.set_value(277), run_time=1.0, rate_func=rate_functions.ease_out_cubic)
+            cont.clear_updaters()
+            sub = T("from losing everything", 34, INK).next_to(cont, DOWN, buff=0.3)
+            self.play(FadeIn(sub), run_time=0.3)
+        self.play(FadeOut(Group(*self.mobjects)), run_time=0.25)
+        # o mundo: globo noturno apagando por regiões, "not a hacker", clarão do Sol e corte para preto
+        gl = globo(2.7, n=140, seed=5).move_to([-2.6, 0, 0])
+        gl[0].set_fill(BG, 1).set_stroke(MUTED, 3)
+        for d in gl[3]:
+            d.set_color(GOLD)
         with self.narrate(F("V01", 3)) as n:
-            self.play(FadeIn(gl), run_time=0.6)
+            self.play(FadeIn(gl, scale=0.9), run_time=0.5)
+            n.wait_until("entire")
+            self.play(LaggedStart(*[d.animate.set_opacity(0.08) for d in sorted(gl[3], key=lambda m: m.get_y())],
+                                  lag_ratio=0.01), run_time=1.2)
             n.wait_until("hacker")
-            hk = T("a hacker", 48, INK).move_to([3.6, 1.0, 0])
-            risco = Line(hk.get_left() + LEFT * 0.15, hk.get_right() + RIGHT * 0.15).set_stroke(C1, 7)
-            self.play(FadeIn(hk), run_time=0.4)
-            self.play(Create(risco), run_time=0.4)
+            hk = T("NOT A HACKER", 54, INK).move_to([2.9, 1.7, 0]).rotate(-0.06)
+            self.som("carimbo")
+            self.play(FadeIn(hk, scale=1.6), run_time=0.25)
             n.wait_until("before")
-            self.play(LaggedStart(*[d.animate.set_color(FAINT) for d in gl[3]], lag_ratio=0.03),
-                      FadeIn(T("?", 120, GOLD).move_to([3.6, -1.0, 0]), scale=1.4), run_time=1.2)
-        self.clear_section(run_time=0.4)
+            sol = Circle(radius=3.2).set_fill(GOLD, 1).set_stroke(width=0).move_to([11.0, 0, 0])
+            halo = Circle(radius=4.6).set_fill(GOLD, 0.25).set_stroke(width=0).move_to(sol)
+            self.som("whoosh")
+            self.play(FadeIn(halo), sol.animate.move_to([7.6, -0.6, 0]), halo.animate.move_to([7.6, -0.6, 0]),
+                      gl[0].animate.set_stroke(GOLD, 5), run_time=0.6)
+            self.wait(0.5)
+        self.play(FadeOut(Group(*self.mobjects)), run_time=0.2)
 
 
 # ---------------------------------------------------------------- V02 uma árvore (papel envelhecido)
