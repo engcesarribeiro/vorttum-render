@@ -2,3 +2,4 @@
 2026-11-20T01:29:12Z cancelar rascunho 4 travado na voz da A05
 2026-11-20T03:04:30Z cancelar o final antigo (troca pelo render em fatias)
 2026-11-20T03:53:55Z cancelar o teste (2 máquinas presas no apt)
+cancelar rascunho 003 com V01 antiga 2026-11-23T20:53:33
