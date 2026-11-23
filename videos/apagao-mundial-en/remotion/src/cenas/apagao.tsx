@@ -13,8 +13,8 @@ export {Som};
 
 /** Paleta escura VORTTUM (a mesma do v_doc do Manim). */
 export const VE = {
-  BG: '#1E1C1A', INK: '#ECE5D6', MUTED: '#9A9286', SHEET: '#282522', C1: '#C9694B', C2: '#9AA6AD',
-  GOLD: '#D2B47E', BAD: '#C25B43', GOOD: '#9CA77A', LUZ: '#F0C878',
+  BG: '#1C1D22', INK: '#ECE5D6', MUTED: '#9A9286', SHEET: '#282522', C1: '#DB7350', C2: '#8FB0C4',
+  GOLD: '#E3B865', BAD: '#D0583D', GOOD: '#A6BA72', LUZ: '#F5C463',
 };
 export const KRAFT = '#D8C9AC';
 export const W = 1920, H = 1080;
@@ -45,7 +45,7 @@ export const Vinheta: React.FC<{forca?: number; cor?: string}> = ({forca = 0.55,
 );
 
 export const FundoNoite: React.FC<{children?: React.ReactNode}> = ({children}) => (
-  <AbsoluteFill style={{background: `radial-gradient(ellipse at 60% 40%, #2A2622 0%, ${VE.BG} 55%, #141311 100%)`}}>
+  <AbsoluteFill style={{background: `radial-gradient(ellipse at 60% 40%, #2B2C38 0%, ${VE.BG} 55%, #121318 100%)`}}>
     {children}
   </AbsoluteFill>
 );
@@ -187,7 +187,7 @@ export const Cabo: React.FC<{a: [number, number]; b: [number, number]; flecha: n
 
 /** Árvore em recorte (x = base do tronco). balanço: graus. */
 export const Arvore: React.FC<{x: number; y: number; h?: number; balanco?: number; copa?: string; tronco?: string}> =
-  ({x, y, h = 260, balanco = 0, copa = '#7D8A5A', tronco = '#5A4A3A'}) => (
+  ({x, y, h = 260, balanco = 0, copa = '#6E9548', tronco = '#6A4A33'}) => (
     <g transform={`rotate(${balanco} ${x} ${y})`} style={{filter: 'drop-shadow(6px 8px 0 rgba(0,0,0,0.35))'}}>
       <rect x={x - h * 0.06} y={y - h * 0.45} width={h * 0.12} height={h * 0.45} fill={tronco} />
       {[[-0.17, 0.62, 0.2], [0.17, 0.64, 0.2], [0, 0.82, 0.24], [-0.05, 0.55, 0.18]].map(([dx, dy, r], i) => (
@@ -294,7 +294,7 @@ export const Globo: React.FC<{cx: number; cy: number; r: number; giro: number; a
   return (
     <svg width={W} height={H} style={{position: 'absolute'}}>
       <defs>
-        <radialGradient id="esf" cx="40%" cy="35%" r="70%"><stop offset="0%" stopColor="#2E2A26" /><stop offset="100%" stopColor="#151412" /></radialGradient>
+        <radialGradient id="esf" cx="40%" cy="35%" r="70%"><stop offset="0%" stopColor="#2A3445" /><stop offset="100%" stopColor="#121620" /></radialGradient>
         <filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" /></filter>
       </defs>
       <circle cx={cx} cy={cy} r={r} fill="url(#esf)" stroke={borda} strokeWidth={3} />

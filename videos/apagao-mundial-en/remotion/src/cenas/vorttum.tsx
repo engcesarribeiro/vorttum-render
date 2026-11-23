@@ -24,7 +24,7 @@ export const useLatin = () => {
 
 export const V = {
   BG: '#EFE8DA', INK: '#2A2826', MUTED: '#857E72', SHEET: '#F6F1E6', AREIA: '#C9B48F',
-  C1: '#A4452F', C2: '#4E5A63', GOLD: '#946B2C', BAD: '#7E2F22', GOOD: '#5E6B43',
+  C1: '#B5472C', C2: '#3F6178', GOLD: '#B07F25', BAD: '#8E2F1E', GOOD: '#5F7A3A',
 };
 
 // registra o estilo no kit (o nome vem do ESTILO da RemotionScene no video.py)

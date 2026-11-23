@@ -127,7 +127,7 @@ export const V02_Arvore: React.FC<Props> = (props) => {
         {/* ---------- falas 4 e 5: a linha e a árvore ---------- */}
         {tela(s, 4, 5) && <AbsoluteFill style={{transform: `translateX(${(1 - prog(s, ini(4) - 0.25, 0.4)) * 1500}px)`}}>
           <svg width={W} height={H} style={{position: 'absolute'}}>
-            <path d={`M 0 ${H - 120} Q 480 ${H - 190} 960 ${H - 140} T 1920 ${H - 150} L 1920 ${H} L 0 ${H} Z`} fill="#CDBB94" />
+            <path d={`M 0 ${H - 120} Q 480 ${H - 190} 960 ${H - 140} T 1920 ${H - 150} L 1920 ${H} L 0 ${H} Z`} fill="#C2B27E" />
             <Torre x={240} y={900} h={360} cor={V.INK} />
             <Torre x={900} y={900} h={360} cor={V.INK} />
             <Torre x={1560} y={900} h={360} cor={V.INK} />

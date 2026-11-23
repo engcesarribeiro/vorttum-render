@@ -14,13 +14,13 @@ import estilos
 
 CLARO = {
     "BG": "#EFE8DA", "INK": "#2A2826", "MUTED": "#857E72", "FAINT": "#DCD3C2", "SHEET": "#F6F1E6",
-    "C1": "#A4452F", "C2": "#4E5A63", "GOLD": "#946B2C", "BAD": "#7E2F22", "GOOD": "#5E6B43",
+    "C1": "#B5472C", "C2": "#3F6178", "GOLD": "#B07F25", "BAD": "#8E2F1E", "GOOD": "#5F7A3A",
     "P_GOLD": "#EADCBE", "P_C1": "#EBD3C8", "P_C2": "#D9DDDF", "P_GOOD": "#DFE2D0", "P_INK": "#E6DFD0",
     "PAINEL_BG": "#F6F1E6", "PAINEL_EDGE": "#2A2826",
 }
 ESCURO = {
-    "BG": "#1E1C1A", "INK": "#ECE5D6", "MUTED": "#9A9286", "FAINT": "#2E2B28", "SHEET": "#282522",
-    "C1": "#C9694B", "C2": "#9AA6AD", "GOLD": "#D2B47E", "BAD": "#C25B43", "GOOD": "#9CA77A",
+    "BG": "#1C1D22", "INK": "#ECE5D6", "MUTED": "#9A9286", "FAINT": "#2E2B28", "SHEET": "#282522",
+    "C1": "#DB7350", "C2": "#8FB0C4", "GOLD": "#E3B865", "BAD": "#D0583D", "GOOD": "#A6BA72",
     "P_GOLD": "#3A3225", "P_C1": "#3D2620", "P_C2": "#2B3033", "P_GOOD": "#2E3226", "P_INK": "#2A2724",
     "PAINEL_BG": "#272421", "PAINEL_EDGE": "#4A443D",
 }

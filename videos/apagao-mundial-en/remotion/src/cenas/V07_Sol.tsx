@@ -75,11 +75,11 @@ export const V07_Sol: React.FC<Props> = (props) => {
               </g>}
               {/* a Terra */}
               <g opacity={vida(s, t('cloud', 2), undefined)} transform={`translate(${lerp(1600, 960, zT)} ${lerp(560, 640, zT)}) scale(${lerp(1, 4.2, zT)})`}>
-                <circle r={70} fill="#8FA0A8" stroke={SEPIA} strokeWidth={4 / lerp(1, 4.2, zT)} />
-                <path d="M -40 -30 Q -10 -50 10 -30 Q 30 -10 0 0 Q -30 10 -40 -30 Z M 10 20 Q 40 10 45 35 Q 20 55 5 40 Z" fill="#A89A6E" />
+                <circle r={70} fill="#6F9AB5" stroke={SEPIA} strokeWidth={4 / lerp(1, 4.2, zT)} />
+                <path d="M -40 -30 Q -10 -50 10 -30 Q 30 -10 0 0 Q -30 10 -40 -30 Z M 10 20 Q 40 10 45 35 Q 20 55 5 40 Z" fill="#8FAE5E" />
                 {/* auroras (fala 3) */}
                 {[0, 1, 2].map((k) => <path key={k} d={`M -75 ${-60 - k * 9} Q -30 ${-100 - k * 10 + 10 * Math.sin(s * 3 + k)} 0 ${-78 - k * 9} T 75 ${-60 - k * 9}`}
-                  fill="none" stroke={[V.GOOD, '#B5C48A', '#C58B6A'][k]} strokeWidth={4} opacity={prog(s, t('auroras', 3), 0.6) * 0.9} />)}
+                  fill="none" stroke={['#5FA36A', '#8CC07A', '#C97A8E'][k]} strokeWidth={4} opacity={prog(s, t('auroras', 3), 0.6) * 0.9} />)}
                 {s > t('havana', 3) && <g opacity={prog(s, t('havana', 3), 0.3)}><circle cx={-22} cy={-2} r={3.5} fill={V.C1} /></g>}
               </g>
             </svg>

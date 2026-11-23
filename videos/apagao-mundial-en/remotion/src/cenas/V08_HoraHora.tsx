@@ -9,7 +9,7 @@ import {Camera, useAcao, Impacto, aleatorio} from '../kit/impacto';
 import {useLatin, LM, V} from './vorttum';
 import {W, H, Grao, Vinheta, Bate, Sobe, Rotulo, Cartao, Som, Torre, vida} from './apagao';
 
-const NOITE = '#2B2F38', MORRO1 = '#3B3F45', MORRO2 = '#4A4B4C', CHAO = '#55504A', LUZ = '#F0C878';
+const NOITE = '#24304A', MORRO1 = '#33405A', MORRO2 = '#3F4B5E', CHAO = '#5A5248', LUZ = '#F5C463';
 
 export const V08_HoraHora: React.FC<Props> = (props) => {
   useFontes();
@@ -77,7 +77,7 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
           <path d={`M 0 830 Q 400 760 900 810 T 1920 800 L 1920 1080 L 0 1080 Z`} fill={MORRO2} />
           <rect x={0} y={900} width={W} height={180} fill={CHAO} />
           {/* casas */}
-          {[[120, 220, '#8A6A55'], [330, 260, '#6F7A6A'], [540, 200, '#7E6B77']].map(([x, h, c], i) => casa(x as number, h as number, c as string, i))}
+          {[[120, 220, '#A2674A'], [330, 260, '#5F8466'], [540, 200, '#82648F']].map(([x, h, c], i) => casa(x as number, h as number, c as string, i))}
           {/* poste e semáforo */}
           <rect x={760} y={620} width={14} height={280} fill="#1E1F22" />
           <circle cx={767} cy={615} r={22} fill={apagou ? '#30333A' : LUZ} />
@@ -94,7 +94,7 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
           </g>
           {/* hospital */}
           <g style={{filter: 'drop-shadow(8px 10px 0 rgba(0,0,0,0.3))'}}>
-            <rect x={1150} y={560} width={320} height={340} fill="#C9C2B4" />
+            <rect x={1150} y={560} width={320} height={340} fill="#DCD5C6" />
             <rect x={1280} y={590} width={60} height={60} fill={V.C1} /><rect x={1300} y={570} width={20} height={100} fill={V.C1} /><rect x={1260} y={600} width={100} height={20} fill={V.C1} />
             {[...Array(6)].map((_, i) => janela(1175 + (i % 3) * 100, 690 + Math.floor(i / 3) * 90, !apagou || (gerador && combustivel > 0.05 && Math.sin(s * 25 + i) > -0.95), 10 + i))}
           </g>
