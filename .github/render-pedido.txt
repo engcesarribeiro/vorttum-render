@@ -1,6 +1,6 @@
-pasta=videos/martingale-cassino-en
-qualidade=final
+pasta=videos/apagao-mundial-en
+qualidade=rascunho
 vertical=false
-fps=60
+fps=30
 alvo=35
-# final 1080p60 do VORTTUM 001 com abertura A00 e voz expressiva
+# rascunho 540p com voz do VORTTUM 003 (apagão)
