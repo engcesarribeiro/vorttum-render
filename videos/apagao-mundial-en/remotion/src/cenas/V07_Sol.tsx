@@ -6,6 +6,7 @@ import {Props, at, inicioFala, prog, pop, sai, lerp} from '../kit/tempo';
 import {useFontes} from '../kit/componentes';
 import {Camera, Particulas, useAcao, Impacto, Estouro} from '../kit/impacto';
 import {useLatin, LM, V} from './vorttum';
+import {respiro} from './pecas';
 import {W, H, Grao, Vinheta, FundoPapel, Bate, Sobe, Rotulo, Cartao, Som, Torre, vida} from './apagao';
 
 const SEPIA = '#5B4330';
@@ -59,7 +60,7 @@ export const V07_Sol: React.FC<Props> = (props) => {
 
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
-      <Camera s={s} imp={impR} zoom={lerp(1, 1.05, (s % 16) / 16)}>
+      <Camera s={s} imp={impR} zoom={respiro(s).zoom} foco={respiro(s).foco}>
         <FundoPapel deriva={(s % 25) / 25} />
         {/* -------- falas 1 a 3 -------- */}
         {tela(s, 1, 3) && (() => {

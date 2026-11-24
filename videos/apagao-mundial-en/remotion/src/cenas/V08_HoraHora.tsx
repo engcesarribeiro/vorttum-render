@@ -44,7 +44,10 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
   const zoom = lerp(anterior[1], z0, v), fx = lerp(anterior[2], x0, v), fy = lerp(anterior[3], y0, v);
   void u;
 
-  const apagou = s > t('out', 2);
+  const tLiga = (k: number) => t('plant', 8) + k * Math.max(0.5, (t('normal', 8) - t('plant', 8)) / 7);
+  const tDesl = (k: number) => t('storm', 9) + (6 - k) * 0.18;
+  const ligadas = [...Array(7)].filter((_, k) => s > tLiga(k) && !(s > tDesl(k))).length;
+  const apagou = s > t('out', 2) && !(s > ini(8) && ligadas >= 3);
   const gerador = s > t('kick', 3);
   const bateriaTorre = s < t('two', 4) ? 1 : lerp(1, 0, prog(s, t('two', 4), Math.max(1, t('silent', 5) - t('two', 4)), (x) => x));
   const semSinal = s > t('silent', 5);
@@ -72,7 +75,12 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
         <svg width={W} height={H} style={{position: 'absolute'}}>
           <rect width={W} height={H} fill={NOITE} />
           {estrelas.map((q, i) => <circle key={i} cx={q.x} cy={q.y} r={2.2} fill="#E9E2D0" opacity={(apagou ? 0.9 : 0.35) * (0.6 + 0.4 * Math.sin(s * 2 + q.f))} />)}
-          <circle cx={1650} cy={150} r={60} fill="#E9E2D0" opacity={0.9} />
+          <circle cx={1650} cy={150} r={60} fill="#E9E2D0" opacity={0.9 * (1 - prog(s, t('solar', 9), 0.5))} />
+          {s > t('solar', 9) && <g transform={`translate(1800 130) scale(${0.7 * pop(s, t('solar', 9))}) rotate(${s * 20})`}>
+            <circle r={150} fill="#E08A3C" opacity={0.25 + 0.1 * Math.sin(s * 6)} />
+            {[...Array(12)].map((_, i) => <path key={i} d="M -14 -95 L 0 -150 L 14 -95 Z" fill="#E3B865" transform={`rotate(${i * 30})`} />)}
+            <circle r={90} fill="#D9A441" />
+          </g>}
           <path d={`M 0 760 Q 300 640 640 720 T 1300 700 T 1920 690 L 1920 1080 L 0 1080 Z`} fill={MORRO1} />
           <path d={`M 0 830 Q 400 760 900 810 T 1920 800 L 1920 1080 L 0 1080 Z`} fill={MORRO2} />
           <rect x={0} y={900} width={W} height={180} fill={CHAO} />
@@ -124,6 +132,8 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
         background: '#F3EDE1', padding: '10px 36px', boxShadow: '8px 10px 0 rgba(0,0,0,0.35)', fontFamily: LM, fontWeight: 700, fontSize: 110,
         color: relogio === 'years?' ? V.C1 : V.INK}}>{relogio}</div>}
       {trocou.map((x, i) => <Som key={i} nome="pop" t={x} volume={0.4} />)}
+      {[...Array(7)].map((_, k) => <Som key={'l' + k} nome="clique" t={tLiga(k)} volume={0.35} />)}
+      <Som nome="whoosh" t={t('storm', 9)} volume={0.45} />
       <Rotulo s={s} t={t('next', 1)} ate={fim(1)} x={960} y={160} fundo="#F3EDE1" cor={V.INK} size={70}>YOUR NEXT 96 HOURS</Rotulo>
       <Rotulo s={s} t={t('fridge', 2)} ate={fim(2)} x={1400} y={300} fundo={V.C1} size={52} rot={3}>EVERYTHING OFF</Rotulo>
       <Rotulo s={s} t={t('code', 3)} ate={fim(3)} x={1400} y={260} fundo={V.GOOD} size={50} rot={-3}>GENERATORS: WITHIN 10 S</Rotulo>
@@ -137,19 +147,27 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
         <div style={{width: 420, height: 50, border: `4px solid ${V.INK}`, marginTop: 12}}><div style={{height: '100%', width: `${combustivel * 100}%`, background: combustivel < 0.3 ? V.C1 : V.GOOD}} /></div>
         <div style={{fontFamily: LM, fontSize: 38, color: V.C1, marginTop: 10, opacity: prog(s, t('electricity', 7), 0.3)}}>the fuel pumps need electricity</div></div>; })()}
       {/* fala 8: partida a frio (usinas religando uma a uma) */}
-      {s > ini(8) - 0.2 && s < fim(8) + 0.05 && <svg width={W} height={H} style={{position: 'absolute'}}>
+      {s > ini(8) - 0.2 && s < t('years', 9) && <svg width={W} height={H} style={{position: 'absolute'}}>
         {[...Array(7)].map((_, k5) => {
-          const on = s > t('plant', 8) + k5 * 0.45;
-          return <g key={k5} transform={`translate(${260 + k5 * 230} 260)`} opacity={vida(s, ini(8) + 0.2 + k5 * 0.05, fim(8))}>
+          const on = s > tLiga(k5) && !(s > tDesl(k5));
+          return <g key={k5} transform={`translate(${420 + k5 * 200} 270) scale(${1 + 0.25 * Math.exp(-Math.abs(s - tLiga(k5)) * 8)})`} opacity={vida(s, ini(8) + 0.2 + k5 * 0.05, t('years', 9) - 0.2)}>
             <rect x={-70} y={-60} width={140} height={120} fill={on ? V.GOLD : '#4A4540'} stroke="#F3EDE1" strokeWidth={4} />
             <text y={14} fontFamily={LM} fontWeight={700} fontSize={36} fill="#F3EDE1" textAnchor="middle">{on ? 'ON' : 'OFF'}</text>
-            {k5 < 6 && <line x1={70} y1={0} x2={160} y2={0} stroke={on ? V.GOLD : '#4A4540'} strokeWidth={8} />}
+            {k5 < 6 && <line x1={70} y1={0} x2={130} y2={0} stroke={on ? V.GOLD : '#4A4540'} strokeWidth={8} />}
           </g>;
         })}
       </svg>}
       <Rotulo s={s} t={t('black', 8)} ate={fim(8)} x={960} y={470} fundo="#F3EDE1" cor={V.INK} size={66} rot={-2}>BLACK START: ONE PLANT AT A TIME</Rotulo>
-      <Sobe s={s} t={t('normal', 8)} ate={fim(8)} x={960} y={560} size={50} ancora="centro" cor="#F3EDE1">normal blackout: hours to days</Sobe>
-      <Bate s={s} t={t('years', 9)} x={960} y={540} size={170} cor={V.C1} som={false}>YEARS?</Bate>
+      <Sobe s={s} t={t('normal', 8)} ate={fim(8)} x={960} y={600} size={50} ancora="centro" cor="#F3EDE1">normal blackout: hours to days</Sobe>
+      {s > t('years', 9) - 0.6 && <div style={{position: 'absolute', left: 960, top: 560, width: 0, height: 0}}>
+        {[0, 1, 2, 3, 4, 5].map((k) => { const u = prog(s, t('years', 9) - 0.6 + k * 0.12, 0.35);
+          return <div key={k} style={{position: 'absolute', left: -230, top: -200, width: 460, height: 400, background: '#F3EDE1',
+            boxShadow: '8px 10px 0 rgba(0,0,0,0.35)', transformOrigin: '50% 0%', opacity: k === 5 ? u : 1 - u,
+            transform: `rotateX(${k === 5 ? 0 : u * 90}deg) rotate(${(k % 2 ? 2 : -2)}deg)`}}>
+            <div style={{height: 70, background: V.C1}} /></div>; })}
+      </div>}
+      <Rotulo s={s} t={t('bigger', 9)} ate={t('years', 9) - 0.6} x={960} y={520} fundo={V.C1} size={60} rot={-2}>A BIGGER PROBLEM</Rotulo>
+      <Bate s={s} t={t('years', 9)} x={960} y={600} size={170} cor={V.C1} som={false}>YEARS?</Bate>
       <Vinheta forca={0.5} />
       <Grao forca={0.06} />
     </AbsoluteFill>

@@ -6,6 +6,7 @@ import {Props, at, inicioFala, prog, pop, sai, lerp} from '../kit/tempo';
 import {useFontes} from '../kit/componentes';
 import {Camera, useAcao, Impacto} from '../kit/impacto';
 import {useLatin, LM, V} from './vorttum';
+import {respiro} from './pecas';
 import {W, H, Grao, Bate, Sobe, Rotulo, Som, vida} from './apagao';
 
 const CREME = '#EFE8DA';
@@ -65,7 +66,7 @@ export const V06_Botao: React.FC<Props> = (props) => {
 
   return (
     <AbsoluteFill style={{background: CREME, overflow: 'hidden'}}>
-      <Camera s={s} imp={impR} zoom={lerp(1, 1.04, (s % 14) / 14)}>
+      <Camera s={s} imp={impR} zoom={respiro(s).zoom} foco={respiro(s).foco}>
         {fundo}
         {/* fala 1 */}
         {s < t('three', 2) + 0.3 && <AbsoluteFill style={{opacity: sai(s, t('three', 2), 0.3), transform: `scale(${lerp(1, 0.6, prog(s, t('no', 2), 0.8))})`}}>

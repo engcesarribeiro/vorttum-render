@@ -7,6 +7,7 @@ import {Props, at, inicioFala, prog, pop, sai, lerp} from '../kit/tempo';
 import {useFontes} from '../kit/componentes';
 import {Camera, Flash, Estouro, Particulas, LinhasVelocidade, useAcao, Impacto} from '../kit/impacto';
 import {useLatin, LM, V} from './vorttum';
+import {ArvoreColagem} from './pecas';
 import {VE, W, H, Grao, Vinheta, FundoNoite, Bate, Sobe, Rotulo, Som, Torre, pontaTorre, Cabo, Arvore, useLuzes, Luzes,
   Medidor, Globo, Interruptor, conta, milhar, vida} from './apagao';
 
@@ -76,7 +77,7 @@ export const V01_Gancho: React.FC<Props> = (props) => {
             <Torre x={170} y={1010} h={330} cor={VE.INK} />
             <Torre x={640} y={1010} h={330} cor={VE.INK} />
             <Cabo a={[ax, ay]} b={[bx, by]} flecha={flecha} cor={s > tTree ? VE.C1 : VE.MUTED} w={6} />
-            <Arvore x={405} y={1040} h={300} balanco={Math.sin(s * 1.3) * 1.5} />
+            <ArvoreColagem x={405} y={1040} h={300} balanco={Math.sin(s * 1.3) * 1.5} queimada={0.35 + 0.4 * prog(s, tTree, 0.5)} seed={5} />
           </svg>
           <Particulas a={s} t={tTree + 0.05} x={405} y={800} n={26} ang={-90} abertura={220} vel={900} cores={[VE.LUZ, VE.C1, '#FFF1D0']} tamanho={14} />
           <Estouro s={s} t={tTree + 0.05} x={405} y={790} forca={0.7} cor="#FFF1D0" cor2={VE.C1} />

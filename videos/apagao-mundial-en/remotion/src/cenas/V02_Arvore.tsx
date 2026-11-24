@@ -7,6 +7,7 @@ import {useFontes, Boneco} from '../kit/componentes';
 import {estilo} from '../kit/estilos';
 import {Camera, Estouro, Particulas, useAcao, Impacto} from '../kit/impacto';
 import {useLatin, LM, V} from './vorttum';
+import {ArvoreColagem, respiro} from './pecas';
 import {W, H, Grao, Vinheta, FundoPapel, Bate, Sobe, Rotulo, Cartao, Som, Torre, pontaTorre, Cabo, Arvore, conta, milhar, vida} from './apagao';
 
 const Ventilador: React.FC<{x: number; y: number; s: number; p: number}> = ({x, y, s, p}) => (
@@ -69,7 +70,7 @@ export const V02_Arvore: React.FC<Props> = (props) => {
 
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
-      <Camera s={s} imp={impR} zoom={z}>
+      <Camera s={s} imp={impR} zoom={respiro(s).zoom} foco={respiro(s).foco}>
         <FundoPapel deriva={(s % 20) / 20} />
         {/* ---------- falas 1 a 3: o escritório ---------- */}
         {tela(s, 1, 3) && <AbsoluteFill>
@@ -141,8 +142,8 @@ export const V02_Arvore: React.FC<Props> = (props) => {
               const x = lerp(p0[0], p1[0], u), y = lerp(p0[1], p1[1], u) + fl * 2 * 2 * u * (1 - u);
               return <circle key={i} cx={x} cy={y} r={9} fill={V.GOLD} opacity={s > t('line', 4) ? 0.9 : 0} />;
             })}
-            <Arvore x={570} y={1000} h={330} balanco={Math.sin(s * 1.6) * 2} />
-            <Arvore x={1230} y={1000} h={300} balanco={Math.sin(s * 1.4 + 1) * 2} />
+            <ArvoreColagem x={570} y={1000} h={330} balanco={Math.sin(s * 1.6) * 2} queimada={0.5 * prog(s, t('tree', 4), 0.6)} seed={3} />
+            <ArvoreColagem x={1230} y={1000} h={300} balanco={Math.sin(s * 1.4 + 1) * 2} queimada={0.5 * prog(s, t('trees', 5), 0.6)} seed={8} />
           </svg>
           <Estouro s={s} t={t('tree', 4) + 0.05} x={570} y={720} forca={0.8} cor="#FFF1D0" cor2={V.C1} />
           <Particulas a={s} t={t('tree', 4) + 0.05} x={570} y={720} n={22} cores={[V.GOLD, V.C1]} />

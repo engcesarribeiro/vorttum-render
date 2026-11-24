@@ -7,6 +7,7 @@ import {Props, at, inicioFala, prog, pop, sai, lerp} from '../kit/tempo';
 import {useFontes} from '../kit/componentes';
 import {Camera, useAcao, Impacto, aleatorio} from '../kit/impacto';
 import {useLatin, LM, V} from './vorttum';
+import {respiro} from './pecas';
 import {W, H, Grao, Vinheta, FundoKraft, Bate, Sobe, Rotulo, Cartao, Som, conta, milhar, vida} from './apagao';
 
 type P2 = [number, number];
@@ -65,7 +66,7 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
 
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
-      <Camera s={s} imp={impR} zoom={lerp(1, 1.05, (s % 15) / 15)}>
+      <Camera s={s} imp={impR} zoom={respiro(s).zoom} foco={respiro(s).foco}>
         <FundoKraft />
         {/* -------- Texas: falas 1 a 5 -------- */}
         {tela(s, 1, 5) && <AbsoluteFill>
