@@ -3,4 +3,4 @@ qualidade=rascunho
 vertical=false
 fps=30
 alvo=35
-# rascunho 540p com voz do VORTTUM 003: voz mais limpa e círculos da equação
+# rascunho 540p com voz do VORTTUM 003: velocidade, ênfases e voz mais limpa
