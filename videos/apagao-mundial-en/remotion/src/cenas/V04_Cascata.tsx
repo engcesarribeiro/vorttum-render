@@ -243,8 +243,8 @@ export const V04_Cascata: React.FC<Props> = (props) => {
               <circle cx={190} cy={230} r={60} fill="none" stroke={V.INK} strokeWidth={5} />
               <line x1={190} y1={230} x2={225} y2={200} stroke={V.C1} strokeWidth={6} />
               {[0, 1, 2].map((k) => <rect key={k} x={100 + k * 70} y={330} width={40} height={60} fill={k === 1 ? V.GOOD : V.INK} />)}
-              <text x={350} y={230} fontFamily={LM} fontWeight={700} fontSize={34} fill={V.INK}>UNDER-FREQUENCY</text>
-              <text x={350} y={300} fontFamily={LM} fontWeight={700} fontSize={34} fill={V.C1}>LOAD SHEDDING</text>
+              <text x={350} y={230} fontFamily={LM} fontWeight={700} fontSize={30} fill={V.INK}>UNDER-FREQUENCY</text>
+              <text x={350} y={300} fontFamily={LM} fontWeight={700} fontSize={30} fill={V.C1}>LOAD SHEDDING</text>
               <text x={350} y={370} fontFamily="JetBrains Mono" fontSize={30} fill={V.INK}>installed · waiting</text>
             </svg>
           </Cartao>
