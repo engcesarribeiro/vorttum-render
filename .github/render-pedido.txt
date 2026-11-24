@@ -3,4 +3,4 @@ qualidade=rascunho
 vertical=false
 fps=30
 alvo=35
-# rascunho 540p com voz do VORTTUM 003: conectores no roteiro e mais cor
+# rascunho 540p com voz do VORTTUM 003: mais colagem e movimento (V03, V04, V09 refeitas)
