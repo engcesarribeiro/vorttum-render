@@ -92,7 +92,7 @@ export const V02_Arvore: React.FC<Props> = (props) => {
               p={pop(s, t('conditioners', 1) + k * 0.18) * sai(s, fim(1), 0.3)} />)}
           </svg>
           {/* sala de controle */}
-          <Cartao s={s} t={t('control', 2)} x={160} y={380} w={900} h={560} fundo={V.SHEET} rot={-1.5} seed={7}>
+          <Cartao s={s} t={ini(2)} x={160} y={380} w={900} h={560} fundo={V.SHEET} rot={-1.5} seed={7}>
             <div style={{position: 'absolute', left: 60, top: 50, width: 780, height: 300, background: '#22201E', overflow: 'hidden', border: `6px solid ${V.INK}`}}>
               {[...Array(14)].map((_, i) => {
                 const y = ((i * 46 - rolagem * 140) % 644 + 644) % 644 - 40;

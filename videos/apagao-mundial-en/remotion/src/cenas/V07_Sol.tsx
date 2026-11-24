@@ -124,7 +124,7 @@ export const V07_Sol: React.FC<Props> = (props) => {
         })()}
         {/* -------- falas 6 e 7: Quebec e o Dst -------- */}
         {tela(s, 6, 7) && <AbsoluteFill>
-          <Cartao s={s} t={t('march', 6) - 0.2} x={150} y={170} w={720} h={520} rot={-3} seed={9} fundo="#F1E8D4">
+          <Cartao s={s} t={ini(6)} x={150} y={170} w={720} h={520} rot={-3} seed={9} fundo="#F1E8D4">
             <div style={{position: 'absolute', left: 50, top: 40, fontFamily: LM, fontWeight: 700, fontSize: 46, color: SEPIA, borderBottom: `4px solid ${SEPIA}`, paddingBottom: 10, width: 620}}>MARCH 1989</div>
             <div style={{position: 'absolute', left: 50, top: 150, fontFamily: LM, fontWeight: 700, fontSize: 84, color: V.INK, lineHeight: 1.0}}>QUEBEC<br />GRID DOWN</div>
             <div style={{position: 'absolute', left: 50, top: 380, fontFamily: LM, fontSize: 40, color: SEPIA, width: 620}}>a much smaller storm</div>

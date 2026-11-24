@@ -157,16 +157,16 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
         })}
       </svg>}
       <Rotulo s={s} t={t('black', 8)} ate={fim(8)} x={960} y={470} fundo="#F3EDE1" cor={V.INK} size={66} rot={-2}>BLACK START: ONE PLANT AT A TIME</Rotulo>
-      <Sobe s={s} t={t('normal', 8)} ate={fim(8)} x={960} y={600} size={50} ancora="centro" cor="#F3EDE1">normal blackout: hours to days</Sobe>
+      <Rotulo s={s} t={t('normal', 8)} ate={fim(8)} x={960} y={570} fundo="#1B2236" cor="#F3EDE1" size={40} rot={1.5} seed={12}>NORMAL BLACKOUT: HOURS TO DAYS</Rotulo>
       {s > t('years', 9) - 0.6 && <div style={{position: 'absolute', left: 960, top: 560, width: 0, height: 0}}>
         {[0, 1, 2, 3, 4, 5].map((k) => { const u = prog(s, t('years', 9) - 0.6 + k * 0.12, 0.35);
-          return <div key={k} style={{position: 'absolute', left: -230, top: -200, width: 460, height: 400, background: '#F3EDE1',
+          return <div key={k} style={{position: 'absolute', left: -380, top: -210, width: 760, height: 420, background: '#F3EDE1',
             boxShadow: '8px 10px 0 rgba(0,0,0,0.35)', transformOrigin: '50% 0%', opacity: k === 5 ? u : 1 - u,
             transform: `rotateX(${k === 5 ? 0 : u * 90}deg) rotate(${(k % 2 ? 2 : -2)}deg)`}}>
             <div style={{height: 70, background: V.C1}} /></div>; })}
       </div>}
       <Rotulo s={s} t={t('bigger', 9)} ate={t('years', 9) - 0.6} x={960} y={520} fundo={V.C1} size={60} rot={-2}>A BIGGER PROBLEM</Rotulo>
-      <Bate s={s} t={t('years', 9)} x={960} y={600} size={170} cor={V.C1} som={false}>YEARS?</Bate>
+      <Bate s={s} t={t('years', 9)} x={960} y={650} size={150} cor={V.INK} som={false}>YEARS?</Bate>
       <Vinheta forca={0.5} />
       <Grao forca={0.06} />
       <Som nome="clique" t={tLiga(0)} volume={0.4} />

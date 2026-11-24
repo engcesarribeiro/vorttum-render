@@ -87,9 +87,9 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
           {s > ini(3) - 0.25 && <Cartao s={s} t={ini(3) - 0.2} x={140} y={150} w={1000} h={780} rot={-1} seed={3} som={false}>
             <svg width={1000} height={780} style={{position: 'absolute'}}>
               <line x1={160} y1={gy(59.4) - 150} x2={980} y2={gy(59.4) - 150} stroke={V.C1} strokeWidth={4} strokeDasharray="14 10" />
-              <text x={170} y={gy(59.4) - 162} fontFamily={LM} fontSize={30} fill={V.C1}>59.4 Hz</text>
+              <text x={975} y={gy(59.4) - 162} fontFamily={LM} fontSize={30} fill={V.C1} textAnchor="end">59.4 Hz</text>
               <line x1={160} y1={gy(60) - 150} x2={980} y2={gy(60) - 150} stroke={V.GOOD} strokeWidth={3} strokeDasharray="6 8" />
-              <text x={170} y={gy(60) - 162} fontFamily={LM} fontSize={30} fill={V.GOOD}>60 Hz</text>
+              <text x={975} y={gy(60) - 162} fontFamily={LM} fontSize={30} fill={V.GOOD} textAnchor="end">60 Hz</text>
               <polyline points={pts.map((q) => { const [a, b] = q.split(','); return `${+a - 20},${+b - 150}`; }).join(' ')} fill="none" stroke={V.INK} strokeWidth={8} strokeLinejoin="round" />
             </svg>
             <div style={{position: 'absolute', left: 60, top: 40, fontFamily: LM, fontWeight: 700, fontSize: 56, color: V.INK}}>

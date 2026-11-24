@@ -129,7 +129,7 @@ export const V06_Botao: React.FC<Props> = (props) => {
                 return <line key={k} x1={cx + 190 * Math.cos(a)} y1={500 + 190 * Math.sin(a)} x2={cx + 240 * Math.cos(a)} y2={500 + 240 * Math.sin(a)} stroke={V.GOLD} strokeWidth={18} />; })}
             </svg>
             <Rotulo s={s} t={t('bigger', 6)} ate={fim(6)} x={860} y={140} fundo={V.INK} cor={CREME} size={48}>BIGGER THAN ANY GRID</Rotulo>
-            <Bate s={s} t={t('miles', 7)} x={1440} y={830} size={70} cor={V.INK} som={false}>93,000,000 miles away</Bate>
+            <Bate s={s} t={t('miles', 7)} x={1520} y={840} size={58} cor={V.INK} som={false}>93,000,000 miles away</Bate>
           </AbsoluteFill>;
         })()}
       </Camera>

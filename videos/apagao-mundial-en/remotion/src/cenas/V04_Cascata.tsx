@@ -105,8 +105,8 @@ export const V04_Cascata: React.FC<Props> = (props) => {
 
         {/* ---------- fala 1: as 1.000 usinas ---------- */}
         {tela(s, 1, 1) && <AbsoluteFill>
-          <Grade x={480} y={230} cel={24} s={s} estado={() => 0} mudou={() => 0} p={prog(s, t('thousand', 1) - 0.4, 1.2)} />
-          <Rotulo s={s} t={t('simulation', 1)} x={960} y={130} fundo={V.INK} cor={V.SHEET} size={56} rot={-2}>OUR SIMULATION</Rotulo>
+          <Grade x={480} y={230} cel={24} s={s} estado={() => 0} mudou={() => 0} p={prog(s, ini(1) + 0.2, 1.4)} />
+          <Rotulo s={s} t={Math.min(t('simulation', 1), ini(1) + 0.4)} x={960} y={130} fundo={V.INK} cor={V.SHEET} size={56} rot={-2}>OUR SIMULATION</Rotulo>
           <Bate s={s} t={t('thousand', 1)} x={960} y={940} size={72} cor={V.INK} som={false}>{milhar(conta(s, t('thousand', 1), 1.2, 0, 1000))} power plants</Bate>
           {s > t('connected', 1) && <svg width={W} height={H} style={{position: 'absolute'}}>
             {[0, 1, 2, 3, 4].map((k) => <line key={k} x1={480} y1={230 + 120 * k + 60} x2={480 + 960 * prog(s, t('connected', 1) + k * 0.08, 0.6)} y2={230 + 120 * k + 60}
@@ -236,19 +236,19 @@ export const V04_Cascata: React.FC<Props> = (props) => {
           <Rotulo s={s} t={t('change', 8)} ate={ini(9) - 0.2} x={520} y={170} fundo={V.GOOD} size={46} rot={-2}>ONE CHANGE</Rotulo>
           <Rotulo s={s} t={t('cuts', 8)} ate={ini(9) - 0.2} x={1390} y={790} fundo={V.C1} size={42} rot={2}>CUT 5% OF CUSTOMERS</Rotulo>
           {/* fala 9: o documento real */}
-          <Cartao s={s} t={t('real', 9) - 0.3} ate={ini(10) - 0.2} x={480} y={250} w={960} h={520} fundo="#F1EADB" rot={-2} seed={13}>
-            <svg width={960} height={560}>
+          <Cartao s={s} t={t('real', 9) - 0.3} ate={ini(10) - 0.2} x={120} y={230} w={820} h={500} fundo="#F1EADB" rot={-2} seed={13}>
+            <svg width={820} height={500}>
               <text x={60} y={90} fontFamily="JetBrains Mono" fontSize={30} fill={V.MUTED}>GRID PROTECTION · FIELD EQUIPMENT</text>
               <rect x={60} y={140} width={260} height={300} fill="#D8D2C4" stroke={V.INK} strokeWidth={5} />
               <circle cx={190} cy={230} r={60} fill="none" stroke={V.INK} strokeWidth={5} />
               <line x1={190} y1={230} x2={225} y2={200} stroke={V.C1} strokeWidth={6} />
               {[0, 1, 2].map((k) => <rect key={k} x={100 + k * 70} y={330} width={40} height={60} fill={k === 1 ? V.GOOD : V.INK} />)}
-              <text x={370} y={230} fontFamily={LM} fontWeight={700} fontSize={44} fill={V.INK}>UNDER-FREQUENCY</text>
-              <text x={370} y={310} fontFamily={LM} fontWeight={700} fontSize={44} fill={V.C1}>LOAD SHEDDING</text>
-              <text x={370} y={390} fontFamily="JetBrains Mono" fontSize={30} fill={V.INK}>installed · waiting</text>
+              <text x={350} y={230} fontFamily={LM} fontWeight={700} fontSize={40} fill={V.INK}>UNDER-FREQUENCY</text>
+              <text x={350} y={300} fontFamily={LM} fontWeight={700} fontSize={40} fill={V.C1}>LOAD SHEDDING</text>
+              <text x={350} y={370} fontFamily="JetBrains Mono" fontSize={30} fill={V.INK}>installed · waiting</text>
             </svg>
           </Cartao>
-          <Carimbo s={s} t={t('real', 9)} ate={ini(10) - 0.2} x={1300} y={310} cor={V.C1} size={84}>REAL</Carimbo>
+          <Carimbo s={s} t={t('real', 9)} ate={ini(10) - 0.2} x={760} y={820} cor={V.C1} size={70}>REAL</Carimbo>
           {/* fala 10 */}
           <Carimbo s={s} t={t('survives', 10)} x={1390} y={560} cor={V.GOOD} size={76} rot={-6} fundo={V.SHEET}>SURVIVES</Carimbo>
           {s > t('people', 10) - 0.2 && <Boneco e={e} p={pop(s, t('people', 10) - 0.2)} x={760} y={880} altura={180} roupa={V.C2} expressao="duvida" olhar={1} />}

@@ -158,7 +158,7 @@ export const V03_Maquina: React.FC<Props> = (props) => {
             const xs = [260, 540, 820, 1100, 1380, 1660];
             return <>
               <svg width={W} height={H} style={{position: 'absolute'}}>
-                <g opacity={1 - calma} transform={`translate(960 520) scale(${pop(s, t('turbines', 5) - 0.1) * (1 - 0.4 * calma)}) translate(-960 -520)`}>
+                <g opacity={1 - calma} transform={`translate(960 520) scale(${pop(s, ini(5) + 0.1) * (1 - 0.4 * calma)}) translate(-960 -520)`}>
                   <Turbina x={960} y={520} r={330} ang={s * 300} tremor={tremor * (1 - calma)} racha={racha} s={s} />
                 </g>
                 {calma > 0 && xs.map((x, i) => {
@@ -203,13 +203,13 @@ export const V03_Maquina: React.FC<Props> = (props) => {
                 {void rot}
               </span>
             );
-            return <div style={{position: 'absolute', left: 150, top: 170, width: 1100, height: 500, opacity: clamp01(p * 2),
+            return <div style={{position: 'absolute', left: 130, top: 170, width: 1180, height: 500, opacity: clamp01(p * 2),
               transform: `rotate(-1.5deg) scale(${lerp(1.15, 1, p)})`, filter: 'drop-shadow(12px 14px 0 rgba(0,0,0,0.3))'}}>
-              <svg width={1100} height={500} style={{position: 'absolute'}}>
-                <path d={rasgoRet(0, 0, 1100, 500, 21, 9)} fill={VE.BG} />
+              <svg width={1180} height={500} style={{position: 'absolute'}}>
+                <path d={rasgoRet(0, 0, 1180, 500, 21, 9)} fill={VE.BG} />
               </svg>
               <div style={{position: 'absolute', left: 0, right: 0, top: 120, display: 'flex', justifyContent: 'center', alignItems: 'center',
-                fontFamily: LM, fontSize: 84, color: VE.INK}}>
+                fontFamily: LM, fontSize: 72, color: VE.INK}}>
                 {mk(prog(s, t('left', 6), 0.6), VE.GOLD, 3, '', fr(<span>d<i>f</i></span>, <span>d<i>t</i></span>, cel(0)), 'how fast it changes', t('changing', 6))}
                 <span style={{margin: '0 30px', opacity: cel(1)}}>=</span>
                 {fr(<span><i>f</i><sub style={{fontSize: 48}}>0</sub></span>,
@@ -251,7 +251,7 @@ export const V03_Maquina: React.FC<Props> = (props) => {
             <path d={rasgoRet(1240, 640, 560, 340, 61, 8)} fill="#2C3346" opacity={pop(s, t('average', 8) - 0.2)} style={{filter: SOMBRA}} />
           </svg>
           {s > t('average', 8) && <Luzes luzes={luzes} s={s} ligada={() => prog(s, t('five', 8), 0.6) * (0.85 + 0.15 * Math.sin(s * 9))} />}
-          <Cartao s={s} t={t('ran', 8)} x={170} y={150} w={960} h={320} fundo="#EEE6D3" rot={-2} seed={12}>
+          <Cartao s={s} t={ini(8)} x={170} y={150} w={960} h={320} fundo="#EEE6D3" rot={-2} seed={12}>
             <div style={{position: 'absolute', left: 50, top: 30, fontFamily: LM, fontWeight: 700, fontSize: 40, color: V.MUTED, letterSpacing: 3}}>U.S. GRID · LAST YEAR</div>
             <div style={{position: 'absolute', left: 50, top: 100, fontFamily: LM, fontWeight: 700, fontSize: 130, color: V.INK}}>
               {s > t('four', 8) ? milhar(conta(s, t('four', 8), 1.0, 0, 4400)) : '?'}<span style={{fontSize: 60}}> TWh</span>

@@ -49,6 +49,10 @@ export const V10_Fim: React.FC<Props> = (props) => {
           {s > tk + 0.3 && s < fim(1) && <div style={{position: 'absolute', left: [420, 920, 1460][k] - [150, 120, 250][k], top: 556, width: [300, 240, 500][k] * prog(s, tk + 0.3, 0.2), height: 8, background: VE.C1}} />}
         </React.Fragment>;
       })}
+      {/* véus escuros atrás dos textos (as luzes não atrapalham a leitura) */}
+      <div style={{position: 'absolute', left: 0, right: 0, top: 90, height: 230, opacity: vida(s, t('local', 2) - 0.2, fim(2)), background: 'linear-gradient(180deg, rgba(14,15,19,0) 0%, rgba(14,15,19,0.88) 25%, rgba(14,15,19,0.88) 75%, rgba(14,15,19,0) 100%)'}} />
+      <div style={{position: 'absolute', left: 0, right: 0, top: 90, height: 320, opacity: vida(s, t('seconds', 3) - 0.2, fim(3)), background: 'linear-gradient(180deg, rgba(14,15,19,0) 0%, rgba(14,15,19,0.88) 25%, rgba(14,15,19,0.88) 75%, rgba(14,15,19,0) 100%)'}} />
+      <div style={{position: 'absolute', left: 0, right: 0, top: 330, height: 450, opacity: vida(s, t('tonight', 4) - 0.2), background: 'linear-gradient(180deg, rgba(14,15,19,0) 0%, rgba(14,15,19,0.88) 25%, rgba(14,15,19,0.88) 75%, rgba(14,15,19,0) 100%)'}} />
       {/* fala 2 */}
       <Bate s={s} t={t('local', 2)} ate={fim(2)} x={960} y={200} size={90} cor={VE.INK}>every blackout so far: local</Bate>
       <Rotulo s={s} t={tBack} ate={fim(2)} x={960} y={900} fundo={VE.GOOD} cor={V.SHEET} size={64} rot={2}>THE LIGHTS CAME BACK</Rotulo>
@@ -58,7 +62,7 @@ export const V10_Fim: React.FC<Props> = (props) => {
       {/* fala 4 */}
       <Bate s={s} t={t('tonight', 4)} x={960} y={420} size={86} cor={VE.INK}>If your power went out tonight...</Bate>
       <Bate s={s} t={t('hours', 4)} x={960} y={570} size={100} cor={VE.GOLD}>how many hours would you last?</Bate>
-      <Sobe s={s} t={t('comments', 4)} x={960} y={700} size={50} ancora="centro" cor={VE.MUTED}>tell me in the comments</Sobe>
+      <Sobe s={s} t={t('comments', 4)} x={960} y={700} size={50} ancora="centro" cor={VE.INK}>tell me in the comments</Sobe>
       <Vinheta forca={0.6} />
       <Grao forca={0.07} />
       <Som nome="ding" t={t('hours', 4)} volume={0.35} />
