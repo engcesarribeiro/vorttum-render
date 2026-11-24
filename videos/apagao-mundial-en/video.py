@@ -171,7 +171,7 @@ def casa(s=0.42, cor=GOLD):
 
 class _Base(ExplainerScene):
     VOICE = "en-US-AndrewMultilingualNeural"
-    RATE = "+0%"
+    RATE = "+5%"                 # vídeo inteiro 5% mais rápido; gancho (V01) e hora a hora (V08) a +10%
     TITLE_AREA = False
 
 
@@ -193,7 +193,7 @@ class _Quadro(_Base):
 # ---------------------------------------------------------------- V01 gancho (colagem)
 class V01_Gancho(RemotionScene):
     VOICE = _Base.VOICE
-    RATE = _Base.RATE
+    RATE = "+10%"
     ESTILO = "v_remotion"
     FALAS = [F("V01", k) for k in range(1, 4)]
     CAUDA = 1.1
@@ -254,7 +254,7 @@ class V07_Sol(RemotionScene):
 # ---------------------------------------------------------------- V08 hora a hora (Manim escuro)
 class V08_HoraHora(RemotionScene):
     VOICE = _Base.VOICE
-    RATE = _Base.RATE
+    RATE = "+10%"
     ESTILO = "v_remotion"
     FALAS = [F("V08", k) for k in range(1, 10)]
     CAUDA = 0.5

@@ -296,7 +296,7 @@ VOZ_EXPRESSIVA = os.environ.get("EXPLAINER_VOZ_EXPRESSIVA", "on").lower() not in
 PAUSA_FRASE = 0.32       # entre frases dentro da mesma fala (o serviço punha ~0,5 s em todas)
 PAUSA_JUNTA = 0.06       # emenda no meio da frase (ex.: antes de um <emphasis>)
 CAUDA_FALA = {".": 0.22, "!": 0.22, "?": 0.45, "…": 0.4}   # silêncio depois da fala, pelo último sinal
-ENFASE = {"rate": -10, "volume": "+10%", "pitch": "-2Hz"}
+ENFASE = {"rate": -10, "volume": "+15%", "pitch": "-2Hz"}
 _TAG = re.compile(r"<break\s+time=\"([\d.]+)(ms|s)\"\s*/>|<(emphasis|prosody)([^>]*)>(.*?)</\3>", re.S)
 
 

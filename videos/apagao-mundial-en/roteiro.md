@@ -31,9 +31,9 @@ Style: collage (cut-out tree, map, gauge, globe).
 
 **Fala 1:** One tree, <break time="0.3s"/> seven seconds, <break time="0.3s"/> and fifty million people in the dark.
 
-**Fala 2:** Then Texas turned off millions of people on purpose... and it still came four minutes from losing everything.
+**Fala 2:** Then Texas turned off millions of people on purpose... and it still came <emphasis>four minutes</emphasis> from losing everything.
 
-**Fala 3:** But only one thing could actually turn off the entire world, and it's not a hacker. <break time="0.5s"/> In fact, it's hit us before.
+**Fala 3:** But only one thing could actually turn off the entire world, and it's not a hacker. <break time="0.5s"/> <prosody rate="-10%">In fact, it's hit us before.</prosody>
 
 ### V02 | One tree, fifty million people (0:13–1:25)
 Style: aged paper. Timeline of August 14, 2003. A line sagging into a tree. Counters.
@@ -44,7 +44,7 @@ Style: aged paper. Timeline of August 14, 2003. A line sagging into a tree. Coun
 
 **Fala 3:** Investigators later found the cause: a software bug had frozen the alarms, and the screens were so overloaded that they took almost a minute to refresh, instead of a second or two.
 
-**Fala 4:** And a few miles away, a high-voltage line heats up, sags... and touches a tree that nobody trimmed.
+**Fala 4:** And a few miles away, a high-voltage line heats up, sags... and touches <emphasis>a tree that nobody trimmed.</emphasis>
 
 **Fala 5:** So the line shuts off, and the power it was carrying jumps to the lines next to it. Now they overheat too, and they start sagging into more trees.
 
@@ -52,7 +52,7 @@ Style: aged paper. Timeline of August 14, 2003. A line sagging into a tree. Coun
 
 **Fala 7:** Five hundred and eight generating units at two hundred and sixty-five power plants shut down, and New York lost about eighty percent of its power in six seconds.
 
-**Fala 8:** In the end, fifty million people, in eight states and part of Canada, lost power, and some of them stayed in the dark for four days.
+**Fala 8:** In the end, fifty million people, in eight states and part of Canada, lost power, and <prosody rate="-8%">some of them stayed in the dark for four days.</prosody>
 
 **Fala 9:** Now, to understand how one tree did that in seven seconds, you need to know what's spinning behind every outlet in your house, and how little time it has to spare.
 
@@ -77,7 +77,7 @@ Style: Manim, dark. Generators spinning in sync, a frequency gauge, the swing eq
 
 **Fala 9:** And with a typical inertia, all that spinning metal stores enough energy to keep the whole country running for about <emphasis>five seconds</emphasis>.
 
-**Fala 10:** Five seconds. That's the entire cushion between a broken power plant and a frequency in free fall, so everything else has to react inside that window.
+**Fala 10:** <emphasis>Five seconds.</emphasis> That's the entire cushion between a broken power plant and a frequency in free fall, so everything else has to react inside that window.
 
 ### V04 | The cascade (3:00–4:40)
 Style: Manim, dark. Grid of 1,000 plants (dots) going dark as their relays trip, frequency chart from the simulation. Replay with load shedding.
@@ -92,9 +92,9 @@ Style: Manim, dark. Grid of 1,000 plants (dots) going dark as their relays trip,
 
 **Fala 5:** But every plant that leaves makes the gap bigger, and it takes its spinning wheel with it, so there's less inertia to slow the fall. That means the frequency falls faster, and even more relays trip.
 
-**Fala 6:** In less than four seconds, the whole grid is gone. And if you lose ten percent, it's over in two and a half.
+**Fala 6:** In less than four seconds, <prosody rate="-10%">the whole grid is gone.</prosody> And if you lose ten percent, it's over in <emphasis>two and a half.</emphasis>
 
-**Fala 7:** And that's the paradox: the safety system that protects each plant is exactly what turns a problem into total darkness. That's how one tree took out fifty million people in seven seconds.
+**Fala 7:** And that's <emphasis>the paradox:</emphasis> the safety system that protects each plant is exactly what turns a problem into total darkness. That's how one tree took out fifty million people in seven seconds.
 
 **Fala 8:** So now let's run the ten percent again, with one change. When the frequency falls below fifty-nine point three hertz, the grid automatically cuts off five percent of its customers.
 
@@ -102,7 +102,7 @@ Style: Manim, dark. Grid of 1,000 plants (dots) going dark as their relays trip,
 
 **Fala 10:** This time, the frequency stops falling, and the grid survives. But now some people are sitting in the dark, on purpose.
 
-**Fala 11:** In other words, there's only one way to stop a cascade: you turn people off before the machines turn themselves off.
+**Fala 11:** In other words, there's only one way to stop a cascade: <prosody rate="-10%">you turn people off before the machines turn themselves off.</prosody>
 
 ### V05 | Close calls (4:40–6:00)
 Style: collage. Texas frequency timeline with the 59.4 Hz line and a 4:37 countdown, then cards for Spain and Portugal and India.
@@ -123,7 +123,7 @@ Style: collage. Texas frequency timeline with the 59.4 Hz line and a 4:37 countd
 
 **Fala 8:** And back in twenty twelve, India had the biggest blackout in history, with six hundred and twenty million people. That's about nine percent of everyone on Earth.
 
-**Fala 9:** But look at what all of these have in common: every single one of them stopped at a border.
+**Fala 9:** But look at what all of these have in common: every single one of them <prosody rate="-10%">stopped at a border.</prosody>
 
 ### V06 | Is there an off switch? (6:00–7:00)
 Style: Bauhaus. Separate grids as separate blocks; a cascade stopping at the edge; a hacker crossed out.
@@ -140,7 +140,7 @@ Style: Bauhaus. Separate grids as separate blocks; a cascade stopping at the edg
 
 **Fala 6:** So to turn off the whole world, you'd need something that hits every grid at the same time, something bigger than any grid on Earth.
 
-**Fala 7:** And there is one thing like that. It's ninety-three million miles away.
+**Fala 7:** And there is one thing like that. It's <emphasis>ninety-three million miles away.</emphasis>
 
 ### V07 | The Sun (7:00–8:20)
 Style: aged paper. Sun and Earth, the 1859 card, telegraph wire, the probability curves.
@@ -165,7 +165,7 @@ Style: aged paper. Sun and Earth, the 1859 card, telegraph wire, the probability
 
 **Fala 10:** Other researchers say that's too high, and a later analysis put it closer to zero point seven percent per decade, which is about two percent over thirty years.
 
-**Fala 11:** So the odds are somewhere between one in fifty and one in three. Nobody can say exactly, but nobody says zero.
+**Fala 11:** So the odds are somewhere between one in fifty and one in three. Nobody can say exactly, <prosody rate="-10%">but nobody says zero.</prosody>
 
 ### V08 | Hour by hour (8:20–10:00)
 Style: Manim, dark. A large clock counter and one card per moment.
@@ -186,7 +186,7 @@ Style: Manim, dark. A large clock counter and one card per moment.
 
 **Fala 8:** And the grid? Well, after a total collapse, it can't just be switched back on, so operators have to restart it from zero, one plant at a time. It's called a black start, and after a normal blackout, that takes hours, sometimes days.
 
-**Fala 9:** But after a solar storm, there's a bigger problem, because the lights might not come back for years.
+**Fala 9:** But after a solar storm, there's a bigger problem, because <prosody rate="-12%">the lights might not come back for years.</prosody>
 
 ### V09 | Why it wouldn't come back (10:00–10:50)
 Style: whiteboard with the hand drawing. A large transformer, the induced current, the wait in weeks turned into years.
@@ -199,7 +199,7 @@ Style: whiteboard with the hand drawing. A large transformer, the induced curren
 
 **Fala 4:** And you can't buy one off the shelf, because each one is built to order. Back in twenty ten, the wait was somewhere between five and sixteen months, but today, the average wait for a large power transformer is about one hundred and twenty-eight weeks.
 
-**Fala 5:** That's two and a half years, for just one. Now picture hundreds of them, all ordered in the same week.
+**Fala 5:** That's <emphasis>two and a half years,</emphasis> for just one. Now picture hundreds of them, all ordered in the same week.
 
 ### V10 | The end (10:50–11:20)
 Style: ivory paper. The frequency gauge back at 60 Hz.
@@ -210,4 +210,4 @@ Style: ivory paper. The frequency gauge back at 60 Hz.
 
 **Fala 3:** But every one of them is running, right now, on a few seconds of spinning metal, and there's one thing up there that could hit all of them on the same day.
 
-**Fala 4:** So if your power went out tonight and didn't come back, how many hours do you think you'd last? Tell me in the comments.
+**Fala 4:** So if your power went out tonight and didn't come back, <prosody rate="-8%">how many hours do you think you'd last?</prosody> Tell me in the comments.
