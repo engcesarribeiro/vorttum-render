@@ -192,14 +192,14 @@ export const V03_Maquina: React.FC<Props> = (props) => {
             const mk = (p0: number, cor: string, seed: number, rot: string, filho: React.ReactNode, rotulo?: string, tr?: number) => (
               <span style={{position: 'relative', display: 'inline-flex'}}>
                 {filho}
-                {p0 > 0 && <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{position: 'absolute', left: -26, top: -22,
-                  width: 'calc(100% + 52px)', height: 'calc(100% + 44px)', overflow: 'visible', pointerEvents: 'none'}}>
-                  <path d={oval(seed)} fill="none" stroke={cor} strokeWidth={7} vectorEffect="non-scaling-stroke" strokeLinecap="round"
+                {p0 > 0 && <svg style={{position: 'absolute', left: -28, top: -24, width: 'calc(100% + 56px)', height: 'calc(100% + 48px)',
+                  overflow: 'visible', pointerEvents: 'none', transform: `rotate(${seed % 2 ? -4 : 3}deg)`}}>
+                  <ellipse cx="50%" cy="50%" rx="49%" ry="48%" fill="none" stroke={cor} strokeWidth={7} strokeLinecap="round"
                     pathLength={1} strokeDasharray="1 1" strokeDashoffset={1 - clamp01(p0)} />
                 </svg>}
-                {rotulo && tr !== undefined && <span style={{position: 'absolute', left: '50%', top: 'calc(100% + 30px)', whiteSpace: 'nowrap',
-                  transform: `translateX(-50%) translateY(${(1 - prog(s, tr, 0.4)) * 20}px)`, opacity: prog(s, tr, 0.4),
-                  fontSize: 36, fontWeight: 700, color: cor, fontStyle: 'normal'}}>{rotulo}</span>}
+                {rotulo && tr !== undefined && <span style={{position: 'absolute', left: 0, top: 'calc(100% + 30px)', whiteSpace: 'nowrap',
+                  transform: `translateY(${(1 - prog(s, tr, 0.4)) * 20}px)`, opacity: prog(s, tr, 0.4),
+                  fontSize: 32, fontWeight: 700, color: cor, fontStyle: 'normal'}}>{rotulo}</span>}
                 {void rot}
               </span>
             );
