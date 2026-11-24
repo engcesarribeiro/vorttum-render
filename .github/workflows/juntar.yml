@@ -68,5 +68,8 @@ jobs:
           else git checkout -q --orphan renders && git rm -rqf .; fi
           git clean -fdq
           mkdir -p videos
-          for f in /tmp/v/*.mp4; do cp "$f" "videos/$N-$(basename "$f")"; done
+          for f in /tmp/v/*.mp4; do d="videos/$N-$(basename "$f")"; rm -f "$d" "$d".parte*
+            # arquivo acima de 95 MB vai em partes de 90 MB (limite do GitHub); para juntar: cat arquivo.mp4.parte* > arquivo.mp4
+            if [ "$(stat -c%s "$f")" -gt 95000000 ]; then split -b 90m -d "$f" "$d.parte"; else cp "$f" "$d"; fi; done
+          git add -A videos
           git add videos && git commit -qm "Render $N (junção da execução ${{ steps.p.outputs.run_id }})" && git push -q origin renders

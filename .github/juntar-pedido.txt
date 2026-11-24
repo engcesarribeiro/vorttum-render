@@ -1,6 +1,6 @@
-run_id=44670861594
-pasta=videos/martingale-cassino-en
-sub=final
-args=--final --fps 60
-nome=martingale-cassino-en-final-60fps
-# junção 2: fatias sem áudio antes de emendar
+run_id=45305634857
+pasta=videos/apagao-mundial-en
+sub=rascunho
+args=--rascunho
+nome=apagao-mundial-en-rascunho-30fps
+# junção: VORTTUM 003 rascunho com mais colagem (arquivo grande vai em partes)
