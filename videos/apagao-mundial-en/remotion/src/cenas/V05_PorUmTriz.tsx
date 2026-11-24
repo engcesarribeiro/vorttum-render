@@ -133,7 +133,7 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
             <Bate s={s} t={t('sixty', 6)} ate={fim(6)} x={1400} y={520} size={100} cor={V.INK}>{milhar(conta(s, t('sixty', 6), 0.7, 0, 60000000))}</Bate>
             <Sobe s={s} t={t('sixty', 6) + 0.4} ate={fim(6)} x={1400} y={600} size={44} ancora="centro" cor={V.INK}>people</Sobe>
             <Rotulo s={s} t={t('sixteen', 6)} ate={fim(6)} x={1400} y={730} fundo={V.C2} size={56} rot={3}>UP TO 16 H TO RESTORE</Rotulo>
-            {s > t('voltage', 7) - 0.3 && <Cartao s={s} t={t('voltage', 7) - 0.3} x={1060} y={250} w={760} h={600} rot={2} seed={4}>
+            {s > t('voltage', 7) - 0.3 && <Cartao s={s} t={t('voltage', 7) - 0.3} x={1040} y={260} w={700} h={580} rot={2} seed={4}>
               <div style={{position: 'absolute', left: 50, top: 40, fontFamily: LM, fontWeight: 700, fontSize: 52, color: V.INK}}>voltage surge</div>
               <div style={{position: 'absolute', left: 50, top: 130, width: 660, height: 60, border: `4px solid ${V.INK}`}}>
                 <div style={{height: '100%', width: `${((tens - 200) / 100) * 100}%`, background: tens > 255 ? V.C1 : V.GOOD}} /></div>

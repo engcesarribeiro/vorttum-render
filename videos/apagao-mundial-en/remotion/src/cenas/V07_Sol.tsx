@@ -163,7 +163,7 @@ export const V07_Sol: React.FC<Props> = (props) => {
               </g>
             </svg>
           </Cartao>
-          <Rotulo s={s} t={t('agree', 8)} x={1520} y={190} fundo={V.INK} size={36} rot={3}>SCIENTISTS DON'T AGREE</Rotulo>
+          <Rotulo s={s} t={t('agree', 8)} x={1450} y={210} fundo={V.INK} size={32} rot={3}>SCIENTISTS DON'T AGREE</Rotulo>
           <Cartao s={s} t={t('twelve', 8) - 0.3} x={1340} y={250} w={520} h={190} rot={2} seed={3} fundo={V.SHEET}>
             <div style={{padding: '30px 34px', fontFamily: LM, color: V.C1}}><div style={{fontSize: 40}}>Riley, 2012</div><div style={{fontSize: 52, fontWeight: 700, whiteSpace: 'pre'}}>12% / decade</div></div>
           </Cartao>

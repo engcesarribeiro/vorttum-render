@@ -172,9 +172,9 @@ export const V04_Cascata: React.FC<Props> = (props) => {
           <Carimbo s={s} t={t('holds', 3)} ate={ini(4) - 0.2} x={1390} y={560} cor={V.GOOD} size={76} fundo={V.SHEET}>HOLDS</Carimbo>
           <Rotulo s={s} t={ini(4)} ate={t10 - 0.2} x={520} y={210} fundo={V.INK} cor={V.SHEET} size={46} rot={2} seed={9}>TEST 2</Rotulo>
           <Rotulo s={s} t={t8} ate={t10 - 0.2} x={520} y={880} fundo={V.C1} size={64} rot={-2} seed={4}>–8%</Rotulo>
-          <Rotulo s={s} t={t('gap', 5)} ate={ini(6) - 0.2} x={1390} y={840} fundo={V.SHEET} cor={V.INK} size={40} rot={-2}>BIGGER GAP</Rotulo>
-          <Rotulo s={s} t={t('inertia', 5)} ate={ini(6) - 0.2} x={1390} y={905} fundo={V.C2} size={40} rot={2} seed={6}>LESS INERTIA</Rotulo>
-          <Rotulo s={s} t={t('faster', 5)} ate={ini(6) - 0.2} x={1390} y={970} fundo={V.C1} size={40} rot={-1} seed={7}>FALLS FASTER</Rotulo>
+          <Rotulo s={s} t={t('gap', 5)} ate={ini(6) - 0.2} x={1390} y={810} fundo={V.SHEET} cor={V.INK} size={38} rot={-2}>BIGGER GAP</Rotulo>
+          <Rotulo s={s} t={t('inertia', 5)} ate={ini(6) - 0.2} x={1390} y={865} fundo={V.C2} size={38} rot={2} seed={6}>LESS INERTIA</Rotulo>
+          <Rotulo s={s} t={t('faster', 5)} ate={ini(6) - 0.2} x={1390} y={920} fundo={V.C1} size={38} rot={-1} seed={7}>FALLS FASTER</Rotulo>
           {/* cliques dos relés */}
           <Bate s={s} t={t('four', 6)} ate={t10 - 0.2} x={1390} y={890} size={110} cor={V.C1}>3.9 s</Bate>
           <Rotulo s={s} t={t10} x={520} y={210} fundo={V.INK} cor={V.SHEET} size={46} rot={-2} seed={10}>TEST 3 · –10%</Rotulo>

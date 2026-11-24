@@ -30,9 +30,9 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
 
   // câmera: [instante, zoom, foco x, foco y]
   const chaves: [number, number, number, number][] = [
-    [0, 1.0, 960, 540], [t('zero', 2), 1.0, 960, 540], [t('hospitals', 3) - 0.3, 1.25, 1200, 560], [t('phone', 4) - 0.3, 1.3, 800, 600],
-    [t('tower', 4) - 0.2, 1.22, 960, 520], [t('kitchen', 5) - 0.3, 1.25, 700, 600], [t('gas', 6) - 0.4, 1.25, 1200, 600],
-    [t('hospitals', 7) - 0.3, 1.25, 1200, 560], [ini(8) - 0.2, 0.92, 960, 540],
+    [0, 1.0, 960, 540], [t('zero', 2), 1.0, 960, 540], [t('hospitals', 3) - 0.3, 1.12, 1200, 560], [t('phone', 4) - 0.3, 1.12, 800, 600],
+    [t('tower', 4) - 0.2, 1.12, 960, 520], [t('kitchen', 5) - 0.3, 1.12, 700, 600], [t('gas', 6) - 0.4, 1.12, 1200, 600],
+    [t('hospitals', 7) - 0.3, 1.12, 1200, 560], [ini(8) - 0.2, 0.92, 960, 540],
   ];
   let k = 0;
   while (k < chaves.length - 1 && s >= chaves[k + 1][0]) k++;
@@ -87,7 +87,7 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
           <path d={`M 0 830 Q 400 760 900 810 T 1920 800 L 1920 1080 L 0 1080 Z`} fill={MORRO2} />
           <rect x={0} y={900} width={W} height={180} fill={CHAO} />
           {/* casas */}
-          {[[120, 220, '#A2674A'], [330, 260, '#5F8466'], [540, 200, '#82648F']].map(([x, h, c], i) => casa(x as number, h as number, c as string, i))}
+          {[[170, 220, '#A2674A'], [365, 260, '#5F8466'], [560, 200, '#82648F']].map(([x, h, c], i) => casa(x as number, h as number, c as string, i))}
           {/* poste e semáforo */}
           <rect x={760} y={620} width={14} height={280} fill="#1E1F22" />
           <circle cx={767} cy={615} r={22} fill={apagou ? '#30333A' : LUZ} />
@@ -116,9 +116,9 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
           </g>}
           {/* posto */}
           <g style={{filter: 'drop-shadow(8px 10px 0 rgba(0,0,0,0.3))'}}>
-            <rect x={1560} y={700} width={300} height={30} fill={V.GOLD} />
-            <rect x={1580} y={730} width={14} height={170} fill="#1E1F22" /><rect x={1826} y={730} width={14} height={170} fill="#1E1F22" />
-            {[0, 1].map((k4) => <rect key={k4} x={1650 + k4 * 110} y={800} width={50} height={100} fill={s > t('pumps', 6) ? '#4A4540' : V.C1} />)}
+            <rect x={1530} y={700} width={260} height={30} fill={V.GOLD} />
+            <rect x={1545} y={730} width={14} height={170} fill="#1E1F22" /><rect x={1760} y={730} width={14} height={170} fill="#1E1F22" />
+            {[0, 1].map((k4) => <rect key={k4} x={1600 + k4 * 100} y={800} width={50} height={100} fill={s > t('pumps', 6) ? '#4A4540' : V.C1} />)}
           </g>
         </svg>
         {/* personagem com o celular */}

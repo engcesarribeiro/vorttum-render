@@ -140,11 +140,11 @@ export const V03_Maquina: React.FC<Props> = (props) => {
               <Medidor cx={1600} cy={400} r={160 * lerp(1, 1.2, prog(s, t('meter', 4), 0.5))} f={freq} tinta={V.INK} />
             </g>
           </svg>
-          <Rotulo s={s} t={t('rule', 3)} ate={t('make', 4) - 0.2} x={960} y={120} fundo={V.INK} cor={V.SHEET} size={60} rot={-1.5}>POWER IN  =  POWER OUT</Rotulo>
+          <Rotulo s={s} t={t('rule', 3)} ate={t('make', 4) - 0.2} x={960} y={160} fundo={V.INK} cor={V.SHEET} size={56} rot={-1.5}>POWER IN  =  POWER OUT</Rotulo>
           <Rotulo s={s} t={t('going', 3)} x={600} y={880} fundo={V.GOLD} cor={V.SHEET} size={50} rot={-3} seed={4}>MADE</Rotulo>
           <Rotulo s={s} t={t('coming', 3)} x={1320} y={880} fundo={V.C2} cor={V.SHEET} size={50} rot={3} seed={5}>USED</Rotulo>
-          <Rotulo s={s} t={t('speed', 4)} ate={tMenos} x={300} y={500} fundo={V.GOOD} size={50} rot={-4}>SPEEDS UP</Rotulo>
-          <Rotulo s={s} t={t('slow', 4)} ate={tEq} x={300} y={500} fundo={V.C1} size={50} rot={3} seed={8}>SLOWS DOWN</Rotulo>
+          <Rotulo s={s} t={t('speed', 4)} ate={tMenos} x={370} y={500} fundo={V.GOOD} size={50} rot={-4}>SPEEDS UP</Rotulo>
+          <Rotulo s={s} t={t('slow', 4)} ate={tEq} x={370} y={500} fundo={V.C1} size={50} rot={3} seed={8}>SLOWS DOWN</Rotulo>
           <Rotulo s={s} t={t('meter', 4)} x={1600} y={660} fundo={V.SHEET} cor={V.INK} size={44} rot={-2} seed={10}>a live meter</Rotulo>
           {s > tMais && s < tMenos && <LinhasVelocidade x={300} y={300} altura={300} lado={-1} intensidade={0.8} s={s} cor={V.INK} />}
         </AbsoluteFill>}
@@ -169,8 +169,8 @@ export const V03_Maquina: React.FC<Props> = (props) => {
                   </g>;
                 })}
               </svg>
-              <Rotulo s={s} t={t('exact', 5)} ate={t('push', 5) + 0.6} x={960} y={110} fundo={V.C2} size={56} rot={-2}>ONE EXACT SPEED</Rotulo>
-              <Bate s={s} t={t('vibrate', 5)} ate={t('watches', 5) - 0.3} x={1560} y={220} size={92} cor={V.C1} rot={6} som={false}>VIBRATION</Bate>
+              <Rotulo s={s} t={t('exact', 5)} ate={t('push', 5) + 0.6} x={960} y={150} fundo={V.C2} size={50} rot={-2}>ONE EXACT SPEED</Rotulo>
+              <Bate s={s} t={t('vibrate', 5)} ate={t('watches', 5) - 0.3} x={1460} y={230} size={78} cor={V.C1} rot={6} som={false}>VIBRATION</Bate>
               <Rotulo s={s} t={t('watches', 5) + 0.4} x={960} y={200} fundo={V.INK} cor={V.SHEET} size={52} rot={1.5}>EVERY PLANT WATCHES THE FREQUENCY</Rotulo>
             </>;
           })()}
@@ -251,7 +251,7 @@ export const V03_Maquina: React.FC<Props> = (props) => {
             <path d={rasgoRet(1240, 640, 560, 340, 61, 8)} fill="#2C3346" opacity={pop(s, t('average', 8) - 0.2)} style={{filter: SOMBRA}} />
           </svg>
           {s > t('average', 8) && <Luzes luzes={luzes} s={s} ligada={() => prog(s, t('five', 8), 0.6) * (0.85 + 0.15 * Math.sin(s * 9))} />}
-          <Cartao s={s} t={t('ran', 8)} x={160} y={120} w={980} h={330} fundo="#EEE6D3" rot={-2} seed={12}>
+          <Cartao s={s} t={t('ran', 8)} x={170} y={150} w={960} h={320} fundo="#EEE6D3" rot={-2} seed={12}>
             <div style={{position: 'absolute', left: 50, top: 30, fontFamily: LM, fontWeight: 700, fontSize: 40, color: V.MUTED, letterSpacing: 3}}>U.S. GRID · LAST YEAR</div>
             <div style={{position: 'absolute', left: 50, top: 100, fontFamily: LM, fontWeight: 700, fontSize: 130, color: V.INK}}>
               {s > t('four', 8) ? milhar(conta(s, t('four', 8), 1.0, 0, 4400)) : '?'}<span style={{fontSize: 60}}> TWh</span>

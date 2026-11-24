@@ -47,8 +47,8 @@ export const V02_Arvore: React.FC<Props> = (props) => {
   const rolagem = travado ? t('stopped', 2) : s;
 
   // tela 4-5: paisagem
-  const [a1, b1] = [pontaTorre(240, 900, 360, 1), pontaTorre(900, 900, 360, -1)];
-  const [a2, b2] = [pontaTorre(900, 900, 360, 1), pontaTorre(1560, 900, 360, -1)];
+  const [a1, b1] = [pontaTorre(320, 900, 360, 1), pontaTorre(960, 900, 360, -1)];
+  const [a2, b2] = [pontaTorre(960, 900, 360, 1), pontaTorre(1600, 900, 360, -1)];
   const sag1 = lerp(60, 230, prog(s, t('sags', 4) - 0.2, 0.9));
   const quente1 = prog(s, t('heats', 4), 0.6);
   const morta = prog(s, t('shuts', 5), 0.3);
@@ -129,9 +129,9 @@ export const V02_Arvore: React.FC<Props> = (props) => {
         {tela(s, 4, 5) && <AbsoluteFill style={{transform: `translateX(${(1 - prog(s, ini(4) - 0.25, 0.4)) * 1500}px)`}}>
           <svg width={W} height={H} style={{position: 'absolute'}}>
             <path d={`M 0 ${H - 120} Q 480 ${H - 190} 960 ${H - 140} T 1920 ${H - 150} L 1920 ${H} L 0 ${H} Z`} fill="#C2B27E" />
-            <Torre x={240} y={900} h={360} cor={V.INK} />
-            <Torre x={900} y={900} h={360} cor={V.INK} />
-            <Torre x={1560} y={900} h={360} cor={V.INK} />
+            <Torre x={320} y={900} h={360} cor={V.INK} />
+            <Torre x={960} y={900} h={360} cor={V.INK} />
+            <Torre x={1600} y={900} h={360} cor={V.INK} />
             <Cabo a={a1} b={b1} flecha={sag1} cor={morta > 0.5 ? V.MUTED : quente1 > 0.3 ? V.C1 : V.INK} w={quente1 > 0.3 && morta < 0.5 ? 9 : 6} op={1 - 0.5 * morta} />
             <Cabo a={a2} b={b2} flecha={sag2} cor={quente2 > 0.3 ? V.C1 : V.INK} w={quente2 > 0.3 ? 9 : 6} />
             {/* energia correndo no cabo (pontinhos) */}
@@ -142,14 +142,14 @@ export const V02_Arvore: React.FC<Props> = (props) => {
               const x = lerp(p0[0], p1[0], u), y = lerp(p0[1], p1[1], u) + fl * 2 * 2 * u * (1 - u);
               return <circle key={i} cx={x} cy={y} r={9} fill={V.GOLD} opacity={s > t('line', 4) ? 0.9 : 0} />;
             })}
-            <ArvoreColagem x={570} y={1000} h={330} balanco={Math.sin(s * 1.6) * 2} queimada={0.5 * prog(s, t('tree', 4), 0.6)} seed={3} />
-            <ArvoreColagem x={1230} y={1000} h={300} balanco={Math.sin(s * 1.4 + 1) * 2} queimada={0.5 * prog(s, t('trees', 5), 0.6)} seed={8} />
+            <ArvoreColagem x={640} y={1000} h={330} balanco={Math.sin(s * 1.6) * 2} queimada={0.5 * prog(s, t('tree', 4), 0.6)} seed={3} />
+            <ArvoreColagem x={1280} y={1000} h={300} balanco={Math.sin(s * 1.4 + 1) * 2} queimada={0.5 * prog(s, t('trees', 5), 0.6)} seed={8} />
           </svg>
-          <Estouro s={s} t={t('tree', 4) + 0.05} x={570} y={720} forca={0.8} cor="#FFF1D0" cor2={V.C1} />
-          <Particulas a={s} t={t('tree', 4) + 0.05} x={570} y={720} n={22} cores={[V.GOLD, V.C1]} />
-          <Estouro s={s} t={t('trees', 5) + 0.05} x={1230} y={740} forca={0.6} cor="#FFF1D0" cor2={V.C1} semente={4} />
-          <Rotulo s={s} t={t('nobody', 4)} ate={fim(4)} x={570} y={260} fundo={V.SHEET} cor={V.INK} size={48} rot={-3}>A TREE NOBODY TRIMMED</Rotulo>
-          <Rotulo s={s} t={t('jumps', 5)} ate={fim(5)} x={1230} y={260} fundo={V.GOLD} cor={V.SHEET} size={48} rot={3}>THE POWER JUMPS</Rotulo>
+          <Estouro s={s} t={t('tree', 4) + 0.05} x={640} y={720} forca={0.8} cor="#FFF1D0" cor2={V.C1} />
+          <Particulas a={s} t={t('tree', 4) + 0.05} x={640} y={720} n={22} cores={[V.GOLD, V.C1]} />
+          <Estouro s={s} t={t('trees', 5) + 0.05} x={1280} y={740} forca={0.6} cor="#FFF1D0" cor2={V.C1} semente={4} />
+          <Rotulo s={s} t={t('nobody', 4)} ate={fim(4)} x={640} y={260} fundo={V.SHEET} cor={V.INK} size={48} rot={-3}>A TREE NOBODY TRIMMED</Rotulo>
+          <Rotulo s={s} t={t('jumps', 5)} ate={fim(5)} x={1280} y={260} fundo={V.GOLD} cor={V.SHEET} size={48} rot={3}>THE POWER JUMPS</Rotulo>
         </AbsoluteFill>}
 
         {/* ---------- fala 6: uma hora, depois 7 segundos ---------- */}

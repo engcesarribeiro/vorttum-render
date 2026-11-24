@@ -61,8 +61,8 @@ export const V09_Transformador: React.FC<Props> = (props) => {
                   const x = u < 0.5 ? lerp(300, 840, u * 2) : lerp(1080, 1640, (u - 0.5) * 2);
                   return <circle key={i} cx={x} cy={760} r={u < 0.5 ? 9 : 14} fill={V.GOLD} opacity={0.9 * (1 - calor * 0.7)} />;
                 })}
-                <g opacity={pop(s, ini(1))}><Usina x={220} y={950} k={1.3} s={s} seed={5} /></g>
-                {[1520, 1640, 1760].map((x, i) => <g key={i} opacity={pop(s, t('street', 1) + i * 0.1)}>
+                <g opacity={pop(s, ini(1))}><Usina x={280} y={950} k={1.2} s={s} seed={5} /></g>
+                {[1460, 1570, 1680].map((x, i) => <g key={i} opacity={pop(s, t('street', 1) + i * 0.1)}>
                   <Casa x={x} y={950} k={1.5} seed={i + 7} cor={['#A2674A', '#5F8466', '#82648F'][i]} luz={1 - 0.6 * calor} /></g>)}
                 <g transform={`translate(960 900) scale(${pT}) translate(-960 -900)`}>
                   <Transformador x={960} y={900} k={1.25} calor={calor} s={s} />
