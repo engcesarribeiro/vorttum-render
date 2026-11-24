@@ -68,7 +68,7 @@ export const V09_Transformador: React.FC<Props> = (props) => {
                   <Transformador x={960} y={900} k={1.25} calor={calor} s={s} />
                 </g>
                 {/* sol e a corrente lenta */}
-                {pSol > 0 && <g transform={`translate(170 170) scale(${pSol}) rotate(${s * 10})`}>
+                {pSol > 0 && <g transform={`translate(300 250) scale(${0.75 * pSol}) rotate(${s * 10})`}>
                   {[...Array(14)].map((_, i) => <path key={i} d="M -18 -150 L 0 -215 L 18 -150 Z" fill={V.GOLD} transform={`rotate(${i * 360 / 14})`} />)}
                   <circle r={130} fill="#D9A441" />
                   <circle r={130} fill="none" stroke={V.INK} strokeWidth={4} />
@@ -88,7 +88,7 @@ export const V09_Transformador: React.FC<Props> = (props) => {
                   <rect x={1300} y={580 - 300 * prog(s, t('overheat', 2), 1.6)} width={30} height={300 * prog(s, t('overheat', 2), 1.6)} fill={V.C1} />
                 </g>
               </svg>
-              <MaoAponta t={t('weak', 1)} ate={t('giant', 1)} x={760} y={420} ang={20} tamanho={300} />
+              <MaoAponta som={false} t={t('weak', 1)} ate={t('giant', 1)} x={760} y={420} ang={20} tamanho={300} />
               <Rotulo s={s} t={t('weak', 1)} ate={fim(1)} x={960} y={150} fundo={V.C1} size={60} rot={-2}>THE WEAK POINT</Rotulo>
               <Rotulo s={s} t={t('up', 1)} ate={fim(1)} x={570} y={700} fundo={V.SHEET} cor={V.INK} size={40} rot={-3} seed={4}>STEP UP</Rotulo>
               <Rotulo s={s} t={t('down', 1)} ate={fim(1)} x={1360} y={700} fundo={V.SHEET} cor={V.INK} size={40} rot={3} seed={5}>STEP DOWN</Rotulo>
@@ -104,7 +104,7 @@ export const V09_Transformador: React.FC<Props> = (props) => {
 
         {/* ---------- fala 3: os 350 ---------- */}
         {tela(s, 3, 3) && <AbsoluteFill style={{opacity: prog(s, ini(3) - 0.25, 0.35)}}>
-          <Cartao s={s} t={t('report', 3) - 0.2} x={120} y={160} w={520} h={680} fundo="#F1EADB" rot={-3} seed={14}>
+          <Cartao s={s} t={t('report', 3) - 0.2} x={150} y={170} w={520} h={680} fundo="#F1EADB" rot={-3} seed={14}>
             <svg width={520} height={680}>
               <text x={50} y={90} fontFamily="JetBrains Mono" fontSize={30} fill={V.MUTED}>REPORT</text>
               <text x={50} y={150} fontFamily={LM} fontWeight={700} fontSize={44} fill={V.INK}>Severe solar storm</text>
@@ -118,11 +118,11 @@ export const V09_Transformador: React.FC<Props> = (props) => {
               const p = pop(s, t('severe', 3) + (i / 350) * 2.0, 0.3);
               if (p <= 0) return null;
               const ruim = prog(s, t('damage', 3) + (i % 7) * 0.05, 0.2) * (i % 3 === 0 || s > t('fifty', 3) + 0.4 ? 1 : 0);
-              return <Mini key={i} x={790 + c * 44} y={240 + rr * 52} k={p * 0.9} ruim={ruim} />;
+              return <Mini key={i} x={800 + c * 39} y={250 + rr * 46} k={p * 0.9} ruim={ruim} />;
             })}
           </svg>
-          <Bate s={s} t={t('three', 3)} x={1320} y={1000} size={120} cor={V.C1}>{conta(s, t('three', 3), 1.4, 0, 350)}+ transformers</Bate>
-          <Rotulo s={s} t={t('damage', 3)} x={380} y={940} fundo={V.C1} size={48} rot={2}>DAMAGED</Rotulo>
+          <Bate s={s} t={t('three', 3)} x={1270} y={940} size={96} cor={V.C1}>{conta(s, t('three', 3), 1.4, 0, 350)}+ transformers</Bate>
+          <Rotulo s={s} t={t('damage', 3)} x={410} y={920} fundo={V.C1} size={46} rot={2}>DAMAGED</Rotulo>
         </AbsoluteFill>}
 
         {/* ---------- falas 4 e 5: a espera e a fila ---------- */}
@@ -130,7 +130,7 @@ export const V09_Transformador: React.FC<Props> = (props) => {
           {(() => {
             const pB1 = prog(s, t('five', 4), 0.8), pB2 = prog(s, t('today', 4), 2.0, (x) => x);
             const semanas = Math.round(128 * pB2);
-            const X = (m: number) => 420 + m * 38;      // meses → px (128 semanas ≈ 29,5 meses)
+            const X = (m: number) => 420 + m * 34;      // meses → px (128 semanas ≈ 29,5 meses)
             const fila = prog(s, t('picture', 5), 3.5, (x) => x);
             const sai4 = prog(s, ini(5) + 0.3, 0.6);
             return <>
@@ -184,6 +184,7 @@ export const V09_Transformador: React.FC<Props> = (props) => {
       </Camera>
       <Vinheta forca={0.35} cor="60,40,20" />
       <Grao forca={0.06} />
+      <Som nome="baque" t={t('transformer', 1) + 0.15} volume={0.45} />
     </AbsoluteFill>
   );
 };

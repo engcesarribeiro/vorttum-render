@@ -11,6 +11,18 @@ import {useLatin, LM, V} from './vorttum';
 import {W, H, Grao, Vinheta, FundoPapel, Bate, Sobe, Rotulo, Cartao, Som, Medidor, conta, milhar, vida, VE, useLuzes, Luzes} from './apagao';
 import {Rotor, Usina, Casa, Balanca, Turbina, Bateria, Circulo, Carimbo, respiro, clamp01, rasgoRet, SOMBRA} from './pecas';
 
+/** Oval à mão numa caixa 0..100 (um pouco mais de uma volta). */
+const oval = (seed: number) => {
+  let x = seed * 9301 + 49297;
+  const r = () => ((x = (x * 9301 + 49297) % 233280) / 233280);
+  const pts: string[] = [];
+  for (let i = 0; i <= 46; i++) {
+    const a = (i / 40) * Math.PI * 2 - 2.2, k = 1 + (r() - 0.5) * 0.05 + (i / 40) * 0.04;
+    pts.push(`${50 + Math.cos(a) * 50 * k} ${50 + Math.sin(a) * 50 * k}`);
+  }
+  return 'M ' + pts.join(' L ');
+};
+
 export const V03_Maquina: React.FC<Props> = (props) => {
   useFontes();
   useLatin();
@@ -122,19 +134,19 @@ export const V03_Maquina: React.FC<Props> = (props) => {
               </g>} />
             {/* rotor e mostrador acompanham a balança */}
             <g opacity={vida(s, t('going', 3))}>
-              <Rotor x={240} y={300} r={150} ang={ang} vel={vAgora} />
+              <Rotor x={300} y={300} r={135} ang={ang} vel={vAgora} />
             </g>
             <g opacity={vida(s, t('make', 4))}>
-              <Medidor cx={1680} cy={400} r={190 * lerp(1, 1.25, prog(s, t('meter', 4), 0.5))} f={freq} tinta={V.INK} />
+              <Medidor cx={1600} cy={400} r={160 * lerp(1, 1.2, prog(s, t('meter', 4), 0.5))} f={freq} tinta={V.INK} />
             </g>
           </svg>
           <Rotulo s={s} t={t('rule', 3)} ate={t('make', 4) - 0.2} x={960} y={120} fundo={V.INK} cor={V.SHEET} size={60} rot={-1.5}>POWER IN  =  POWER OUT</Rotulo>
           <Rotulo s={s} t={t('going', 3)} x={600} y={880} fundo={V.GOLD} cor={V.SHEET} size={50} rot={-3} seed={4}>MADE</Rotulo>
           <Rotulo s={s} t={t('coming', 3)} x={1320} y={880} fundo={V.C2} cor={V.SHEET} size={50} rot={3} seed={5}>USED</Rotulo>
-          <Rotulo s={s} t={t('speed', 4)} ate={tMenos} x={240} y={520} fundo={V.GOOD} size={50} rot={-4} som="whoosh">SPEEDS UP</Rotulo>
-          <Rotulo s={s} t={t('slow', 4)} ate={tEq} x={240} y={520} fundo={V.C1} size={50} rot={3} seed={8} som="whoosh">SLOWS DOWN</Rotulo>
-          <Rotulo s={s} t={t('meter', 4)} x={1680} y={700} fundo={V.SHEET} cor={V.INK} size={44} rot={-2} seed={10}>a live meter</Rotulo>
-          {s > tMais && s < tMenos && <LinhasVelocidade x={240} y={300} altura={300} lado={-1} intensidade={0.8} s={s} cor={V.INK} />}
+          <Rotulo s={s} t={t('speed', 4)} ate={tMenos} x={300} y={500} fundo={V.GOOD} size={50} rot={-4}>SPEEDS UP</Rotulo>
+          <Rotulo s={s} t={t('slow', 4)} ate={tEq} x={300} y={500} fundo={V.C1} size={50} rot={3} seed={8}>SLOWS DOWN</Rotulo>
+          <Rotulo s={s} t={t('meter', 4)} x={1600} y={660} fundo={V.SHEET} cor={V.INK} size={44} rot={-2} seed={10}>a live meter</Rotulo>
+          {s > tMais && s < tMenos && <LinhasVelocidade x={300} y={300} altura={300} lado={-1} intensidade={0.8} s={s} cor={V.INK} />}
         </AbsoluteFill>}
 
         {/* ---------- fala 5: a turbina que treme e racha ---------- */}
@@ -159,7 +171,6 @@ export const V03_Maquina: React.FC<Props> = (props) => {
               </svg>
               <Rotulo s={s} t={t('exact', 5)} ate={t('push', 5) + 0.6} x={960} y={110} fundo={V.C2} size={56} rot={-2}>ONE EXACT SPEED</Rotulo>
               <Bate s={s} t={t('vibrate', 5)} ate={t('watches', 5) - 0.3} x={1560} y={220} size={92} cor={V.C1} rot={6} som={false}>VIBRATION</Bate>
-              <Som nome="rasgo" t={t('tear', 5)} volume={0.55} />
               <Rotulo s={s} t={t('watches', 5) + 0.4} x={960} y={200} fundo={V.INK} cor={V.SHEET} size={52} rot={1.5}>EVERY PLANT WATCHES THE FREQUENCY</Rotulo>
             </>;
           })()}
@@ -178,43 +189,54 @@ export const V03_Maquina: React.FC<Props> = (props) => {
                 <div style={{padding: '0 8px'}}>{b}</div>
               </div>
             );
-            return <div style={{position: 'absolute', left: 120, top: 150, width: 1180, height: 520, opacity: clamp01(p * 2),
+            const mk = (p0: number, cor: string, seed: number, rot: string, filho: React.ReactNode, rotulo?: string, tr?: number) => (
+              <span style={{position: 'relative', display: 'inline-flex'}}>
+                {filho}
+                {p0 > 0 && <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{position: 'absolute', left: -26, top: -22,
+                  width: 'calc(100% + 52px)', height: 'calc(100% + 44px)', overflow: 'visible', pointerEvents: 'none'}}>
+                  <path d={oval(seed)} fill="none" stroke={cor} strokeWidth={7} vectorEffect="non-scaling-stroke" strokeLinecap="round"
+                    pathLength={1} strokeDasharray="1 1" strokeDashoffset={1 - clamp01(p0)} />
+                </svg>}
+                {rotulo && tr !== undefined && <span style={{position: 'absolute', left: '50%', top: 'calc(100% + 30px)', whiteSpace: 'nowrap',
+                  transform: `translateX(-50%) translateY(${(1 - prog(s, tr, 0.4)) * 20}px)`, opacity: prog(s, tr, 0.4),
+                  fontSize: 36, fontWeight: 700, color: cor, fontStyle: 'normal'}}>{rotulo}</span>}
+                {void rot}
+              </span>
+            );
+            return <div style={{position: 'absolute', left: 150, top: 170, width: 1100, height: 500, opacity: clamp01(p * 2),
               transform: `rotate(-1.5deg) scale(${lerp(1.15, 1, p)})`, filter: 'drop-shadow(12px 14px 0 rgba(0,0,0,0.3))'}}>
-              <svg width={1180} height={520} style={{position: 'absolute'}}>
-                <path d={rasgoRet(0, 0, 1180, 520, 21, 9)} fill={VE.BG} />
-                <Circulo cx={215} cy={270} rx={120} ry={150} p={prog(s, t('left', 6), 0.6)} cor={VE.GOLD} seed={3} />
-                <Circulo cx={870} cy={270} rx={250} ry={150} p={prog(s, t('right', 6), 0.6)} cor={VE.C1} seed={5} />
-                <Circulo cx={512} cy={350} rx={60} ry={65} p={prog(s, t('inertia', 7), 0.5)} cor={VE.GOOD} seed={7} />
+              <svg width={1100} height={500} style={{position: 'absolute'}}>
+                <path d={rasgoRet(0, 0, 1100, 500, 21, 9)} fill={VE.BG} />
               </svg>
-              <div style={{position: 'absolute', left: 60, top: 150, display: 'flex', alignItems: 'center', fontFamily: LM, fontSize: 88, color: VE.INK}}>
-                {fr(<span>d<i>f</i></span>, <span>d<i>t</i></span>, cel(0))}
-                <span style={{margin: '0 22px', opacity: cel(1)}}>=</span>
-                {fr(<span><i>f</i><sub style={{fontSize: 50}}>0</sub></span>, <span>2<i style={{color: s > t('inertia', 7) ? VE.GOOD : VE.INK}}>H</i></span>, cel(1.5))}
-                <span style={{margin: '0 10px', opacity: cel(2)}}>·</span>
-                {fr(<span><i>P</i><sub style={{fontSize: 44}}>made</sub> – <i>P</i><sub style={{fontSize: 44}}>used</sub></span>, <span><i>S</i></span>, cel(2.6))}
+              <div style={{position: 'absolute', left: 0, right: 0, top: 120, display: 'flex', justifyContent: 'center', alignItems: 'center',
+                fontFamily: LM, fontSize: 84, color: VE.INK}}>
+                {mk(prog(s, t('left', 6), 0.6), VE.GOLD, 3, '', fr(<span>d<i>f</i></span>, <span>d<i>t</i></span>, cel(0)), 'how fast it changes', t('changing', 6))}
+                <span style={{margin: '0 30px', opacity: cel(1)}}>=</span>
+                {fr(<span><i>f</i><sub style={{fontSize: 48}}>0</sub></span>,
+                  <span>2{mk(prog(s, t('inertia', 7), 0.5), VE.GOOD, 7, '', <i style={{color: s > t('inertia', 7) ? VE.GOOD : VE.INK, padding: '0 4px'}}>H</i>)}</span>, cel(1.5))}
+                <span style={{margin: '0 14px', opacity: cel(2)}}>·</span>
+                {mk(prog(s, t('right', 6), 0.6), VE.C1, 5, '', fr(<span><i>P</i><sub style={{fontSize: 42}}>made</sub> – <i>P</i><sub style={{fontSize: 42}}>used</sub></span>, <span><i>S</i></span>, cel(2.6)), 'the gap', t('gap', 6))}
               </div>
-              <Sobe s={s} t={t('changing', 6)} x={215} y={430} size={36} ancora="centro" cor={VE.GOLD}>how fast it changes</Sobe>
-              <Sobe s={s} t={t('gap', 6)} x={870} y={440} size={36} ancora="centro" cor={VE.C1}>the gap</Sobe>
             </div>;
           })()}
           {/* lado direito: mostrador caindo (esquerda da equação) e a balança pequena (direita) */}
           <svg width={W} height={H} style={{position: 'absolute'}}>
             <g opacity={vida(s, t('left', 6), t('right', 6))}>
-              <Medidor cx={1600} cy={430} r={190} f={60 - 0.6 * ((s * 0.5) % 1)} tinta={V.INK} />
+              <Medidor cx={1560} cy={470} r={170} f={60 - 0.6 * ((s * 0.5) % 1)} tinta={V.INK} />
             </g>
             <g opacity={vida(s, t('right', 6), ini(7) - 0.1)}>
-              <Balanca x={1640} y={300} braco={150} ang={8 * Math.sin(s * 2)} />
+              <g transform="translate(1560 300) scale(0.62) translate(-1560 -300)"><Balanca x={1560} y={300} braco={200} ang={8 * Math.sin(s * 2)} /></g>
             </g>
             <g opacity={vida(s, t('inertia', 7))}>
-              <Rotor x={1580} y={420} r={240 * pop(s, t('inertia', 7))} ang={s * 90} cor="#4A4540" marca={VE.LUZ} seed={9} />
+              <Rotor x={1540} y={420} r={180 * pop(s, t('inertia', 7))} ang={s * 90} cor="#4A4540" marca={VE.LUZ} seed={9} />
               {s > t('energy', 7) && [...Array(10)].map((_, i) => {
-                const a = (i / 10) * Math.PI * 2 + s * 1.5, rr = 280 + 30 * Math.sin(s * 4 + i);
-                return <circle key={i} cx={1580 + Math.cos(a) * rr} cy={420 + Math.sin(a) * rr} r={12} fill={V.GOLD} opacity={prog(s, t('energy', 7), 0.5)} />;
+                const a = (i / 10) * Math.PI * 2 + s * 1.5, rr = 215 + 15 * Math.sin(s * 4 + i);
+                return <circle key={i} cx={1540 + Math.cos(a) * rr} cy={420 + Math.sin(a) * rr} r={12} fill={V.GOLD} opacity={prog(s, t('energy', 7), 0.5)} />;
               })}
             </g>
           </svg>
-          <Rotulo s={s} t={t('inertia', 7) + 0.2} x={1580} y={760} fundo={V.GOOD} size={56} rot={-3}>H = INERTIA</Rotulo>
-          <Sobe s={s} t={t('spinning', 7)} x={1580} y={830} size={40} ancora="centro" cor={V.INK}>energy stored in spinning metal</Sobe>
+          <Rotulo s={s} t={t('inertia', 7) + 0.2} x={1540} y={720} fundo={V.GOOD} size={52} rot={-3}>H = INERTIA</Rotulo>
+          <Sobe s={s} t={t('spinning', 7)} x={1060} y={760} size={40} ancora="centro" cor={V.INK}>energy stored in spinning metal</Sobe>
         </AbsoluteFill>}
 
         {/* ---------- fala 8: os números dos EUA ---------- */}
@@ -236,8 +258,8 @@ export const V03_Maquina: React.FC<Props> = (props) => {
             </div>
           </Cartao>
           <Sobe s={s} t={t('works', 8)} x={1210} y={520} size={46} ancora="esquerda" cor={V.INK}>÷ 8,760 hours  =</Sobe>
-          <Bate s={s} t={t('five', 8)} x={1520} y={170} size={150} cor={V.C1}>500 GW</Bate>
-          <Rotulo s={s} t={t('moment', 8)} x={1520} y={320} fundo={V.INK} cor={V.SHEET} size={44} rot={2}>EVERY MOMENT</Rotulo>
+          <Bate s={s} t={t('five', 8)} x={1500} y={200} size={120} cor={V.C1}>500 GW</Bate>
+          <Rotulo s={s} t={t('moment', 8)} x={1500} y={330} fundo={V.INK} cor={V.SHEET} size={42} rot={2}>EVERY MOMENT</Rotulo>
         </AbsoluteFill>}
 
         {/* ---------- falas 9 e 10: a bateria de 5 segundos e a janela ---------- */}
@@ -257,7 +279,7 @@ export const V03_Maquina: React.FC<Props> = (props) => {
                 </g>
                 {/* janela de 5 s */}
                 {sobe > 0 && (() => {
-                  const x0 = 260, x1 = 1660, y = 760;
+                  const x0 = 280, x1 = 1640, y = 700;
                   const pj = prog(s, t('cushion', 10), 0.6);
                   return <g opacity={pj}>
                     <path d={rasgoRet(x0, y - 70, (x1 - x0) * pj, 140, 71, 6)} fill={V.GOLD} opacity={0.35} />
@@ -277,16 +299,17 @@ export const V03_Maquina: React.FC<Props> = (props) => {
               <Rotulo s={s} t={t('stores', 9)} ate={t5 - 0.1} x={960} y={250} fundo={V.INK} cor={V.SHEET} size={50} rot={-2}>ALL THE SPINNING METAL IN THE U.S.</Rotulo>
               {s >= t5 && s < t5 + 5.2 && s < t('cushion', 10) - 0.3 && <div style={{position: 'absolute', left: 960, top: 240, transform: 'translate(-50%, -50%)',
                 fontFamily: LM, fontWeight: 700, fontSize: 210, color: restam <= 2 ? V.C1 : V.INK}}>{restam}</div>}
-              {[0, 1, 2, 3, 4].map((k) => <Som key={k} nome="tique" t={t5 + k} volume={0.4} />)}
-              <Bate s={s} t={ini(10)} ate={t('cushion', 10) - 0.3} x={960} y={880} size={150} cor={V.C1} som={false}>5 SECONDS</Bate>
-              <Rotulo s={s} t={t('cushion', 10)} x={960} y={560} fundo={V.GOLD} cor={V.SHEET} size={54} rot={-2}>THE WHOLE CUSHION</Rotulo>
-              <Rotulo s={s} t={t('react', 10)} x={960} y={1000} fundo={V.INK} cor={V.SHEET} size={46} rot={1.5}>EVERYTHING ELSE MUST REACT IN HERE</Rotulo>
+              <Bate s={s} t={ini(10)} ate={t('cushion', 10) - 0.3} x={960} y={860} size={140} cor={V.C1} som={false}>5 SECONDS</Bate>
+              <Rotulo s={s} t={t('cushion', 10)} x={960} y={530} fundo={V.GOLD} cor={V.SHEET} size={50} rot={-2}>THE WHOLE CUSHION</Rotulo>
+              <Rotulo s={s} t={t('react', 10)} x={960} y={940} fundo={V.INK} cor={V.SHEET} size={44} rot={1.5}>EVERYTHING ELSE MUST REACT IN HERE</Rotulo>
             </>;
           })()}
         </AbsoluteFill>}
       </Camera>
       <Vinheta forca={0.35} cor="60,40,20" />
       <Grao forca={0.06} />
+      <Som nome="baque" t={t('tear', 5)} volume={0.5} />
+      {[0, 1, 2, 3, 4].map((k) => <Som key={k} nome="tique" t={t('five', 9) + k} volume={0.35} />)}
     </AbsoluteFill>
   );
 };

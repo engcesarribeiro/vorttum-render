@@ -67,7 +67,7 @@ export const V07_Sol: React.FC<Props> = (props) => {
           const zT = prog(s, ini(3) - 0.2, 0.8);
           return <AbsoluteFill>
             <svg width={W} height={H} style={{position: 'absolute'}}>
-              <SolGravura x={lerp(560, 300, prog(s, ini(2) - 0.2, 0.7))} y={560} r={lerp(230, 170, prog(s, ini(2) - 0.2, 0.7))} s={s}
+              <SolGravura x={lerp(600, 400, prog(s, ini(2) - 0.2, 0.7))} y={560} r={lerp(230, 170, prog(s, ini(2) - 0.2, 0.7))} s={s}
                 p={pop(s, ini(1) + 0.1, 0.9) * (1 - zT)} clarao={prog(s, t('burst', 1), 0.2) * sai(s, t('burst', 1) + 1.2, 0.8)} />
               {/* a nuvem */}
               {s > t('cloud', 2) - 0.1 && s < ini(3) && <g transform={`translate(${lerp(480, 1460, viagem)} ${560 + 30 * Math.sin(s * 3)})`}>
@@ -99,20 +99,20 @@ export const V07_Sol: React.FC<Props> = (props) => {
           const pulso = (s * 1.2) % 1;
           return <AbsoluteFill>
             <svg width={W} height={H} style={{position: 'absolute'}}>
-              {[...Array(6)].map((_, k) => {
-                const x = 120 + k * 340, y = 760;
+              {[...Array(5)].map((_, k) => {
+                const x = 240 + k * 360, y = 760;
                 return <g key={k} opacity={1 - hoje} transform={`translate(0 ${(1 - pop(s, ini(4) - 0.2 + k * 0.08)) * 200})`}>
                   <rect x={x - 8} y={y - 330} width={16} height={330} fill={SEPIA} />
                   <rect x={x - 60} y={y - 320} width={120} height={14} fill={SEPIA} />
                 </g>;
               })}
-              <path d={`M 120 450 ${[...Array(6)].map((_, k) => `Q ${290 + k * 340} 500 ${460 + k * 340} 450`).join(' ')}`} fill="none" stroke={SEPIA} strokeWidth={5} opacity={1 - hoje} />
-              {hoje > 0 && [...Array(5)].map((_, k) => <Torre key={k} x={180 + k * 400} y={900} h={lerp(200, 420, hoje)} cor={SEPIA} op={hoje} />)}
-              {hoje > 0 && <path d={`M 0 ${900 - 0.8 * 420 * hoje} L 1920 ${900 - 0.8 * 420 * hoje}`} stroke={s > t('needs', 5) ? V.C1 : SEPIA} strokeWidth={6} opacity={hoje} />}
+              <path d={`M 240 450 ${[...Array(4)].map((_, k) => `Q ${420 + k * 360} 500 ${600 + k * 360} 450`).join(' ')}`} fill="none" stroke={SEPIA} strokeWidth={5} opacity={1 - hoje} />
+              {hoje > 0 && [...Array(5)].map((_, k) => <Torre key={k} x={300 + k * 330} y={900} h={lerp(200, 420, hoje)} cor={SEPIA} op={hoje} />)}
+              {hoje > 0 && <path d={`M 220 ${900 - 0.8 * 420 * hoje} L 1700 ${900 - 0.8 * 420 * hoje}`} stroke={s > t('needs', 5) ? V.C1 : SEPIA} strokeWidth={6} opacity={hoje} />}
               {s > t('currents', 4) && [...Array(10)].map((_, k) => {
                 const u = (k / 10 + pulso) % 1;
                 const y = hoje > 0.5 ? 900 - 0.8 * 420 : 455 + 20 * Math.sin(u * Math.PI * 12);
-                return <circle key={k} cx={u * 1920} cy={y} r={12} fill={V.C1} opacity={0.9} />;
+                return <circle key={k} cx={(hoje > 0.5 ? 220 : 240) + u * (hoje > 0.5 ? 1480 : 1440)} cy={y} r={12} fill={V.C1} opacity={0.9} />;
               })}
             </svg>
             <Particulas a={s} t={t('damaged', 4) - 0.1} x={800} y={460} n={20} cores={[V.GOLD, V.C1]} />
@@ -146,7 +146,7 @@ export const V07_Sol: React.FC<Props> = (props) => {
         </AbsoluteFill>}
         {/* -------- falas 8 a 11: as chances -------- */}
         {tela(s, 8, 11) && <AbsoluteFill>
-          <Cartao s={s} t={ini(8) - 0.2} x={120} y={110} w={1180} h={900} rot={-1} seed={6} fundo="#F1E8D4" som={false}>
+          <Cartao s={s} t={ini(8) - 0.2} x={150} y={100} w={1150} h={890} rot={-1} seed={6} fundo="#F1E8D4" som={false}>
             <svg width={1180} height={900} style={{position: 'absolute'}}>
               <line x1={150} y1={790} x2={1140} y2={790} stroke={SEPIA} strokeWidth={4} />
               <line x1={150} y1={790} x2={150} y2={70} stroke={SEPIA} strokeWidth={4} />
@@ -163,7 +163,7 @@ export const V07_Sol: React.FC<Props> = (props) => {
               </g>
             </svg>
           </Cartao>
-          <Rotulo s={s} t={t('agree', 8)} x={1580} y={160} fundo={V.INK} size={38} rot={3}>SCIENTISTS DON'T AGREE</Rotulo>
+          <Rotulo s={s} t={t('agree', 8)} x={1520} y={190} fundo={V.INK} size={36} rot={3}>SCIENTISTS DON'T AGREE</Rotulo>
           <Cartao s={s} t={t('twelve', 8) - 0.3} x={1340} y={250} w={520} h={190} rot={2} seed={3} fundo={V.SHEET}>
             <div style={{padding: '30px 34px', fontFamily: LM, color: V.C1}}><div style={{fontSize: 40}}>Riley, 2012</div><div style={{fontSize: 52, fontWeight: 700, whiteSpace: 'pre'}}>12% / decade</div></div>
           </Cartao>
@@ -173,12 +173,13 @@ export const V07_Sol: React.FC<Props> = (props) => {
           <Cartao s={s} t={t('zero', 10) - 0.3} x={1340} y={660} w={520} h={190} rot={-2} seed={7} fundo={V.SHEET}>
             <div style={{padding: '30px 34px', fontFamily: LM, color: V.C2}}><div style={{fontSize: 40}}>later analysis</div><div style={{fontSize: 52, fontWeight: 700, whiteSpace: 'pre'}}>0.7% / decade</div></div>
           </Cartao>
-          <Rotulo s={s} t={t('fifty', 11)} x={960} y={60} fundo={V.GOLD} size={56}>BETWEEN 1 IN 50 AND 1 IN 3</Rotulo>
-          <Rotulo s={s} t={t('zero', 11)} x={1600} y={960} fundo={V.C1} size={64} rot={-5} som={false}>NOBODY SAYS ZERO</Rotulo>
+          <Rotulo s={s} t={t('fifty', 11)} x={960} y={130} fundo={V.GOLD} size={50}>BETWEEN 1 IN 50 AND 1 IN 3</Rotulo>
+          <Rotulo s={s} t={t('zero', 11)} x={1480} y={920} fundo={V.C1} size={54} rot={-5} som={false}>NOBODY SAYS ZERO</Rotulo>
         </AbsoluteFill>}
       </Camera>
       <Vinheta forca={0.35} cor="60,40,20" />
       <Grao forca={0.06} />
+      <Som nome="whoosh" t={t('hit', 3) - 0.4} volume={0.45} />
     </AbsoluteFill>
   );
 };

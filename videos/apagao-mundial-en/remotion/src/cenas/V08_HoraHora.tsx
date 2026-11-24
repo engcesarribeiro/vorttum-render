@@ -30,9 +30,9 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
 
   // câmera: [instante, zoom, foco x, foco y]
   const chaves: [number, number, number, number][] = [
-    [0, 1.0, 960, 540], [t('zero', 2), 1.0, 960, 540], [t('hospitals', 3) - 0.3, 1.55, 1300, 600], [t('phone', 4) - 0.3, 1.6, 760, 640],
-    [t('tower', 4) - 0.2, 1.45, 960, 520], [t('kitchen', 5) - 0.3, 1.5, 420, 640], [t('gas', 6) - 0.4, 1.55, 1690, 640],
-    [t('hospitals', 7) - 0.3, 1.55, 1300, 600], [ini(8) - 0.2, 0.92, 960, 540],
+    [0, 1.0, 960, 540], [t('zero', 2), 1.0, 960, 540], [t('hospitals', 3) - 0.3, 1.25, 1200, 560], [t('phone', 4) - 0.3, 1.3, 800, 600],
+    [t('tower', 4) - 0.2, 1.22, 960, 520], [t('kitchen', 5) - 0.3, 1.25, 700, 600], [t('gas', 6) - 0.4, 1.25, 1200, 600],
+    [t('hospitals', 7) - 0.3, 1.25, 1200, 560], [ini(8) - 0.2, 0.92, 960, 540],
   ];
   let k = 0;
   while (k < chaves.length - 1 && s >= chaves[k + 1][0]) k++;
@@ -41,7 +41,9 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
   const u = k === chaves.length - 1 ? 1 : prog(s, prox[0] - 0.01, 0.01);
   const v = prog(s, t0, 0.8);
   const anterior = chaves[Math.max(0, k - 1)];
-  const zoom = lerp(anterior[1], z0, v), fx = lerp(anterior[2], x0, v), fy = lerp(anterior[3], y0, v);
+  const zoom = lerp(anterior[1], z0, v);
+  const lim = (c: number, L: number) => (zoom <= 1 ? c : Math.max(L / (2 * zoom), Math.min(L - L / (2 * zoom), c)));
+  const fx = lim(lerp(anterior[2], x0, v), W), fy = lim(lerp(anterior[3], y0, v), H);
   void u;
 
   const tLiga = (k: number) => t('plant', 8) + k * Math.max(0.5, (t('normal', 8) - t('plant', 8)) / 7);
@@ -76,7 +78,7 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
           <rect width={W} height={H} fill={NOITE} />
           {estrelas.map((q, i) => <circle key={i} cx={q.x} cy={q.y} r={2.2} fill="#E9E2D0" opacity={(apagou ? 0.9 : 0.35) * (0.6 + 0.4 * Math.sin(s * 2 + q.f))} />)}
           <circle cx={1650} cy={150} r={60} fill="#E9E2D0" opacity={0.9 * (1 - prog(s, t('solar', 9), 0.5))} />
-          {s > t('solar', 9) && <g transform={`translate(1800 130) scale(${0.7 * pop(s, t('solar', 9))}) rotate(${s * 20})`}>
+          {s > t('solar', 9) && <g transform={`translate(1640 150) scale(${0.6 * pop(s, t('solar', 9))}) rotate(${s * 20})`}>
             <circle r={150} fill="#E08A3C" opacity={0.25 + 0.1 * Math.sin(s * 6)} />
             {[...Array(12)].map((_, i) => <path key={i} d="M -14 -95 L 0 -150 L 14 -95 Z" fill="#E3B865" transform={`rotate(${i * 30})`} />)}
             <circle r={90} fill="#D9A441" />
@@ -120,20 +122,17 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
           </g>
         </svg>
         {/* personagem com o celular */}
-        <Boneco e={e} p={pop(s, t('your', 1, 1) - 0.1)} x={700} y={1040} altura={330} roupa={V.C2}
+        <Boneco e={e} p={pop(s, t('your', 1, 1) - 0.1)} x={700} y={985} altura={300} roupa={V.C2}
           expressao={semSinal ? 'surpreso' : apagou ? 'duvida' : 'feliz'} olhar={1} />
-        <div style={{position: 'absolute', left: 790, top: 820, width: 70, height: 120, borderRadius: 12, background: '#1E1F22', border: '4px solid #E9E2D0',
+        <div style={{position: 'absolute', left: 785, top: 790, width: 64, height: 110, borderRadius: 12, background: '#1E1F22', border: '4px solid #E9E2D0',
           opacity: vida(s, t('phone', 4) - 0.2, undefined), display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: LM, fontWeight: 700, fontSize: 15, color: semSinal ? V.C1 : '#E9E2D0', textAlign: 'center', whiteSpace: 'pre'}}>{semSinal ? 'NO\nSIGNAL' : '68%'}</div>
       </Camera>
 
       {/* relógio fixo e cartões (fora da câmera) */}
-      {relogio && <div style={{position: 'absolute', left: 70, top: 60, transform: `scale(${batida})`, transformOrigin: 'left top',
+      {relogio && <div style={{position: 'absolute', left: 130, top: 100, transform: `scale(${batida})`, transformOrigin: 'left top',
         background: '#F3EDE1', padding: '10px 36px', boxShadow: '8px 10px 0 rgba(0,0,0,0.35)', fontFamily: LM, fontWeight: 700, fontSize: 110,
         color: relogio === 'years?' ? V.C1 : V.INK}}>{relogio}</div>}
-      {trocou.map((x, i) => <Som key={i} nome="pop" t={x} volume={0.4} />)}
-      {[...Array(7)].map((_, k) => <Som key={'l' + k} nome="clique" t={tLiga(k)} volume={0.35} />)}
-      <Som nome="whoosh" t={t('storm', 9)} volume={0.45} />
       <Rotulo s={s} t={t('next', 1)} ate={fim(1)} x={960} y={160} fundo="#F3EDE1" cor={V.INK} size={70}>YOUR NEXT 96 HOURS</Rotulo>
       <Rotulo s={s} t={t('fridge', 2)} ate={fim(2)} x={1400} y={300} fundo={V.C1} size={52} rot={3}>EVERYTHING OFF</Rotulo>
       <Rotulo s={s} t={t('code', 3)} ate={fim(3)} x={1400} y={260} fundo={V.GOOD} size={50} rot={-3}>GENERATORS: WITHIN 10 S</Rotulo>
@@ -150,7 +149,7 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
       {s > ini(8) - 0.2 && s < t('years', 9) && <svg width={W} height={H} style={{position: 'absolute'}}>
         {[...Array(7)].map((_, k5) => {
           const on = s > tLiga(k5) && !(s > tDesl(k5));
-          return <g key={k5} transform={`translate(${420 + k5 * 200} 270) scale(${1 + 0.25 * Math.exp(-Math.abs(s - tLiga(k5)) * 8)})`} opacity={vida(s, ini(8) + 0.2 + k5 * 0.05, t('years', 9) - 0.2)}>
+          return <g key={k5} transform={`translate(${560 + k5 * 190} 300) scale(${1 + 0.25 * Math.exp(-Math.abs(s - tLiga(k5)) * 8)})`} opacity={vida(s, ini(8) + 0.2 + k5 * 0.05, t('years', 9) - 0.2)}>
             <rect x={-70} y={-60} width={140} height={120} fill={on ? V.GOLD : '#4A4540'} stroke="#F3EDE1" strokeWidth={4} />
             <text y={14} fontFamily={LM} fontWeight={700} fontSize={36} fill="#F3EDE1" textAnchor="middle">{on ? 'ON' : 'OFF'}</text>
             {k5 < 6 && <line x1={70} y1={0} x2={130} y2={0} stroke={on ? V.GOLD : '#4A4540'} strokeWidth={8} />}
@@ -170,6 +169,8 @@ export const V08_HoraHora: React.FC<Props> = (props) => {
       <Bate s={s} t={t('years', 9)} x={960} y={600} size={170} cor={V.C1} som={false}>YEARS?</Bate>
       <Vinheta forca={0.5} />
       <Grao forca={0.06} />
+      <Som nome="clique" t={tLiga(0)} volume={0.4} />
+      <Som nome="whoosh" t={t('storm', 9)} volume={0.45} />
     </AbsoluteFill>
   );
 };

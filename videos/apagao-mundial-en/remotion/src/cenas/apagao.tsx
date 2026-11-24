@@ -77,7 +77,7 @@ const tx = (a: Ancora) => (a === 'esquerda' ? '0' : a === 'direita' ? '-100%' : 
 /** Texto que BATE na tela: entra grande e desfocado, assenta com passada. Som opcional. */
 export const Bate: React.FC<{s: number; t: number; ate?: number; x: number; y: number; size?: number; cor?: string;
   ancora?: Ancora; som?: string | false; peso?: number; rot?: number; children: React.ReactNode}> =
-  ({s, t, ate, x, y, size = 120, cor = VE.INK, ancora = 'centro', som = 'soco', peso = 700, rot = 0, children}) => {
+  ({s, t, ate, x, y, size = 120, cor = VE.INK, ancora = 'centro', som = false, peso = 700, rot = 0, children}) => {
     if (s < t - 0.05) return <>{som && <Som nome={som} t={t} volume={0.45} />}</>;
     const p = pop(s, t, 0.38);
     const k = ate === undefined ? 1 : sai(s, ate, 0.25);
@@ -111,7 +111,7 @@ export const Sobe: React.FC<{s: number; t: number; ate?: number; x: number; y: n
 /** Rótulo de papel rasgado (colagem) em cores VORTTUM. Entra em pop, levemente torto, com som de papel. */
 export const Rotulo: React.FC<{s: number; t: number; ate?: number; x: number; y: number; fundo?: string; cor?: string;
   size?: number; rot?: number; seed?: number; ancora?: Ancora; som?: string | false; children: React.ReactNode}> =
-  ({s, t, ate, x, y, fundo = V.INK, cor = V.SHEET, size = 54, rot = -2, seed = 3, ancora = 'centro', som = 'papel', children}) => {
+  ({s, t, ate, x, y, fundo = V.INK, cor = V.SHEET, size = 54, rot = -2, seed = 3, ancora = 'centro', som = false, children}) => {
     const p = s < t ? 0 : pop(s, t, 0.4);
     const k = ate === undefined ? 1 : sai(s, ate, 0.25);
     return (
@@ -131,7 +131,7 @@ export const Rotulo: React.FC<{s: number; t: number; ate?: number; x: number; y:
 /** Cartão de papel com fita (colagem), entra caindo e assenta. */
 export const Cartao: React.FC<{s: number; t: number; ate?: number; x: number; y: number; w: number; h: number; fundo?: string;
   rot?: number; seed?: number; fita?: boolean; som?: string | false; children?: React.ReactNode}> =
-  ({s, t, ate, x, y, w, h, fundo = V.SHEET, rot = -2, seed = 5, fita = true, som = 'papel', children}) => {
+  ({s, t, ate, x, y, w, h, fundo = V.SHEET, rot = -2, seed = 5, fita = true, som = false, children}) => {
     const p = s < t ? 0 : pop(s, t, 0.45);
     const k = ate === undefined ? 1 : sai(s, ate, 0.25);
     const balanca = Math.sin((s - t) * 1.6) * 0.6 * prog(s, t, 0.5);

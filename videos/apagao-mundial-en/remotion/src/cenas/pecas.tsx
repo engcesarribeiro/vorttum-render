@@ -311,13 +311,13 @@ export const Circulo: React.FC<{cx: number; cy: number; rx: number; ry: number; 
   };
 
 /** Carimbo: retângulo com borda, entra batendo (com som). */
-export const Carimbo: React.FC<{s: number; t: number; ate?: number; x: number; y: number; cor?: string; size?: number; rot?: number; fundo?: string; children: React.ReactNode}> =
-  ({s, t, ate, x, y, cor = V.C1, size = 70, rot = -8, fundo, children}) => {
+export const Carimbo: React.FC<{s: number; t: number; ate?: number; x: number; y: number; cor?: string; size?: number; rot?: number; fundo?: string; som?: boolean; children: React.ReactNode}> =
+  ({s, t, ate, x, y, cor = V.C1, size = 70, rot = -8, fundo, som = false, children}) => {
     const p = s < t ? 0 : prog(s, t, 0.18);
     const k = ate === undefined ? 1 : sai(s, ate, 0.25);
     return (
       <>
-        <Som nome="carimbo" t={t} volume={0.5} />
+        {som && <Som nome="carimbo" t={t} volume={0.5} />}
         {p > 0 && k > 0 && <div style={{position: 'absolute', left: x, top: y, opacity: k * clamp01(p * 3),
           transform: `translate(-50%, -50%) rotate(${rot}deg) scale(${lerp(2.2, 1, p)})`, border: `${size * 0.09}px solid ${cor}`,
           padding: `${size * 0.1}px ${size * 0.3}px`, color: cor, fontFamily: LM, fontWeight: 700, fontSize: size, whiteSpace: 'pre',
@@ -328,9 +328,9 @@ export const Carimbo: React.FC<{s: number; t: number; ate?: number; x: number; y
 
 // ------------------------------------------------------------------ câmera que respira por fala
 /** Zoom e passeio lentos e contínuos (movimento de fundo sem chamar atenção, sem saltos). */
-export const respiro = (s: number, amp = 0.03) => ({
+export const respiro = (s: number, amp = 0.012) => ({
   zoom: 1 + amp + amp * Math.sin((s * 2 * Math.PI) / 16),
-  foco: [960 + 40 * Math.sin((s * 2 * Math.PI) / 23), 540 + 20 * Math.cos((s * 2 * Math.PI) / 19)] as [number, number],
+  foco: [960 + 14 * Math.sin((s * 2 * Math.PI) / 23), 540 + 8 * Math.cos((s * 2 * Math.PI) / 19)] as [number, number],
 });
 /** Índice (1..n) da fala em s. */
 export const falaEm = (props: Props, s: number) => {

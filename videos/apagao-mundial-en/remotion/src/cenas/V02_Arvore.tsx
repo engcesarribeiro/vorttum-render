@@ -74,8 +74,8 @@ export const V02_Arvore: React.FC<Props> = (props) => {
         <FundoPapel deriva={(s % 20) / 20} />
         {/* ---------- falas 1 a 3: o escritório ---------- */}
         {tela(s, 1, 3) && <AbsoluteFill>
-          <Bate s={s} t={t('august', 1)} x={130} y={150} size={96} ancora="esquerda" cor={V.INK} som={false} rot={-2}>August 14, 2003</Bate>
-          <Rotulo s={s} t={t('ohio', 1)} ate={fim(1)} x={150} y={290} ancora="esquerda" fundo={V.C1} size={50}>OHIO · 3:05 P.M.</Rotulo>
+          <Bate s={s} t={t('august', 1)} x={170} y={160} size={92} ancora="esquerda" cor={V.INK} som={false} rot={-2}>August 14, 2003</Bate>
+          <Rotulo s={s} t={t('ohio', 1)} ate={fim(1)} x={180} y={290} ancora="esquerda" fundo={V.C1} size={48}>OHIO · 3:05 P.M.</Rotulo>
           <svg width={W} height={H} style={{position: 'absolute'}}>
             {/* termômetro */}
             <g opacity={vida(s, t('hot', 1), fim(1))}>
@@ -107,15 +107,15 @@ export const V02_Arvore: React.FC<Props> = (props) => {
             <div style={{position: 'absolute', left: 60, bottom: 40, fontFamily: LM, fontWeight: 700, fontSize: 44, color: V.INK}}>control room, near Cleveland</div>
           </Cartao>
           {tela(s, 2, 3) && <>
-            <Boneco e={e} p={pop(s, t('operators', 2))} x={1240} y={980} altura={330} roupa={V.C2} expressao="serio" olhar={-1} />
-            <Boneco e={e} p={pop(s, t('operators', 2) + 0.15)} x={1480} y={980} altura={360} roupa={V.GOLD} expressao="duvida" olhar={-1} />
+            <Boneco e={e} p={pop(s, t('operators', 2))} x={1240} y={940} altura={300} roupa={V.C2} expressao="serio" olhar={-1} />
+            <Boneco e={e} p={pop(s, t('operators', 2) + 0.15)} x={1460} y={940} altura={320} roupa={V.GOLD} expressao="duvida" olhar={-1} />
           </>}
           {/* fala 3 */}
-          <Rotulo s={s} t={t('bug', 3)} ate={fim(3)} x={1500} y={240} fundo={V.C1} size={62} rot={4} seed={11} som="rasgo">SOFTWARE BUG</Rotulo>
+          <Rotulo s={s} t={t('bug', 3)} ate={fim(3)} x={1440} y={240} fundo={V.C1} size={56} rot={4} seed={11}>SOFTWARE BUG</Rotulo>
           {(() => {
             const t0 = t('minute', 3) - 0.2, p = vida(s, t0, fim(3));
             const rapido = prog(s, t0 + 0.2, 0.5), lento = prog(s, t0 + 0.2, 7.5, (x) => x);
-            return p > 0 && <div style={{position: 'absolute', left: 1180, top: 380, width: 640, opacity: p, fontFamily: LM, fontSize: 38, color: V.INK}}>
+            return p > 0 && <div style={{position: 'absolute', left: 1160, top: 380, width: 580, opacity: p, fontFamily: LM, fontSize: 38, color: V.INK}}>
               <div>screen refresh:</div>
               <div style={{marginTop: 14}}>normal · 1 to 3 s</div>
               <div style={{height: 34, background: '#E3D9C4', border: `3px solid ${V.INK}`, marginTop: 6}}><div style={{height: '100%', width: `${rapido * 100}%`, background: V.GOOD}} /></div>
@@ -148,19 +148,18 @@ export const V02_Arvore: React.FC<Props> = (props) => {
           <Estouro s={s} t={t('tree', 4) + 0.05} x={570} y={720} forca={0.8} cor="#FFF1D0" cor2={V.C1} />
           <Particulas a={s} t={t('tree', 4) + 0.05} x={570} y={720} n={22} cores={[V.GOLD, V.C1]} />
           <Estouro s={s} t={t('trees', 5) + 0.05} x={1230} y={740} forca={0.6} cor="#FFF1D0" cor2={V.C1} semente={4} />
-          <Som nome="estrondo" t={t('trees', 5) + 0.05} volume={0.35} />
           <Rotulo s={s} t={t('nobody', 4)} ate={fim(4)} x={570} y={260} fundo={V.SHEET} cor={V.INK} size={48} rot={-3}>A TREE NOBODY TRIMMED</Rotulo>
-          <Rotulo s={s} t={t('jumps', 5)} ate={fim(5)} x={1230} y={260} fundo={V.GOLD} cor={V.SHEET} size={48} rot={3} som="whoosh">THE POWER JUMPS</Rotulo>
+          <Rotulo s={s} t={t('jumps', 5)} ate={fim(5)} x={1230} y={260} fundo={V.GOLD} cor={V.SHEET} size={48} rot={3}>THE POWER JUMPS</Rotulo>
         </AbsoluteFill>}
 
         {/* ---------- fala 6: uma hora, depois 7 segundos ---------- */}
         {tela(s, 6, 6) && <AbsoluteFill>
           <Sobe s={s} t={ini(6)} x={960} y={250} size={56} ancora="centro" cor={V.INK}>3:05 p.m.  →  4:10 p.m.</Sobe>
-          <div style={{position: 'absolute', left: 160, top: 420, width: 1600, height: 70, border: `5px solid ${V.INK}`, background: '#E3D9C4'}}>
+          <div style={{position: 'absolute', left: 220, top: 420, width: 1480, height: 70, border: `5px solid ${V.INK}`, background: '#E3D9C4'}}>
             <div style={{height: '100%', width: `${hora * 96}%`, background: V.GOLD}} />
             <div style={{position: 'absolute', right: 0, top: -10, height: 90, width: `${4 * estouro}%`, background: V.C1}} />
           </div>
-          <Sobe s={s} t={t('hour', 6)} x={160} y={520} size={44} cor={V.MUTED}>about an hour, slowly</Sobe>
+          <Sobe s={s} t={t('hour', 6)} x={220} y={520} size={44} cor={V.MUTED}>about an hour, slowly</Sobe>
           <Bate s={s} t={t('seven', 6)} x={1200} y={720} size={150} cor={V.C1} som={false} rot={-3}>7 SECONDS</Bate>
         </AbsoluteFill>}
 
@@ -193,8 +192,8 @@ export const V02_Arvore: React.FC<Props> = (props) => {
               fontFamily: LM, fontWeight: 700, fontSize: 34, color: apaga > 0.5 ? V.MUTED : V.SHEET}}>{q.n}</div>;
           })}
           <Bate s={s} t={tf} x={960} y={880} size={130} cor={V.INK}>{milhar(conta(s, tf, 0.8, 0, 50000000))} people</Bate>
-          <Rotulo s={s} t={t('eight', 8)} x={1640} y={640} fundo={V.SHEET} cor={V.INK} size={42} rot={3}>8 STATES + ONTARIO</Rotulo>
-          <Rotulo s={s} t={t('four', 8)} x={1640} y={760} fundo={V.C1} size={46} rot={-3}>SOME: UP TO 4 DAYS</Rotulo>
+          <Rotulo s={s} t={t('eight', 8)} x={370} y={560} fundo={V.SHEET} cor={V.INK} size={38} rot={3}>8 STATES + ONTARIO</Rotulo>
+          <Rotulo s={s} t={t('four', 8)} x={370} y={680} fundo={V.C1} size={38} rot={-3}>SOME: UP TO 4 DAYS</Rotulo>
         </AbsoluteFill>}
 
         {/* ---------- fala 9: a tomada ---------- */}
@@ -215,12 +214,13 @@ export const V02_Arvore: React.FC<Props> = (props) => {
                 <circle r={20} fill={V.INK} /><circle cy={-200} r={16} fill={V.GOLD} />
               </g>
             </svg>
-            <Bate s={s} t={t('spare', 9)} x={1560} y={860} size={84} cor={V.C1} rot={-3} som="vupt">how much time?</Bate>
+            <Bate s={s} t={t('spare', 9)} x={1560} y={860} size={84} cor={V.C1} rot={-3}>how much time?</Bate>
           </AbsoluteFill>;
         })()}
       </Camera>
       <Vinheta forca={0.35} cor="60,40,20" />
       <Grao forca={0.06} />
+      <Som nome="estrondo" t={t('seven', 6)} volume={0.45} />
     </AbsoluteFill>
   );
 };

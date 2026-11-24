@@ -44,10 +44,10 @@ export const V01_Gancho: React.FC<Props> = (props) => {
   const seg = Math.min(7, Math.max(0, (s - tSeven) / Math.max(0.5, fimOnda - tSeven) * 7));
   const v1 = s < f2 - 0.15 ? 1 : 0;
   const flecha = lerp(70, 210, prog(s, tTree - 0.25, 0.3));
-  const [ax, ay] = pontaTorre(170, 1010, 330, 1), [bx, by] = pontaTorre(640, 1010, 330, -1);
+  const [ax, ay] = pontaTorre(260, 1000, 330, 1), [bx, by] = pontaTorre(700, 1000, 330, -1);
   const zoom1 = lerp(1.0, 1.08, prog(s, 0, Math.max(1, f2), (x) => x));
   const ida = prog(s, tTree - 0.3, 0.5) * (1 - prog(s, tSeven - 0.2, 0.6));
-  const foco1: [number, number] = [lerp(960, 480, ida), lerp(540, 760, ida)];
+  const foco1: [number, number] = [lerp(960, 560, ida), lerp(540, 740, ida)];
 
   // ---------------- tela 2: Texas
   const v2 = s >= f2 - 0.15 && s < f3 - 0.15 ? 1 : 0;
@@ -74,13 +74,13 @@ export const V01_Gancho: React.FC<Props> = (props) => {
         {v1 > 0 && <AbsoluteFill>
           <Luzes luzes={luzes} s={s} ligada={ligada} />
           <svg width={W} height={H} style={{position: 'absolute'}}>
-            <Torre x={170} y={1010} h={330} cor={VE.INK} />
-            <Torre x={640} y={1010} h={330} cor={VE.INK} />
+            <Torre x={260} y={1000} h={330} cor={VE.INK} />
+            <Torre x={700} y={1000} h={330} cor={VE.INK} />
             <Cabo a={[ax, ay]} b={[bx, by]} flecha={flecha} cor={s > tTree ? VE.C1 : VE.MUTED} w={6} />
-            <ArvoreColagem x={405} y={1040} h={300} balanco={Math.sin(s * 1.3) * 1.5} queimada={0.35 + 0.4 * prog(s, tTree, 0.5)} seed={5} />
+            <ArvoreColagem x={480} y={1030} h={300} balanco={Math.sin(s * 1.3) * 1.5} queimada={0.35 + 0.4 * prog(s, tTree, 0.5)} seed={5} />
           </svg>
-          <Particulas a={s} t={tTree + 0.05} x={405} y={800} n={26} ang={-90} abertura={220} vel={900} cores={[VE.LUZ, VE.C1, '#FFF1D0']} tamanho={14} />
-          <Estouro s={s} t={tTree + 0.05} x={405} y={790} forca={0.7} cor="#FFF1D0" cor2={VE.C1} />
+          <Particulas a={s} t={tTree + 0.05} x={480} y={790} n={26} ang={-90} abertura={220} vel={900} cores={[VE.LUZ, VE.C1, '#FFF1D0']} tamanho={14} />
+          <Estouro s={s} t={tTree + 0.05} x={480} y={780} forca={0.7} cor="#FFF1D0" cor2={VE.C1} />
         </AbsoluteFill>}
         {/* ---- tela 2 ---- */}
         {v2 > 0 && <AbsoluteFill style={{transform: `translateX(${entra2 * 1400}px)`}}>
@@ -105,14 +105,12 @@ export const V01_Gancho: React.FC<Props> = (props) => {
       {v1 > 0 && <>
         {s > tSeven - 0.05 && <div style={{position: 'absolute', left: 960, top: 70, transform: `translateX(-50%) scale(${lerp(1.6, 1, pop(s, tSeven, 0.3))})`,
           fontFamily: LM, fontWeight: 700, fontSize: 150, color: VE.C1, opacity: prog(s, tSeven - 0.05, 0.15)}}>{seg.toFixed(1)} s</div>}
-        <Som nome="tique" t={tSeven} volume={0.3} />
         <Bate s={s} t={tFifty} x={1300} y={470} size={150} cor={VE.INK}>{milhar(conta(s, tFifty, 0.6, 0, 50000000))}</Bate>
         <Rotulo s={s} t={tFifty + 0.45} x={1300} y={620} fundo={VE.C1} cor={'#F6F1E6'} size={60} rot={-3}>IN THE DARK</Rotulo>
       </>}
       {v2 > 0 && <>
-        <Rotulo s={s} t={f2 + 0.15} x={150} y={150} ancora="esquerda" fundo={V.SHEET} cor={V.INK} size={46} rot={-2} som={false}>TEXAS · FEB 2021</Rotulo>
+        <Rotulo s={s} t={f2 + 0.15} x={180} y={160} ancora="esquerda" fundo={V.SHEET} cor={V.INK} size={46} rot={-2} som={false}>TEXAS · FEB 2021</Rotulo>
         <Bate s={s} t={tFour - 0.1} x={1600} y={500} size={180} cor={VE.GOLD} som={false}>{mmss}</Bate>
-        {[0, 0.15, 0.3, 0.45, 0.6, 0.75].map((d) => <Som key={d} nome="tique" t={tFour - 0.1 + d} volume={0.35} />)}
         <Sobe s={s} t={tFour + 1.0} x={1600} y={630} size={44} ancora="centro" cor={VE.INK}>from losing everything</Sobe>
         <Sobe s={s} t={tPurpose + 0.1} x={1230} y={665} size={40} ancora="centro" cor={VE.C2}>on purpose</Sobe>
       </>}
@@ -126,6 +124,8 @@ export const V01_Gancho: React.FC<Props> = (props) => {
       <Flash s={s} imp={imp} cor="#FFF1D0" />
       <Vinheta forca={0.6} />
       <Grao forca={0.07} />
+      <Som nome="estrondo" t={tTree + 0.05} volume={0.5} />
+      <Som nome="carimbo" t={tHacker} volume={0.45} />
       <AbsoluteFill style={{background: '#000', opacity: preto}} />
     </AbsoluteFill>
   );

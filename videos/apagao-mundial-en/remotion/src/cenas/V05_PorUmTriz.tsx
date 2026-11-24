@@ -84,7 +84,7 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
               <div style={{position: 'absolute', right: 0, top: 0, height: '100%', width: `${48.6 * prog(s, t('half', 2), 0.8)}%`, background: V.C1}} /></div>
             <div style={{fontFamily: LM, fontWeight: 700, fontSize: 54, color: V.C1, marginTop: 14}}>48.6% of generation gone</div></div>; })()}
           {/* gráfico da frequência */}
-          {s > ini(3) - 0.25 && <Cartao s={s} t={ini(3) - 0.2} x={90} y={150} w={1000} h={780} rot={-1} seed={3} som={false}>
+          {s > ini(3) - 0.25 && <Cartao s={s} t={ini(3) - 0.2} x={140} y={150} w={1000} h={780} rot={-1} seed={3} som={false}>
             <svg width={1000} height={780} style={{position: 'absolute'}}>
               <line x1={160} y1={gy(59.4) - 150} x2={980} y2={gy(59.4) - 150} stroke={V.C1} strokeWidth={4} strokeDasharray="14 10" />
               <text x={170} y={gy(59.4) - 162} fontFamily={LM} fontSize={30} fill={V.C1}>59.4 Hz</text>
@@ -113,9 +113,9 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
               </g>;
             })}
           </svg>
-          <Rotulo s={s} t={t('four', 4) + 0.6} ate={fim(4)} x={1500} y={930} fundo={V.GOLD} size={64} rot={-4} som="carimbo">4:37 LEFT</Rotulo>
-          <Rotulo s={s} t={t('zero', 5)} x={1500} y={640} fundo={V.C1} size={66} rot={-6} seed={8} som={false}>RESTART FROM ZERO</Rotulo>
-          <Rotulo s={s} t={t('weeks', 5)} x={1500} y={790} fundo={V.INK} size={58} rot={4} seed={2}>COULD TAKE WEEKS</Rotulo>
+          <Rotulo s={s} t={t('four', 4) + 0.6} ate={fim(4)} x={1450} y={900} fundo={V.GOLD} size={58} rot={-4}>4:37 LEFT</Rotulo>
+          <Rotulo s={s} t={t('zero', 5)} x={1440} y={640} fundo={V.C1} size={54} rot={-5} seed={8} som={false}>RESTART FROM ZERO</Rotulo>
+          <Rotulo s={s} t={t('weeks', 5)} x={1440} y={780} fundo={V.INK} size={50} rot={4} seed={2}>COULD TAKE WEEKS</Rotulo>
         </AbsoluteFill>}
 
         {/* -------- Espanha e Portugal: falas 6 e 7 -------- */}
@@ -130,7 +130,7 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
             </svg>
             <Rotulo s={s} t={t('april', 6)} ate={fim(7)} x={180} y={150} ancora="esquerda" fundo={V.INK} size={54}>SPAIN + PORTUGAL · APR 2025</Rotulo>
             <Bate s={s} t={ts} ate={fim(6)} x={1400} y={330} size={150} cor={V.C1}>{'< 90 s'}</Bate>
-            <Bate s={s} t={t('sixty', 6)} ate={fim(6)} x={1400} y={520} size={100} cor={V.INK} som="pop">{milhar(conta(s, t('sixty', 6), 0.7, 0, 60000000))}</Bate>
+            <Bate s={s} t={t('sixty', 6)} ate={fim(6)} x={1400} y={520} size={100} cor={V.INK}>{milhar(conta(s, t('sixty', 6), 0.7, 0, 60000000))}</Bate>
             <Sobe s={s} t={t('sixty', 6) + 0.4} ate={fim(6)} x={1400} y={600} size={44} ancora="centro" cor={V.INK}>people</Sobe>
             <Rotulo s={s} t={t('sixteen', 6)} ate={fim(6)} x={1400} y={730} fundo={V.C2} size={56} rot={3}>UP TO 16 H TO RESTORE</Rotulo>
             {s > t('voltage', 7) - 0.3 && <Cartao s={s} t={t('voltage', 7) - 0.3} x={1060} y={250} w={760} h={600} rot={2} seed={4}>
@@ -147,7 +147,6 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
                     {off && <text x={0} y={90} fontFamily={LM} fontWeight={700} fontSize={34} fill={V.C1} textAnchor="middle">OFF</text>}
                   </g>;
                 })}
-                {s > t('disconnected', 7) && [...Array(6)].map((_, k) => <Som key={k} nome="clique" t={t('disconnected', 7) + k * 0.3} volume={0.35} />)}
               </svg>
             </Cartao>}
           </AbsoluteFill>;
@@ -156,14 +155,14 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
         {/* -------- Índia: fala 8 -------- */}
         {tela(s, 8, 8) && <AbsoluteFill>
           <svg width={W} height={H} style={{position: 'absolute'}}>
-            <Mapa pts={INDIA} x={150} y={170} w={720} h={760} p={pop(s, ini(8))} cor={s > t('india', 8) + 1.2 ? '#3A3633' : V.GOLD} />
+            <Mapa pts={INDIA} x={200} y={170} w={720} h={760} p={pop(s, ini(8))} cor={s > t('india', 8) + 1.2 ? '#3A3633' : V.GOLD} />
             {[...Array(100)].map((_, k) => {
               const x = 1080 + (k % 10) * 70, y = 330 + Math.floor(k / 10) * 60;
               return <circle key={k} cx={x} cy={y} r={20} fill={k < 9 && s > t('nine', 8) + k * 0.05 ? V.C1 : '#B8A98A'}
                 opacity={vida(s, t('nine', 8) - 0.5 + (k % 10) * 0.01, fim(8))} />;
             })}
           </svg>
-          <Rotulo s={s} t={t('twelve', 8)} x={180} y={120} ancora="esquerda" fundo={V.INK} size={54}>INDIA · JUL 2012</Rotulo>
+          <Rotulo s={s} t={t('twelve', 8)} x={200} y={140} ancora="esquerda" fundo={V.INK} size={52}>INDIA · JUL 2012</Rotulo>
           <Bate s={s} t={t('six', 8)} x={1430} y={190} size={110} cor={V.INK}>{milhar(conta(s, t('six', 8), 0.8, 0, 620000000))}</Bate>
           <Sobe s={s} t={t('nine', 8) + 0.4} x={1430} y={960} size={52} ancora="centro" cor={V.C1}>9% of everyone on Earth</Sobe>
         </AbsoluteFill>}
@@ -171,7 +170,7 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
         {/* -------- fala 9: todos pararam numa fronteira -------- */}
         {tela(s, 9, 9) && <AbsoluteFill>
           <svg width={W} height={H} style={{position: 'absolute'}}>
-            <Mapa pts={TEXAS} x={140} y={300} w={460} h={430} p={pop(s, ini(9))} cor="#3A3633" borda={prog(s, t('border', 9), 0.4)} rot={-2} />
+            <Mapa pts={TEXAS} x={190} y={300} w={460} h={430} p={pop(s, ini(9))} cor="#3A3633" borda={prog(s, t('border', 9), 0.4)} rot={-2} />
             <Mapa pts={IBERIA} x={720} y={320} w={480} h={400} p={pop(s, ini(9) + 0.15)} cor="#3A3633" borda={prog(s, t('border', 9) + 0.1, 0.4)} rot={2} />
             <Mapa pts={INDIA} x={1340} y={270} w={430} h={460} p={pop(s, ini(9) + 0.3)} cor="#3A3633" borda={prog(s, t('border', 9) + 0.2, 0.4)} rot={-1} />
           </svg>
@@ -180,6 +179,7 @@ export const V05_PorUmTriz: React.FC<Props> = (props) => {
       </Camera>
       <Vinheta forca={0.3} cor="60,40,20" />
       <Grao forca={0.07} />
+      <Som nome="clique" t={t('disconnected', 7)} volume={0.45} />
     </AbsoluteFill>
   );
 };

@@ -45,22 +45,23 @@ export const V10_Fim: React.FC<Props> = (props) => {
       {['no hacker', 'no tree', 'no single mistake'].map((txt, k) => {
         const tk = t(['hacker', 'tree', 'single'][k], 1);
         return <React.Fragment key={k}>
-          <Bate s={s} t={tk} ate={fim(1)} x={[420, 920, 1460][k]} y={560} size={58} cor={VE.INK} som="pop">{txt}</Bate>
+          <Bate s={s} t={tk} ate={fim(1)} x={[420, 920, 1460][k]} y={560} size={58} cor={VE.INK}>{txt}</Bate>
           {s > tk + 0.3 && s < fim(1) && <div style={{position: 'absolute', left: [420, 920, 1460][k] - [150, 120, 250][k], top: 556, width: [300, 240, 500][k] * prog(s, tk + 0.3, 0.2), height: 8, background: VE.C1}} />}
         </React.Fragment>;
       })}
       {/* fala 2 */}
-      <Bate s={s} t={t('local', 2)} ate={fim(2)} x={960} y={200} size={90} cor={VE.INK} som="soco">every blackout so far: local</Bate>
+      <Bate s={s} t={t('local', 2)} ate={fim(2)} x={960} y={200} size={90} cor={VE.INK}>every blackout so far: local</Bate>
       <Rotulo s={s} t={tBack} ate={fim(2)} x={960} y={900} fundo={VE.GOOD} cor={V.SHEET} size={64} rot={2}>THE LIGHTS CAME BACK</Rotulo>
       {/* fala 3 */}
-      <Bate s={s} t={t('seconds', 3)} ate={fim(3)} x={960} y={200} size={84} cor={VE.GOLD} som="soco">a few seconds of spinning metal</Bate>
+      <Bate s={s} t={t('seconds', 3)} ate={fim(3)} x={960} y={200} size={84} cor={VE.GOLD}>a few seconds of spinning metal</Bate>
       <Sobe s={s} t={t('day', 3)} ate={fim(3)} x={1500} y={330} size={54} ancora="centro" cor={VE.C1}>and one thing up there</Sobe>
       {/* fala 4 */}
-      <Bate s={s} t={t('tonight', 4)} x={960} y={420} size={86} cor={VE.INK} som="soco">If your power went out tonight...</Bate>
-      <Bate s={s} t={t('hours', 4)} x={960} y={570} size={100} cor={VE.GOLD} som="soco">how many hours would you last?</Bate>
+      <Bate s={s} t={t('tonight', 4)} x={960} y={420} size={86} cor={VE.INK}>If your power went out tonight...</Bate>
+      <Bate s={s} t={t('hours', 4)} x={960} y={570} size={100} cor={VE.GOLD}>how many hours would you last?</Bate>
       <Sobe s={s} t={t('comments', 4)} x={960} y={700} size={50} ancora="centro" cor={VE.MUTED}>tell me in the comments</Sobe>
       <Vinheta forca={0.6} />
       <Grao forca={0.07} />
+      <Som nome="ding" t={t('hours', 4)} volume={0.35} />
       <AbsoluteFill style={{background: '#000', opacity: prog(s, props.duracao - 0.6, 0.5)}} />
     </AbsoluteFill>
   );

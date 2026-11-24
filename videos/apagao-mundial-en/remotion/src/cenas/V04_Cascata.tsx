@@ -96,7 +96,7 @@ export const V04_Cascata: React.FC<Props> = (props) => {
   // casas (clientes): 20, uma (5%) apaga quando f < 59.3 na simulação com corte
   const fC = s > tCorte ? fEm(C.p10_corte, simC(s)) : 60;
   let tCasa = 1e9;
-  if (s > tCorte) for (let k = 0; k < C.p10_corte.t.length; k++) if (C.p10_corte.f[k] < 59.3) { tCasa = tCorte + C.p10_corte.t[k] / 1.3; break; }
+  for (let k = 0; k < C.p10_corte.t.length; k++) if (C.p10_corte.f[k] < 59.3) { tCasa = tCorte + C.p10_corte.t[k] / 1.3; break; }
 
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
@@ -105,11 +105,11 @@ export const V04_Cascata: React.FC<Props> = (props) => {
 
         {/* ---------- fala 1: as 1.000 usinas ---------- */}
         {tela(s, 1, 1) && <AbsoluteFill>
-          <Grade x={400} y={215} cel={28} s={s} estado={() => 0} mudou={() => 0} p={prog(s, t('thousand', 1) - 0.4, 1.2)} />
-          <Rotulo s={s} t={t('simulation', 1)} x={960} y={130} fundo={V.INK} cor={V.SHEET} size={56} rot={-2} som="carimbo">OUR SIMULATION</Rotulo>
-          <Bate s={s} t={t('thousand', 1)} x={960} y={1020} size={80} cor={V.INK} som={false}>{milhar(conta(s, t('thousand', 1), 1.2, 0, 1000))} power plants</Bate>
+          <Grade x={480} y={230} cel={24} s={s} estado={() => 0} mudou={() => 0} p={prog(s, t('thousand', 1) - 0.4, 1.2)} />
+          <Rotulo s={s} t={t('simulation', 1)} x={960} y={130} fundo={V.INK} cor={V.SHEET} size={56} rot={-2}>OUR SIMULATION</Rotulo>
+          <Bate s={s} t={t('thousand', 1)} x={960} y={940} size={72} cor={V.INK} som={false}>{milhar(conta(s, t('thousand', 1), 1.2, 0, 1000))} power plants</Bate>
           {s > t('connected', 1) && <svg width={W} height={H} style={{position: 'absolute'}}>
-            {[0, 1, 2, 3, 4].map((k) => <line key={k} x1={400} y1={250 + 140 * k + 70} x2={400 + 1120 * prog(s, t('connected', 1) + k * 0.08, 0.6)} y2={250 + 140 * k + 70}
+            {[0, 1, 2, 3, 4].map((k) => <line key={k} x1={480} y1={230 + 120 * k + 60} x2={480 + 960 * prog(s, t('connected', 1) + k * 0.08, 0.6)} y2={230 + 120 * k + 60}
               stroke={V.SHEET} strokeWidth={3} strokeDasharray="10 8" opacity={0.7} />)}
           </svg>}
         </AbsoluteFill>}
@@ -159,27 +159,26 @@ export const V04_Cascata: React.FC<Props> = (props) => {
 
         {/* ---------- falas 3 a 6: os testes ---------- */}
         {tela(s, 3, 6) && <AbsoluteFill style={{opacity: prog(s, ini(3) - 0.25, 0.35)}}>
-          <Grade x={70} y={290} cel={20} s={s} estado={estado} mudou={mudou} p={pop(s, ini(3) - 0.2, 0.6)} />
-          <GraficoManim x={960} y={160} w={900} h={620} p={pop(s, ini(3), 0.5)} tmax={6} titulo="grid frequency"
+          <Grade x={140} y={300} cel={19} s={s} estado={estado} mudou={mudou} p={pop(s, ini(3) - 0.2, 0.6)} />
+          <GraficoManim x={980} y={170} w={820} h={600} p={pop(s, ini(3), 0.5)} tmax={6} titulo="grid frequency"
             linhas={[{f: 58.9, cor: VE.C1, rotulo: 'relays start tripping'}]}
             curvas={[
               ...(teste === 5 ? [{t: C.p5.t, f: C.p5.f, cor: VE.GOOD, ate: sim5(s)}] : []),
               ...(teste >= 8 ? [{t: C.p8.t, f: C.p8.f, cor: VE.GOLD, ate: sim8(s)}] : []),
               ...(teste === 10 ? [{t: C.p10.t, f: C.p10.f, cor: VE.C1, ate: sim10(s)}] : []),
             ]} />
-          <Rotulo s={s} t={t('first', 3)} ate={ini(4) - 0.2} x={410} y={200} fundo={V.INK} cor={V.SHEET} size={48} rot={-2}>TEST 1</Rotulo>
-          <Rotulo s={s} t={t5} ate={ini(4) - 0.2} x={410} y={900} fundo={V.C1} size={64} rot={2} som="rasgo">–5%</Rotulo>
-          <Carimbo s={s} t={t('holds', 3)} ate={ini(4) - 0.2} x={1420} y={560} cor={V.GOOD} size={80} fundo={V.SHEET}>HOLDS</Carimbo>
-          <Rotulo s={s} t={ini(4)} ate={t10 - 0.2} x={410} y={200} fundo={V.INK} cor={V.SHEET} size={48} rot={2} seed={9}>TEST 2</Rotulo>
-          <Rotulo s={s} t={t8} ate={t10 - 0.2} x={410} y={900} fundo={V.C1} size={64} rot={-2} som="rasgo" seed={4}>–8%</Rotulo>
-          <Rotulo s={s} t={t('gap', 5)} ate={ini(6) - 0.2} x={1410} y={860} fundo={V.SHEET} cor={V.INK} size={42} rot={-2}>BIGGER GAP</Rotulo>
-          <Rotulo s={s} t={t('inertia', 5)} ate={ini(6) - 0.2} x={1410} y={940} fundo={V.C2} size={42} rot={2} seed={6}>LESS INERTIA</Rotulo>
-          <Rotulo s={s} t={t('faster', 5)} ate={ini(6) - 0.2} x={1410} y={1020} fundo={V.C1} size={42} rot={-1} seed={7}>FALLS FASTER</Rotulo>
+          <Rotulo s={s} t={t('first', 3)} ate={ini(4) - 0.2} x={520} y={210} fundo={V.INK} cor={V.SHEET} size={46} rot={-2}>TEST 1</Rotulo>
+          <Rotulo s={s} t={t5} ate={ini(4) - 0.2} x={520} y={880} fundo={V.C1} size={64} rot={2}>–5%</Rotulo>
+          <Carimbo s={s} t={t('holds', 3)} ate={ini(4) - 0.2} x={1390} y={560} cor={V.GOOD} size={76} fundo={V.SHEET}>HOLDS</Carimbo>
+          <Rotulo s={s} t={ini(4)} ate={t10 - 0.2} x={520} y={210} fundo={V.INK} cor={V.SHEET} size={46} rot={2} seed={9}>TEST 2</Rotulo>
+          <Rotulo s={s} t={t8} ate={t10 - 0.2} x={520} y={880} fundo={V.C1} size={64} rot={-2} seed={4}>–8%</Rotulo>
+          <Rotulo s={s} t={t('gap', 5)} ate={ini(6) - 0.2} x={1390} y={840} fundo={V.SHEET} cor={V.INK} size={40} rot={-2}>BIGGER GAP</Rotulo>
+          <Rotulo s={s} t={t('inertia', 5)} ate={ini(6) - 0.2} x={1390} y={905} fundo={V.C2} size={40} rot={2} seed={6}>LESS INERTIA</Rotulo>
+          <Rotulo s={s} t={t('faster', 5)} ate={ini(6) - 0.2} x={1390} y={970} fundo={V.C1} size={40} rot={-1} seed={7}>FALLS FASTER</Rotulo>
           {/* cliques dos relés */}
-          {[0.2, 0.45, 0.65, 0.8, 0.9].map((u, k) => <Som key={k} nome="clique" t={t8 + (3.95 / k8) * (0.55 + u * 0.45)} volume={0.35} />)}
-          <Bate s={s} t={t('four', 6)} ate={t10 - 0.2} x={1410} y={900} size={120} cor={V.C1}>3.9 s</Bate>
-          <Rotulo s={s} t={t10} x={410} y={200} fundo={V.INK} cor={V.SHEET} size={48} rot={-2} seed={10}>TEST 3 · –10%</Rotulo>
-          <Bate s={s} t={t('half', 6)} x={1410} y={900} size={120} cor={V.C1}>2.5 s</Bate>
+          <Bate s={s} t={t('four', 6)} ate={t10 - 0.2} x={1390} y={890} size={110} cor={V.C1}>3.9 s</Bate>
+          <Rotulo s={s} t={t10} x={520} y={210} fundo={V.INK} cor={V.SHEET} size={46} rot={-2} seed={10}>TEST 3 · –10%</Rotulo>
+          <Bate s={s} t={t('half', 6)} x={1390} y={890} size={110} cor={V.C1}>2.5 s</Bate>
         </AbsoluteFill>}
 
         {/* ---------- fala 7: o paradoxo ---------- */}
@@ -217,8 +216,8 @@ export const V04_Cascata: React.FC<Props> = (props) => {
 
         {/* ---------- falas 8 a 10: o corte de carga ---------- */}
         {tela(s, 8, 10) && <AbsoluteFill style={{opacity: prog(s, ini(8) - 0.25, 0.35)}}>
-          <Grade x={70} y={200} cel={20} s={s} estado={estadoC} mudou={mudouC} p={pop(s, ini(8) - 0.2, 0.6)} />
-          <GraficoManim x={960} y={110} w={900} h={560} p={pop(s, ini(8), 0.5)} tmax={6} titulo="10% lost, with load shedding"
+          <Grade x={140} y={240} cel={19} s={s} estado={estadoC} mudou={mudouC} p={pop(s, ini(8) - 0.2, 0.6)} />
+          <GraficoManim x={980} y={170} w={820} h={540} p={pop(s, ini(8), 0.5)} tmax={6} titulo="10% lost, with load shedding"
             linhas={s > t('below', 8) ? [{f: 59.3, cor: VE.GOLD, rotulo: '59.3 Hz: cut 5% of customers'}] : []}
             curvas={s > tCorte ? [{t: C.p10_corte.t, f: C.p10_corte.f, cor: VE.GOOD, ate: simC(s)}] : []} />
           {/* 20 casas = os clientes */}
@@ -228,17 +227,16 @@ export const V04_Cascata: React.FC<Props> = (props) => {
               const apagada = i === 7 && s > tCasa;
               const marca = i === 7 && s > t('cuts', 8) && s < tCorte;
               return <g key={i} opacity={clamp01(p * 2)}>
-                <Casa x={120 + i * 88} y={1010} k={1} luz={apagada ? 0 : 1} seed={i + 50}
+                <Casa x={200 + i * 80} y={985} k={0.85} luz={apagada ? 0 : 1} seed={i + 50}
                   cor={['#A2674A', '#5F8466', '#82648F', '#C29A55'][i % 4]} />
-                {marca && <circle cx={120 + i * 88} cy={970} r={70} fill="none" stroke={V.C1} strokeWidth={6} strokeDasharray="10 8" />}
+                {marca && <circle cx={200 + i * 80} cy={950} r={70} fill="none" stroke={V.C1} strokeWidth={6} strokeDasharray="10 8" />}
               </g>;
             })}
           </svg>
-          {s > tCasa && <Som nome="clique" t={tCasa} volume={0.5} />}
-          <Rotulo s={s} t={t('change', 8)} ate={ini(9) - 0.2} x={480} y={110} fundo={V.GOOD} size={50} rot={-2}>ONE CHANGE</Rotulo>
-          <Rotulo s={s} t={t('cuts', 8)} ate={ini(9) - 0.2} x={1400} y={790} fundo={V.C1} size={46} rot={2}>CUT 5% OF CUSTOMERS</Rotulo>
+          <Rotulo s={s} t={t('change', 8)} ate={ini(9) - 0.2} x={520} y={170} fundo={V.GOOD} size={46} rot={-2}>ONE CHANGE</Rotulo>
+          <Rotulo s={s} t={t('cuts', 8)} ate={ini(9) - 0.2} x={1390} y={790} fundo={V.C1} size={42} rot={2}>CUT 5% OF CUSTOMERS</Rotulo>
           {/* fala 9: o documento real */}
-          <Cartao s={s} t={t('real', 9) - 0.3} ate={ini(10) - 0.2} x={480} y={180} w={960} h={560} fundo="#F1EADB" rot={-2} seed={13}>
+          <Cartao s={s} t={t('real', 9) - 0.3} ate={ini(10) - 0.2} x={480} y={250} w={960} h={520} fundo="#F1EADB" rot={-2} seed={13}>
             <svg width={960} height={560}>
               <text x={60} y={90} fontFamily="JetBrains Mono" fontSize={30} fill={V.MUTED}>GRID PROTECTION · FIELD EQUIPMENT</text>
               <rect x={60} y={140} width={260} height={300} fill="#D8D2C4" stroke={V.INK} strokeWidth={5} />
@@ -250,12 +248,12 @@ export const V04_Cascata: React.FC<Props> = (props) => {
               <text x={370} y={390} fontFamily="JetBrains Mono" fontSize={30} fill={V.INK}>installed · waiting</text>
             </svg>
           </Cartao>
-          <Carimbo s={s} t={t('real', 9)} ate={ini(10) - 0.2} x={1300} y={240} cor={V.C1} size={90}>REAL</Carimbo>
+          <Carimbo s={s} t={t('real', 9)} ate={ini(10) - 0.2} x={1300} y={310} cor={V.C1} size={84}>REAL</Carimbo>
           {/* fala 10 */}
-          <Carimbo s={s} t={t('survives', 10)} x={1410} y={560} cor={V.GOOD} size={80} rot={-6} fundo={V.SHEET}>SURVIVES</Carimbo>
-          {s > t('people', 10) - 0.2 && <Boneco e={e} p={pop(s, t('people', 10) - 0.2)} x={736} y={900} altura={190} roupa={V.C2} expressao="duvida" olhar={1} />}
-          <Rotulo s={s} t={t('purpose', 10)} x={760} y={690} fundo={V.INK} cor={V.SHEET} size={48} rot={-3}>DARK ON PURPOSE</Rotulo>
-          <Sobe s={s} t={tCorte + 0.4} x={1410} y={720} size={40} ancora="centro" cor={V.INK}>{fC.toFixed(2)} Hz</Sobe>
+          <Carimbo s={s} t={t('survives', 10)} x={1390} y={560} cor={V.GOOD} size={76} rot={-6} fundo={V.SHEET}>SURVIVES</Carimbo>
+          {s > t('people', 10) - 0.2 && <Boneco e={e} p={pop(s, t('people', 10) - 0.2)} x={760} y={880} altura={180} roupa={V.C2} expressao="duvida" olhar={1} />}
+          <Rotulo s={s} t={t('purpose', 10)} x={760} y={660} fundo={V.INK} cor={V.SHEET} size={46} rot={-3}>DARK ON PURPOSE</Rotulo>
+          <Sobe s={s} t={tCorte + 0.4} x={1390} y={660} size={40} ancora="centro" cor={V.INK}>{fC.toFixed(2)} Hz</Sobe>
         </AbsoluteFill>}
 
         {/* ---------- fala 11: pessoas antes das máquinas ---------- */}
@@ -270,7 +268,6 @@ export const V04_Cascata: React.FC<Props> = (props) => {
               {[-140, 0, 140].map((dx, i) => <Usina key={i} x={dx} y={360} k={0.6} s={s + i} seed={i + 95} />)}
             </g>
           </svg>
-          <Som nome="clique" t={t('people', 11)} volume={0.5} />
           <Rotulo s={s} t={t('people', 11)} x={560} y={230} fundo={V.C1} size={50} rot={-2}>PEOPLE: OFF FIRST</Rotulo>
           <Rotulo s={s} t={t('machines', 11)} x={1360} y={230} fundo={V.GOOD} size={50} rot={2} seed={8}>MACHINES: STAY ON</Rotulo>
           <Bate s={s} t={t('cascade', 11)} x={960} y={110} size={84} cor={V.INK} som={false}>how you stop a cascade</Bate>
@@ -278,6 +275,9 @@ export const V04_Cascata: React.FC<Props> = (props) => {
       </Camera>
       <Vinheta forca={0.3} cor="60,40,20" />
       <Grao forca={0.06} />
+      <Som nome="estrondo" t={t8 + 3.95 / k8} volume={0.45} />
+      {tCasa < props.duracao && <Som nome="clique" t={tCasa} volume={0.5} />}
+      <Som nome="carimbo" t={t('real', 9)} volume={0.45} />
     </AbsoluteFill>
   );
 };
