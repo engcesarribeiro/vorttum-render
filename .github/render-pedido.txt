@@ -3,4 +3,4 @@ qualidade=final
 vertical=false
 fps=60
 alvo=30
-# final 1080p60 com voz do VORTTUM 003 (apagão mundial), ~20 máquinas em paralelo
+# final 1080p60 com voz do VORTTUM 003 (2ª tentativa: V10 mais leve, tempo por quadro maior)

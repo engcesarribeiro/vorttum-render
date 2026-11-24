@@ -134,7 +134,7 @@ def remotion(src: Path, scene: str, video: Path, tempos: Path, args) -> tuple[bo
     bruto = video.with_name(f"{scene}_remotion.mp4")
     cmd = ["npx", "remotion", "render", "src/index.ts", dados["composicao"], str(bruto),
            f"--props={tempos.resolve()}", f"--scale={escala}", "--codec=h264", "--crf=18",
-           "--x264-preset=veryfast", "--log=error", f"--concurrency={max(1, (os.cpu_count() or 2) // max(1, args.jobs))}"]
+           "--x264-preset=veryfast", "--log=error", "--timeout=120000", f"--concurrency={max(1, (os.cpu_count() or 2) // max(1, args.jobs))}"]
     chrome = _chrome()
     if chrome:
         cmd.append(f"--browser-executable={chrome}")

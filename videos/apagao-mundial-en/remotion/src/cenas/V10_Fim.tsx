@@ -20,7 +20,7 @@ export const V10_Fim: React.FC<Props> = (props) => {
   ];
   const {s, imp: impR} = useAcao(imp);
   const luzes = useLuzes([[500, 380, 1.1], [900, 250, 0.9], [1300, 360, 1.2], [1650, 260, 0.8], [700, 700, 1.0], [1150, 760, 1.3],
-    [1600, 700, 0.9], [300, 820, 0.6], [1850, 520, 0.5]], 150, 11);
+    [1600, 700, 0.9], [300, 820, 0.6], [1850, 520, 0.5]], 100, 11);
   const tBack = t('back', 2);
   const ligada = (l: {x: number}) => {
     const volta = prog(s, tBack - 0.6 + (l.x / W) * 1.0, 0.3);
