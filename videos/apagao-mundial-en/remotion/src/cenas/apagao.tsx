@@ -216,11 +216,13 @@ export const useLuzes = (centros: [number, number, number][], n = 140, semente =
 export const Luzes: React.FC<{luzes: Luz[]; s: number; ligada: (l: Luz) => number; cor?: string}> =
   ({luzes, s, ligada, cor = VE.LUZ}) => (
     <svg width={W} height={H} style={{position: 'absolute'}}>
-      <defs><filter id="brilho" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" /></filter></defs>
-      <g filter="url(#brilho)" opacity={0.75}>
+      {/* brilho com gradiente radial (sem filtro de blur: muito mais leve de renderizar) */}
+      <defs><radialGradient id="brilhoLuz"><stop offset="0%" stopColor={cor} stopOpacity={0.9} /><stop offset="45%" stopColor={cor} stopOpacity={0.35} />
+        <stop offset="100%" stopColor={cor} stopOpacity={0} /></radialGradient></defs>
+      <g opacity={0.75}>
         {luzes.map((l, i) => {
           const o = ligada(l);
-          return o > 0.02 ? <circle key={i} cx={l.x} cy={l.y} r={l.r * 3.2} fill={cor} opacity={o * l.b * 0.5} /> : null;
+          return o > 0.02 ? <circle key={i} cx={l.x} cy={l.y} r={l.r * 3.2 + 9} fill="url(#brilhoLuz)" opacity={o * l.b * 0.6} /> : null;
         })}
       </g>
       {luzes.map((l, i) => {

@@ -138,12 +138,38 @@ def remotion(src: Path, scene: str, video: Path, tempos: Path, args) -> tuple[bo
     chrome = _chrome()
     if chrome:
         cmd.append(f"--browser-executable={chrome}")
-    try:
-        p = subprocess.run(cmd, cwd=proj, capture_output=True, text=True, timeout=args.timeout, shell=os.name == "nt")
-    except subprocess.TimeoutExpired:
-        return False, f"FALHOU: Remotion passou de {args.timeout}s em {scene}"
-    if p.returncode != 0 or not bruto.exists():
-        return False, f"FALHOU: Remotion em {scene}\n{(p.stdout + p.stderr)[-2000:]}"
+    # cenas longas em blocos de ~900 quadros, cada um com um navegador novo: o Chrome não acumula memória
+    # até travar num quadro (aconteceu na V10 do VORTTUM 003 em 1080p60, depois de ~1.400 quadros)
+    total = max(1, round(dados["duracao"] * dados["fps"]))
+    bloco = int(os.environ.get("BLOCO_REMOTION", "900"))
+    if total <= bloco * 1.5:
+        blocos = [(None, bruto)]
+    else:
+        blocos = [((a, min(total, a + bloco) - 1), bruto.with_name(f"{scene}_remotion_{a:06d}.mp4")) for a in range(0, total, bloco)]
+    for faixa, saida in blocos:
+        c = [arg if i != 5 else str(saida) for i, arg in enumerate(cmd)]
+        if faixa:
+            c.append(f"--frames={faixa[0]}-{faixa[1]}")
+        ok, ultimo = False, ""
+        for _ in range(2):
+            try:
+                p = subprocess.run(c, cwd=proj, capture_output=True, text=True, timeout=args.timeout, shell=os.name == "nt")
+            except subprocess.TimeoutExpired:
+                ultimo = f"passou de {args.timeout}s"
+                continue
+            if p.returncode == 0 and saida.exists():
+                ok = True
+                break
+            ultimo = (p.stdout + p.stderr)[-2000:]
+        if not ok:
+            return False, f"FALHOU: Remotion em {scene} (quadros {faixa})\n{ultimo}"
+    if len(blocos) > 1:
+        lista = bruto.with_name(f"{scene}_blocos.txt")
+        lista.write_text("".join(f"file '{b[1].resolve()}'\n" for b in blocos), "utf-8")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lista), "-c", "copy", str(bruto)], check=True)
+        for _, b in blocos:
+            b.unlink(missing_ok=True)
+        lista.unlink(missing_ok=True)
     # mesma resolução, fps e codificação das cenas Manim: a junção copia sem recodificar
     w, h = dados["largura"], dados["altura"]
     fps = dados["fps"]
