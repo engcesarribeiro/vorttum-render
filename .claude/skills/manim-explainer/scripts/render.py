@@ -26,6 +26,7 @@ fica travado depois de um erro em vez de encerrar.
 import argparse
 import os
 import re
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -271,9 +272,19 @@ def concat(videos: list[Path], dest: Path, musica: tuple[Path | None, float] = (
 def celular(master: Path, fps: int = 30) -> Path:
     """Cópia para celular: 30 fps, AAC 44,1 kHz estéreo, volume normalizado."""
     dest = master.with_name(master.stem + "_celular.mp4")
+    # loudnorm em duas passadas e modo linear: só um ganho fixo, sem o "bombeamento" que realça ruído entre as palavras
+    alvo = "I=-16:TP=-1.5:LRA=11"
+    med = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(master), "-vn", "-af", f"loudnorm={alvo}:print_format=json",
+                          "-f", "null", "-"], capture_output=True, text=True).stderr
+    try:
+        j = json.loads(med[med.rindex("{"):med.rindex("}") + 1])
+        filtro = (f"loudnorm={alvo}:linear=true:measured_I={j['input_i']}:measured_TP={j['input_tp']}:"
+                  f"measured_LRA={j['input_lra']}:measured_thresh={j['input_thresh']}:offset={j['target_offset']}")
+    except (ValueError, KeyError):
+        filtro = f"loudnorm={alvo}"
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(master), "-c:v", "libx264", "-preset", "veryfast",
                     "-profile:v", "high", "-level", "4.2", "-pix_fmt", "yuv420p", "-r", str(fps), "-crf", "20",
-                    "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "160k", "-ar", "44100", "-ac", "2",
+                    "-af", filtro, "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "2",
                     "-movflags", "+faststart", str(dest)], check=True)
     return dest
 

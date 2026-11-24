@@ -296,7 +296,7 @@ VOZ_EXPRESSIVA = os.environ.get("EXPLAINER_VOZ_EXPRESSIVA", "on").lower() not in
 PAUSA_FRASE = 0.32       # entre frases dentro da mesma fala (o serviço punha ~0,5 s em todas)
 PAUSA_JUNTA = 0.06       # emenda no meio da frase (ex.: antes de um <emphasis>)
 CAUDA_FALA = {".": 0.22, "!": 0.22, "?": 0.45, "…": 0.4}   # silêncio depois da fala, pelo último sinal
-ENFASE = {"rate": -10, "volume": "+18%", "pitch": "-2Hz"}
+ENFASE = {"rate": -10, "volume": "+10%", "pitch": "-2Hz"}
 _TAG = re.compile(r"<break\s+time=\"([\d.]+)(ms|s)\"\s*/>|<(emphasis|prosody)([^>]*)>(.*?)</\3>", re.S)
 
 
@@ -378,14 +378,16 @@ def _sintetiza_expressiva(text: str, voice: str, rate: str, mp3: Path) -> list[t
     for tr in trechos:
         if tr[0] == "voz":
             entradas += ["-i", str(tr[1])]
-            filtros.append(f"[{n}:a]atrim={tr[2]:.3f}:{tr[3]:.3f},asetpts=PTS-STARTPTS,aresample=24000,aformat=channel_layouts=mono[s{len(filtros)}]")
+            d = tr[3] - tr[2]
+            filtros.append(f"[{n}:a]atrim={tr[2]:.3f}:{tr[3]:.3f},asetpts=PTS-STARTPTS,aresample=24000,aformat=channel_layouts=mono,"
+                           f"afade=t=in:d=0.008,afade=t=out:st={max(0.0, d - 0.012):.3f}:d=0.012[s{len(filtros)}]")
         else:
             entradas += ["-f", "lavfi", "-t", f"{tr[1]:.3f}", "-i", "anullsrc=r=24000:cl=mono"]
             filtros.append(f"[{n}:a]asetpts=PTS-STARTPTS[s{len(filtros)}]")
         n += 1
     junta = "".join(f"[s{i}]" for i in range(len(filtros))) + f"concat=n={len(filtros)}:v=0:a=1[out]"
     subprocess.run(["ffmpeg", "-v", "error", "-y", *entradas, "-filter_complex", ";".join(filtros + [junta]),
-                    "-map", "[out]", "-c:a", "libmp3lame", "-b:a", "96k", str(mp3)], check=True)
+                    "-map", "[out]", "-c:a", "libmp3lame", "-q:a", "0", str(mp3)], check=True)
     for f in tmp.iterdir():
         f.unlink()
     tmp.rmdir()
@@ -400,7 +402,7 @@ def _synthesize(text: str, voice: str, rate: str) -> tuple[Path | None, float, l
         return None, max(1.0, len(words) / WORDS_PER_SEC), [(w, i / WORDS_PER_SEC) for i, w in enumerate(words)]
     TTS_DIR.mkdir(parents=True, exist_ok=True)
     if VOZ_EXPRESSIVA:
-        key = hashlib.sha1(f"v4x|{voice}|{rate}|{PAUSA_FRASE}|{ENFASE}|{clean_text(re.sub(r'<', ' <', text))}|{text}".encode()).hexdigest()[:16]
+        key = hashlib.sha1(f"v5x|{voice}|{rate}|{PAUSA_FRASE}|{ENFASE}|{clean_text(re.sub(r'<', ' <', text))}|{text}".encode()).hexdigest()[:16]
         mp3, meta = TTS_DIR / f"{key}.mp3", TTS_DIR / f"{key}.json"
         if not (mp3.exists() and meta.exists()):
             words = _sintetiza_expressiva(text, voice, rate, mp3)
