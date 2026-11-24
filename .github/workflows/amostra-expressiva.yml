@@ -10,12 +10,30 @@ on:
 permissions:
   contents: write
 
+env:
+  SKILL: .claude/skills/aula-animada
+  EXPLAINER_SKILL: ${{ github.workspace }}/.claude/skills/aula-animada
+  EXPLAINER_VOZ: en-US-AndrewMultilingualNeural
+
 jobs:
   amostra:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+      - name: Baixar a skill aula-animada (repositório skills)
+        uses: actions/checkout@v4
+        with:
+          repository: engcesarribeiro/skills
+          ref: main
+          ssh-key: ${{ secrets.SKILLS_DEPLOY_KEY }}
+          path: _skills
+          sparse-checkout: aula-animada
+      - name: Instalar a skill e o explainer dela na pasta do vídeo
+        run: |
+          echo "skill aula-animada @ $(git -C _skills rev-parse HEAD)"
+          mkdir -p .claude/skills && rm -rf "$SKILL" && mv _skills/aula-animada "$SKILL" && rm -rf _skills
+          cp -f "$SKILL/template/explainer.py" "$(sed -n 1p amostras/expressiva-pedido.txt | tr -d '\r')/explainer.py"
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - uses: actions/cache/restore@v4

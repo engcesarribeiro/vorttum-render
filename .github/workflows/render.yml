@@ -3,7 +3,10 @@
 #   cena   -> uma máquina por fatia (cenas Manim longas) ou por cena (Remotion e cenas curtas), lendo as vozes prontas
 #   juntar -> emenda as fatias, monta o áudio de cada cena, junta tudo e publica no ramo "renders"
 # Disparar: editar .github/render-pedido.txt (pasta=..., qualidade=final|rascunho|previa, vertical=true|false,
-#           fps=60 opcional, alvo=35 opcional: segundos de vídeo por fatia) e dar push em main.
+#           fps=60 opcional, alvo=35 opcional: segundos de vídeo por fatia, skill_ref=main opcional: ramo, tag ou
+#           commit da skill) e dar push em main.
+# A skill aula-animada vem do repositório privado engcesarribeiro/skills (deploy key só de leitura no secret
+# SKILLS_DEPLOY_KEY). O job vozes fixa o commit e os jobs cena e juntar usam o mesmo.
 name: Renderizar vídeo
 
 on:
@@ -17,7 +20,9 @@ permissions:
   actions: read
 
 env:
-  SKILL: .claude/skills/manim-explainer
+  SKILL: .claude/skills/aula-animada
+  EXPLAINER_SKILL: ${{ github.workspace }}/.claude/skills/aula-animada
+  EXPLAINER_VOZ: en-US-AndrewMultilingualNeural
 
 jobs:
   vozes:
@@ -32,6 +37,7 @@ jobs:
       sub: ${{ steps.p.outputs.sub }}
       args: ${{ steps.p.outputs.args }}
       tarefas: ${{ steps.f.outputs.tarefas }}
+      skill_sha: ${{ steps.s.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
       - name: Ler pedido
@@ -52,7 +58,22 @@ jobs:
           echo "vertical=$VERT" >> "$GITHUB_OUTPUT"; echo "fps=$FPS" >> "$GITHUB_OUTPUT"
           echo "sub=$SUB" >> "$GITHUB_OUTPUT"; echo "args=$ARGS" >> "$GITHUB_OUTPUT"
           echo "alvo=${ALVO:-35}" >> "$GITHUB_OUTPUT"
+          REF=$(get skill_ref); echo "skill_ref=${REF:-main}" >> "$GITHUB_OUTPUT"
           echo "nome=$(basename "$PASTA")-$QUAL$SUF-${FPS}fps" >> "$GITHUB_OUTPUT"
+      - name: Baixar a skill aula-animada (repositório skills)
+        uses: actions/checkout@v4
+        with:
+          repository: engcesarribeiro/skills
+          ref: ${{ steps.p.outputs.skill_ref }}
+          ssh-key: ${{ secrets.SKILLS_DEPLOY_KEY }}
+          path: _skills
+          sparse-checkout: aula-animada
+      - name: Instalar a skill e o explainer dela na pasta do vídeo
+        id: s
+        run: |
+          SHA=$(git -C _skills rev-parse HEAD); echo "sha=$SHA" >> "$GITHUB_OUTPUT"; echo "skill aula-animada @ $SHA"
+          mkdir -p .claude/skills && rm -rf "$SKILL" && mv _skills/aula-animada "$SKILL" && rm -rf _skills
+          cp -f "$SKILL/template/explainer.py" "${{ steps.p.outputs.pasta }}/explainer.py"
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - uses: actions/cache@v4
@@ -107,6 +128,19 @@ jobs:
         t: ${{ fromJSON(needs.vozes.outputs.tarefas) }}
     steps:
       - uses: actions/checkout@v4
+      - name: Baixar a skill aula-animada (repositório skills)
+        uses: actions/checkout@v4
+        with:
+          repository: engcesarribeiro/skills
+          ref: ${{ needs.vozes.outputs.skill_sha }}
+          ssh-key: ${{ secrets.SKILLS_DEPLOY_KEY }}
+          path: _skills
+          sparse-checkout: aula-animada
+      - name: Instalar a skill e o explainer dela na pasta do vídeo
+        run: |
+          SHA=$(git -C _skills rev-parse HEAD); echo "sha=$SHA" >> "$GITHUB_OUTPUT"; echo "skill aula-animada @ $SHA"
+          mkdir -p .claude/skills && rm -rf "$SKILL" && mv _skills/aula-animada "$SKILL" && rm -rf _skills
+          cp -f "$SKILL/template/explainer.py" "${{ needs.vozes.outputs.pasta }}/explainer.py"
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - uses: actions/cache/restore@v4
@@ -165,6 +199,19 @@ jobs:
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
+      - name: Baixar a skill aula-animada (repositório skills)
+        uses: actions/checkout@v4
+        with:
+          repository: engcesarribeiro/skills
+          ref: ${{ needs.vozes.outputs.skill_sha }}
+          ssh-key: ${{ secrets.SKILLS_DEPLOY_KEY }}
+          path: _skills
+          sparse-checkout: aula-animada
+      - name: Instalar a skill e o explainer dela na pasta do vídeo
+        run: |
+          SHA=$(git -C _skills rev-parse HEAD); echo "sha=$SHA" >> "$GITHUB_OUTPUT"; echo "skill aula-animada @ $SHA"
+          mkdir -p .claude/skills && rm -rf "$SKILL" && mv _skills/aula-animada "$SKILL" && rm -rf _skills
+          cp -f "$SKILL/template/explainer.py" "${{ needs.vozes.outputs.pasta }}/explainer.py"
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - uses: actions/cache/restore@v4

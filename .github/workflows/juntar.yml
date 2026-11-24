@@ -1,5 +1,6 @@
 # Refaz só a junção de um render já feito (as partes ficam guardadas por 2 dias como Artifacts da execução).
-# Disparar: editar .github/juntar-pedido.txt (run_id=, pasta=, sub=, args=, nome=) e dar push em main.
+# Disparar: editar .github/juntar-pedido.txt (run_id=, pasta=, sub=, args=, nome=, skill_ref= opcional) e dar push em main.
+# A skill aula-animada vem do repositório engcesarribeiro/skills (secret SKILLS_DEPLOY_KEY).
 name: Juntar render
 
 on:
@@ -10,6 +11,11 @@ on:
 permissions:
   contents: write
   actions: read
+
+env:
+  SKILL: .claude/skills/aula-animada
+  EXPLAINER_SKILL: ${{ github.workspace }}/.claude/skills/aula-animada
+  EXPLAINER_VOZ: en-US-AndrewMultilingualNeural
 
 jobs:
   juntar:
@@ -22,6 +28,20 @@ jobs:
         run: |
           get() { grep -E "^$1=" .github/juntar-pedido.txt | head -1 | cut -d= -f2-; }
           for k in run_id pasta sub args nome; do echo "$k=$(get $k)" >> "$GITHUB_OUTPUT"; done
+          R=$(get skill_ref | tr -d '\r '); echo "skill_ref=${R:-main}" >> "$GITHUB_OUTPUT"
+      - name: Baixar a skill aula-animada (repositório skills)
+        uses: actions/checkout@v4
+        with:
+          repository: engcesarribeiro/skills
+          ref: ${{ steps.p.outputs.skill_ref }}
+          ssh-key: ${{ secrets.SKILLS_DEPLOY_KEY }}
+          path: _skills
+          sparse-checkout: aula-animada
+      - name: Instalar a skill e o explainer dela na pasta do vídeo
+        run: |
+          echo "skill aula-animada @ $(git -C _skills rev-parse HEAD)"
+          mkdir -p .claude/skills && rm -rf "$SKILL" && mv _skills/aula-animada "$SKILL" && rm -rf _skills
+          cp -f "$SKILL/template/explainer.py" "${{ steps.p.outputs.pasta }}/explainer.py"
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - uses: actions/cache/restore@v4
@@ -55,7 +75,7 @@ jobs:
       - name: Emendar as fatias e juntar as cenas
         working-directory: ${{ steps.p.outputs.pasta }}
         run: |
-          S="$GITHUB_WORKSPACE/.claude/skills/manim-explainer/scripts"
+          S="$GITHUB_WORKSPACE/$SKILL/scripts"
           python "$S/fatias.py" juntar video.py --sub ${{ steps.p.outputs.sub }} --planos planos
           python "$S/render.py" video.py ${{ steps.p.outputs.args }} --concat-only
       - name: Publicar no ramo renders

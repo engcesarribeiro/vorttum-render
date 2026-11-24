@@ -10,3 +10,6 @@ videos/*/sheets/
 node_modules/
 videos/*/quadros/
 videos/*/galeria/
+# explainer.py vem da skill aula-animada (repositório skills) na hora do render
+videos/*/explainer.py
+.claude/skills/aula-animada/

@@ -1,6 +1,5 @@
-pasta=videos/apagao-mundial-en
-qualidade=final
+pasta=videos/teste-skill-en
+qualidade=rascunho
 vertical=false
-fps=60
-alvo=30
-# final 1080p60 com voz do VORTTUM 003 (3ª tentativa: Remotion em blocos de 900 quadros)
+alvo=10
+# teste curto: skill aula-animada baixada do repositório skills (fatias de 10 s para testar o corte)
