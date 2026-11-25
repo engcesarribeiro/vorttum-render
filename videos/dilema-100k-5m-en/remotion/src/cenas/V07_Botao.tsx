@@ -69,8 +69,8 @@ export const V07_Botao: React.FC<Props> = (props) => {
       <Txt x={1030} y={850} p={vis(s, t('Worse', 4), f4)} size={56} cor={V.C1} serif largura={740}>worse odds → briefcase</Txt>
       {/* fala 5: Powerball */}
       <Card x={990} y={140} w={810} h={830} p={vis(s, ini(5), f5)}><div /></Card>
-      <Big x={1395} y={260} p={vis(s, t('Powerball', 5), t('white', 5) - 0.1)} size={64} cor={V.C1} largura={740}>the Powerball jackpot</Big>
-      <Big x={1395} y={450} p={vis(s, t('prize', 5), t('white', 5) - 0.1)} size={56} cor={V.MUTED} largura={720} peso={400}>odds from the game’s own prize chart</Big>
+      <Big x={1395} y={260} p={vis(s, t('Powerball', 5), t('ninety-two', 5) - 0.15)} size={64} cor={V.C1} largura={740}>the Powerball jackpot</Big>
+      <Big x={1395} y={450} p={vis(s, t('prize', 5), t('ninety-two', 5) - 0.15)} size={56} cor={V.MUTED} largura={720} peso={400}>odds from the game’s own prize chart</Big>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <g opacity={vis(s, t('white', 5), f5)}>
           {Array.from({length: 69}, (_, k) => (
