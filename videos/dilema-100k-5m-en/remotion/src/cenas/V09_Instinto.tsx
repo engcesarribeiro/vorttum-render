@@ -79,8 +79,8 @@ export const V09_Instinto: React.FC<Props> = (props) => {
         <Big x={320} y={190} p={1} size={38} cor={V.MUTED} largura={560}>$100,000 today would change everything</Big>
       </Card>
       <Big x={1430} y={650} p={vis(s, t('certainty', 2), f2)} size={50} cor={V.GOOD} largura={620}>certainty has a value the formula does not see</Big>
-      <Big x={1430} y={810} p={vis(s, t('rounding', 2), f2)} size={56} cor={V.MUTED} largura={600}>to the average: a rounding error</Big>
-      <Big x={1430} y={900} p={pop(s, t('whole', 2))} size={64} cor={V.C1} largura={600}>to them: their whole life</Big>
+      <Big x={1430} y={745} p={vis(s, t('rounding', 2), f2)} size={44} cor={V.MUTED} largura={640}>to the average: a rounding error</Big>
+      <Big x={1430} y={860} p={pop(s, t('whole', 2))} size={52} cor={V.C1} largura={660}>to them: their whole life</Big>
       </Jan>
       <Jan s={s} a={ini(3) - 0.1} b={fim(3)}>
       {/* fala 3: três painéis */}
