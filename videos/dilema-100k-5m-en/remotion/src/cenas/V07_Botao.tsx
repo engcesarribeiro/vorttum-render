@@ -46,7 +46,7 @@ export const V07_Botao: React.FC<Props> = (props) => {
       <Card x={990} y={180} w={800} h={740} p={vis(s, ini(1), f3)}><div /></Card>
       {painel(1, ini(1), f1, [
         ['chance of ≥ 1 win', '≈ 100%', t('Losing', 1), verde],
-        ['expected value', '≈ $131 million (26 wins)', t('hundred', 1, 2), V.GOLD],
+        ['expected value', '≈ $131 million', t('hundred', 1, 2), V.GOLD],
         ['verdict', 'not a gamble anymore: a salary', t('salary', 1), verde],
       ])}
       {painel(2, ini(2), f2, [
@@ -104,8 +104,8 @@ export const V07_Botao: React.FC<Props> = (props) => {
           <text x={XL(8.1186) - 16} y={370} fontFamily="Latin Modern" fontWeight={700} fontSize={42} fill={V.GOLD} textAnchor="end">break-even 1 in 131.4M</text>
         </g>
         <g opacity={vis(s, t('generous', 6), f6)}>
-          <circle cx={XL(Math.log10(PB))} cy={545} r={18} fill={V.SHEET} stroke={V.INK} strokeWidth={6} />
-          <line x1={XL(Math.log10(PB))} y1={563} x2={XL(Math.log10(PB))} y2={730} stroke={V.INK} strokeWidth={4} />
+          <circle cx={XL(Math.log10(PB))} cy={617} r={18} fill={V.SHEET} stroke={V.INK} strokeWidth={6} />
+          <line x1={XL(Math.log10(PB))} y1={635} x2={XL(Math.log10(PB))} y2={735} stroke={V.INK} strokeWidth={4} />
           <text x={XL(Math.log10(PB))} y={780} fontFamily="Latin Modern" fontWeight={700} fontSize={38} fill={V.INK} textAnchor="middle">Powerball 1 in 292M</text>
         </g>
       </svg>

@@ -33,8 +33,8 @@ export const V01_Gancho: React.FC<Props> = (props) => {
       <Big x={380} y={1030} p={pop(s, t('seconds', 2)) * vis(s, 0, f2)} size={46} cor={V.C1}>grabbed in ~2 seconds</Big>
       <Carimbo x={960} y={430} p={pop(s, t('single', 2)) * vis(s, 0, t('hundred', 2) - 0.1)} size={52} cor={V.C2} rot={-4}>ONE NUMBER</Carimbo>
       <Big x={960} y={620} p={vis(s, t('single', 2) + 0.2, t('hundred', 2) - 0.1)} size={170} cor={V.C2}>?</Big>
-      <Big x={960} y={600} p={pop(s, t('hundred', 2)) * sai(s, t('nothing', 2) - 0.1, 0.25)} size={150} cor={V.GOOD}>100×</Big>
-      <Big x={960} y={600} p={pop(s, t('nothing', 2))} size={130} cor={V.BAD}>≈ $0</Big>
+      <Big x={890} y={600} p={pop(s, t('hundred', 2)) * sai(s, t('nothing', 2) - 0.1, 0.25)} size={150} cor={V.GOOD}>100×</Big>
+      <Big x={890} y={600} p={pop(s, t('nothing', 2))} size={130} cor={V.BAD}>≈ $0</Big>
       <AbsoluteFill style={{background: '#000', opacity: 1 - prog(s, 0.15, 0.6)}} />
       <Som nome="clique" t={tEnv} volume={0.5} />
       <Som nome="vupt" t={tEnv + 0.15} volume={0.4} />
