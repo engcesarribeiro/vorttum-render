@@ -25,8 +25,8 @@ export const V02_Regras: React.FC<Props> = (props) => {
     <Papel>
       <Jan s={s} a={ini(1) - 0.1} b={fim(1)}>
       {/* fala 1 */}
-      <Card x={110} y={90} w={900} h={110} p={vis(s, t('thought', 1), f1)} cor="#EADCBE">
-        <Big x={450} y={55} p={1} size={50} cor={V.INK}>A THOUGHT EXPERIMENT</Big>
+      <Card x={110} y={90} w={1040} h={110} p={vis(s, t('thought', 1), f1)} cor="#EADCBE">
+        <Big x={520} y={55} p={1} size={50} cor={V.INK}>A THOUGHT EXPERIMENT</Big>
       </Card>
       <Big x={960} y={430} p={vis(s, t('rules', 1), t('title', 1) - 0.1)} size={88} cor={V.INK}>rules first, math second</Big>
       <Big x={960} y={430} p={vis(s, t('title', 1), t('odds', 1) - 0.1)} size={80} cor={V.C1} largura={1500}>the title never says the odds</Big>
@@ -35,26 +35,26 @@ export const V02_Regras: React.FC<Props> = (props) => {
         <Botao cx={960} cy={640} r={190} ang={-80 + 160 * (0.5 + 0.5 * Math.sin(Math.max(0, s - t('dial', 1)) * 1.4))}
           p={vis(s, t('odds', 1) + 0.3, f1)} rotulo="odds per try" />
       </svg>
-      <Big x={960} y={960} p={vis(s, t('flip', 1), f1)} size={64} cor={flip ? V.GOOD : V.C1}>{flip ? 'take the money' : 'take the machine'}</Big>
+      <Big x={960} y={955} p={vis(s, t('flip', 1), f1)} size={68} cor={flip ? V.GOOD : V.C1}>{flip ? 'take the money' : 'take the machine'}</Big>
       </Jan>
       <Jan s={s} a={ini(2) - 0.1} b={fim(2)}>
       {/* fala 2: regras */}
-      <Card x={110} y={110} w={1240} h={800} p={vis(s, ini(2), f2)}>
+      <Card x={120} y={90} w={1300} h={880} p={vis(s, ini(2), f2)}>
         <div />
       </Card>
-      <Txt x={170} y={130} p={vis(s, t('rules', 2), f2)} size={36} cor={V.MUTED} serif>THE RULES OF THE GAME</Txt>
+      <Txt x={170} y={125} p={vis(s, t('rules', 2), f2)} size={56} cor={V.MUTED} serif>THE RULES OF THE GAME</Txt>
       {regras.map(([txt, tt], k) => (
         <React.Fragment key={k}>
-          <Txt x={170} y={190 + k * 100} p={vis(s, tt, f2)} size={42} cor={V.C1} serif>{`Rule ${k + 1}`}</Txt>
-          <Txt x={370} y={190 + k * 100} p={vis(s, tt + 0.05, f2)} size={44} peso={400}>{txt}</Txt>
+          <Txt x={170} y={205 + k * 98} p={vis(s, tt, f2)} size={52} cor={V.C1} serif>{`Rule ${k + 1}`}</Txt>
+          <Txt x={400} y={205 + k * 98} p={vis(s, tt + 0.05, f2)} size={56} peso={400}>{txt}</Txt>
         </React.Fragment>
       ))}
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
-        <Relogio cx={1560} cy={300} r={150} s={s} p={vis(s, t('once', 2), f2)} />
+        <Relogio cx={1630} cy={280} r={130} s={s} p={vis(s, t('once', 2), f2)} />
       </svg>
-      <Txt x={170} y={810} p={vis(s, t('taxes', 2), f2)} size={34} cor={V.MUTED} peso={400}>no taxes, no inflation (for now) · math, not financial advice</Txt>
-      <Big x={1560} y={600} p={vis(s, t('fifty', 2), f2)} size={150} cor={V.GOLD}>50 y</Big>
-      <Big x={1560} y={770} p={vis(s, t('fifty', 2), f2)} size={40} cor={V.MUTED} largura={440} peso={400}>a round example, not a statistic</Big>
+      <Txt x={170} y={800} p={vis(s, t('taxes', 2), f2)} size={52} cor={V.MUTED} peso={400} largura={1180}>no taxes, no inflation (for now) · math, not financial advice</Txt>
+      <Big x={1630} y={560} p={vis(s, t('fifty', 2), f2)} size={130} cor={V.GOLD}>50 y</Big>
+      <Big x={1630} y={760} p={vis(s, t('fifty', 2), f2)} size={56} cor={V.MUTED} largura={400} peso={400}>a round example, not a statistic</Big>
       </Jan>
       <Jan s={s} a={ini(3) - 0.1} b={fim(3)}>
       {/* fala 3 */}

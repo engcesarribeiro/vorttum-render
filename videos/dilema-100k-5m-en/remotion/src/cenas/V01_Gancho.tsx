@@ -21,16 +21,16 @@ export const V01_Gancho: React.FC<Props> = (props) => {
     <Papel>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <Relogio cx={960} cy={170} r={95} s={s} p={vis(s, 0.4)} />
-        <Maleta cx={380} cy={420} k={1.15} p={vis(s, tHund)} />
-        <Maquina cx={1340} cy={270} k={1.15} p={vis(s, t('machine', 1))} s={s} rola={s > t('rolls', 1)} />
+        <Maleta cx={380} cy={385} k={1.15} p={vis(s, tHund)} />
+        <Maquina cx={1340} cy={250} k={1.25} p={vis(s, t('machine', 1))} s={s} rola={s > t('rolls', 1)} />
       </svg>
-      <Envelope x={170} y={500} p={vis(s, tEnv)} aberto={prog(s, tHund, 0.3)}>1</Envelope>
-      <Envelope x={1130} y={500} p={vis(s, tEnv + 0.15)} aberto={prog(s, tSec, 0.3)}>2</Envelope>
-      <Big x={380} y={860} p={pop(s, t('thousand', 1))} size={92} cor={V.GOLD}>$100,000</Big>
-      <Big x={1340} y={860} p={pop(s, t('five', 1))} size={92} cor={V.C1}>$5,000,000</Big>
+      <Envelope x={170} y={455} p={vis(s, tEnv)} aberto={prog(s, tHund, 0.3)}>1</Envelope>
+      <Envelope x={1130} y={455} p={vis(s, tEnv + 0.15)} aberto={prog(s, tSec, 0.3)}>2</Envelope>
+      <Big x={380} y={810} p={pop(s, t('thousand', 1))} size={92} cor={V.GOLD}>$100,000</Big>
+      <Big x={1340} y={810} p={pop(s, t('five', 1))} size={92} cor={V.C1}>$5,000,000</Big>
       {/* fala 2 */}
-      <Big x={380} y={970} p={vis(s, t('sure', 2), f2)} size={46} cor={V.MUTED}>the sure thing</Big>
-      <Big x={380} y={1030} p={pop(s, t('seconds', 2)) * vis(s, 0, f2)} size={46} cor={V.C1}>grabbed in ~2 seconds</Big>
+      <Big x={380} y={895} p={vis(s, t('sure', 2), f2)} size={58} cor={V.MUTED}>the sure thing</Big>
+      <Big x={380} y={965} p={pop(s, t('seconds', 2)) * vis(s, 0, f2)} size={58} cor={V.C1}>grabbed in ~2 seconds</Big>
       <Carimbo x={960} y={430} p={pop(s, t('single', 2)) * vis(s, 0, t('hundred', 2) - 0.1)} size={52} cor={V.C2} rot={-4}>ONE NUMBER</Carimbo>
       <Big x={960} y={620} p={vis(s, t('single', 2) + 0.2, t('hundred', 2) - 0.1)} size={170} cor={V.C2}>?</Big>
       <Big x={890} y={600} p={pop(s, t('hundred', 2)) * sai(s, t('nothing', 2) - 0.1, 0.25)} size={150} cor={V.GOOD}>100×</Big>

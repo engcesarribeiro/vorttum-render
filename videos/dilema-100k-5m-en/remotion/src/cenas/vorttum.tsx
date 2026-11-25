@@ -23,8 +23,8 @@ export const useLatin = () => {
 };
 
 export const V = {
-  BG: '#EFE8DA', INK: '#2A2826', MUTED: '#857E72', SHEET: '#F6F1E6', AREIA: '#C9B48F',
-  C1: '#B5472C', C2: '#3F6178', GOLD: '#B07F25', BAD: '#8E2F1E', GOOD: '#5F7A3A',
+  BG: '#EFE8DA', INK: '#2A2826', MUTED: '#564F44', SHEET: '#F6F1E6', AREIA: '#C9B48F',
+  C1: '#A63F25', C2: '#3F6178', GOLD: '#8F6416', BAD: '#8E2F1E', GOOD: '#4C6428',
 };
 
 // registra o estilo no kit (o nome vem do ESTILO da RemotionScene no video.py)
@@ -56,7 +56,7 @@ export const Txt: React.FC<TxtProps> = ({x, y, p, size = 44, cor = V.INK, serif,
     position: 'absolute', left: x, top: y, width: largura, opacity: Math.min(1, p * 1.5),
     transform: `translate(${ancora === 'esquerda' ? '0' : ancora === 'direita' ? '-100%' : '-50%'}, ${(1 - p) * 18}px)`,
     fontFamily: LM, fontWeight: peso ?? (serif || size >= 36 ? 700 : 400), fontStyle: 'normal',
-    fontSize: size, color: cor, lineHeight: 1.18, whiteSpace: largura ? 'normal' : 'pre',
+    fontSize: Math.max(size, 56), color: cor, lineHeight: 1.18, whiteSpace: largura ? 'normal' : 'pre',
     textAlign: ancora === 'centro' ? 'center' : ancora === 'direita' ? 'right' : 'left',
   }}>{children}</div>
 );

@@ -42,7 +42,7 @@ export const Big: React.FC<{x: number; y: number; p: number; size?: number; cor?
   <div style={{
     position: 'absolute', left: x, top: y, width: largura, opacity: Math.min(1, p * 1.6),
     transform: `translate(-50%, -50%) translateY(${(1 - p) * 18}px) scale(${0.96 + 0.04 * p})`,
-    fontFamily: LM, fontWeight: peso, fontStyle: 'normal', fontSize: size, color: cor, lineHeight: 1.12,
+    fontFamily: LM, fontWeight: peso, fontStyle: 'normal', fontSize: Math.max(size, 56), color: cor, lineHeight: 1.12,
     textAlign: 'center', whiteSpace: largura ? 'normal' : 'pre',
   }}>{children}</div>
 );
@@ -117,17 +117,17 @@ export const Relogio: React.FC<{cx: number; cy: number; r: number; s: number; p:
 /** Caça-níquel pequena com contador. (cx, cy) = centro. */
 export const Maquina: React.FC<{cx: number; cy: number; k?: number; p: number; s: number; rola?: boolean}> = ({cx, cy, k = 1, p, s, rola = true}) => (
   <g transform={`translate(${cx} ${cy}) scale(${k * (0.8 + 0.2 * p)})`} opacity={Math.min(1, p * 2)}>
-    <rect x={-120} y={-130} width={240} height={260} rx={22} fill={V.C2} stroke={V.INK} strokeWidth={6} />
-    <rect x={-96} y={-90} width={192} height={96} rx={10} fill={V.SHEET} stroke={V.INK} strokeWidth={4} />
-    {[-64, 0, 64].map((x, i) => (
+    <rect x={-145} y={-130} width={290} height={260} rx={22} fill={V.C2} stroke={V.INK} strokeWidth={6} />
+    <rect x={-118} y={-90} width={236} height={96} rx={10} fill={V.SHEET} stroke={V.INK} strokeWidth={4} />
+    {[-76, 0, 76].map((x, i) => (
       <text key={x} x={x} y={-24} fontFamily={LM} fontWeight={700} fontSize={64} fill={i === 1 ? V.C1 : V.INK} textAnchor="middle">
         {rola ? ['7', '$', '?', '0', 'x', '5'][Math.floor(s * 9 + i * 2) % 6] : '7'}
       </text>
     ))}
-    <rect x={-96} y={34} width={192} height={44} rx={8} fill={V.INK} />
-    <text x={0} y={68} fontFamily={LM} fontWeight={700} fontSize={32} fill={V.GOLD} textAnchor="middle">every 10 min</text>
-    <line x1={120} y1={-60} x2={166} y2={-110} stroke={V.INK} strokeWidth={10} strokeLinecap="round" />
-    <circle cx={166} cy={-112} r={14} fill={V.C1} stroke={V.INK} strokeWidth={4} />
+    <rect x={-118} y={34} width={236} height={46} rx={8} fill={V.INK} />
+    <text x={0} y={68} fontFamily={LM} fontWeight={700} fontSize={36} fill={V.GOLD} textAnchor="middle">every 10 min</text>
+    <line x1={145} y1={-60} x2={190} y2={-110} stroke={V.INK} strokeWidth={10} strokeLinecap="round" />
+    <circle cx={190} cy={-112} r={14} fill={V.C1} stroke={V.INK} strokeWidth={4} />
   </g>
 );
 
@@ -155,7 +155,7 @@ export const Botao: React.FC<{cx: number; cy: number; r: number; ang: number; p:
         <polygon points={`${cx - 14},${cy - r * 0.2} ${cx + 14},${cy - r * 0.2} ${cx},${cy - r * 0.7}`} fill={V.INK} />
       </g>
       <circle cx={cx} cy={cy} r={r * 0.12} fill={V.INK} />
-      {rotulo && <text x={cx} y={cy + r + 70} fontFamily={LM} fontWeight={700} fontSize={40} fill={V.INK} textAnchor="middle">{rotulo}</text>}
+      {rotulo && <text x={cx} y={cy + r + 70} fontFamily={LM} fontWeight={700} fontSize={54} fill={V.INK} textAnchor="middle">{rotulo}</text>}
     </g>
   );
 

@@ -31,17 +31,18 @@ export const V04_Camada1: React.FC<Props> = (props) => {
       <Jan s={s} a={ini(1) - 0.1} b={fim(1)}>
       {/* fala 1 */}
       <Txt x={110} y={90} p={vis(s, t('flip', 1), f1)} size={54} cor={V.MUTED} serif>the question, flipped</Txt>
-      <Big x={960} y={250} p={vis(s, t('lose', 1), f1)} size={72} cor={V.C1}>what is the chance I lose every single time?</Big>
+      <Big x={960} y={235} p={vis(s, t('lose', 1), f1)} size={68} cor={V.C1} largura={1600}>what is the chance I lose every single time?</Big>
+      <Big x={960} y={650} p={vis(s, tLose - 0.2, f1)} size={56} cor={V.MUTED}>each box = one 10-minute roll (gray = lose)</Big>
       {Array.from({length: N}, (_, k) => {
         const tk = tLose + (k / N) * 2.2;
-        return <div key={k} style={{position: 'absolute', left: 120 + (k % 16) * 107, top: 380 + Math.floor(k / 16) * 96, width: 88, height: 72,
+        return <div key={k} style={{position: 'absolute', left: 120 + (k % 16) * 107, top: 340 + Math.floor(k / 16) * 90, width: 88, height: 72,
           background: s > tk ? GRAY : V.SHEET, border: `4px solid ${V.INK}`, opacity: vis(s, tLose - 0.4, f1) }}>
-          <div style={{fontFamily: 'Latin Modern', fontSize: 24, color: V.MUTED, textAlign: 'center', marginTop: 20}}>{s > tk ? 'lose' : '10 min'}</div>
+
         </div>;
       })}
-      <Big x={960} y={720} p={pop(s, t('nine', 1))} size={66} cor={V.INK}>lose once: 999,999 / 1,000,000</Big>
-      <Big x={960} y={820} p={vis(s, t('twice', 1), f1)} size={66} cor={V.INK}>twice in a row: (1 − p) × (1 − p)</Big>
-      <Big x={960} y={950} p={pop(s, t('power', 1))} size={96} cor={V.GOLD}>n times: (1 − p)<sup style={{fontSize: 64}}>n</sup></Big>
+      <Big x={960} y={740} p={pop(s, t('nine', 1))} size={64} cor={V.INK}>lose once: 999,999 / 1,000,000</Big>
+      <Big x={960} y={830} p={vis(s, t('twice', 1), f1)} size={64} cor={V.INK}>twice in a row: (1 − p) × (1 − p)</Big>
+      <Big x={960} y={935} p={pop(s, t('power', 1))} size={90} cor={V.GOLD}>n times: (1 − p)<sup style={{fontSize: 64}}>n</sup></Big>
       </Jan>
       <Jan s={s} a={ini(2) - 0.1} b={fim(2)}>
       {/* fala 2 */}
@@ -58,21 +59,21 @@ export const V04_Camada1: React.FC<Props> = (props) => {
         <g opacity={vis(s, ini(3), f3)}>
           <line x1={E.X(0)} y1={E.Y(0)} x2={E.X(50)} y2={E.Y(0)} stroke={V.MUTED} strokeWidth={4} />
           <line x1={E.X(0)} y1={E.Y(0)} x2={E.X(0)} y2={E.Y(1)} stroke={V.MUTED} strokeWidth={4} />
-          {[0, 10, 20, 30, 40, 50].map((y) => <text key={y} x={E.X(y)} y={E.Y(0) + 44} fontFamily="Latin Modern" fontSize={34} fill={V.MUTED} textAnchor="middle">{y}</text>)}
-          {[0, 0.25, 0.5, 0.75, 1].map((p) => <text key={p} x={E.X(0) - 16} y={E.Y(p) + 12} fontFamily="Latin Modern" fontSize={34} fill={V.MUTED} textAnchor="end">{Math.round(p * 100)}%</text>)}
-          <text x={E.X(25)} y={E.Y(0) + 96} fontFamily="Latin Modern" fontSize={38} fill={V.INK} textAnchor="middle">years</text>
+          {[0, 10, 20, 30, 40, 50].map((y) => <text key={y} x={E.X(y)} y={E.Y(0) + 58} fontFamily="Latin Modern" fontSize={52} fill={V.MUTED} textAnchor="middle">{y}</text>)}
+          {[0, 0.25, 0.5, 0.75, 1].map((p) => <text key={p} x={E.X(0) - 16} y={E.Y(p) + 12} fontFamily="Latin Modern" fontSize={52} fill={V.MUTED} textAnchor="end">{Math.round(p * 100)}%</text>)}
+          <text x={E.X(25)} y={E.Y(0) + 125} fontFamily="Latin Modern" fontSize={52} fill={V.INK} textAnchor="middle">years</text>
           <polyline points={curva} fill="none" stroke={V.C1} strokeWidth={9} strokeLinejoin="round" />
         </g>
         {pts.map(([y, lab, tt], k) => (
           <g key={y} opacity={vis(s, tt, f3)}>
             <circle cx={E.X(y)} cy={E.Y(cum(y))} r={16} fill={V.GOLD} stroke={V.INK} strokeWidth={5} />
-            <text x={E.X(y) + (k === 5 ? -24 : 8)} y={E.Y(cum(y)) + (k === 5 ? -34 : 62)} fontFamily="Latin Modern" fontWeight={700} fontSize={44} fill={V.INK}
+            <text x={E.X(y) + (k === 5 ? -26 : 26)} y={E.Y(cum(y)) + (k === 5 ? -34 : k === 0 ? 14 : 66)} fontFamily="Latin Modern" fontWeight={700} fontSize={52} fill={V.INK}
               textAnchor={k === 5 ? 'end' : 'start'}>{lab}</text>
           </g>
         ))}
       </svg>
       <Big x={1650} y={400} p={vis(s, tYear[0], f3)} size={120} cor={V.GOLD}>{pc(cum(Math.max(0.01, yReveal)), 1)}</Big>
-      <Big x={1650} y={520} p={vis(s, tYear[0], f3)} size={44} cor={V.MUTED} largura={360}>chance of ≥ 1 win by year {Math.round(yReveal)}</Big>
+      <Big x={1650} y={620} p={vis(s, tYear[0], f3)} size={56} cor={V.MUTED} largura={380}>chance of ≥ 1 win by year {Math.round(yReveal)}</Big>
       </Jan>
       <Jan s={s} a={ini(4) - 0.1} b={fim(4)}>
       {/* fala 4: pizza */}
@@ -81,9 +82,9 @@ export const V04_Camada1: React.FC<Props> = (props) => {
       </svg>
       <Big x={600} y={150} p={vis(s, t('words', 4), f4)} size={64} cor={V.GOLD}>92.8% win</Big>
       <Big x={1300} y={420} p={pop(s, t('thirteen', 4))} size={100} cor={V.GOLD}>13 of every 14</Big>
-      <Big x={1300} y={560} p={vis(s, t('thirteen', 4), f4)} size={46} cor={V.MUTED}>win at least once in 50 years</Big>
+      <Big x={1300} y={570} p={vis(s, t('thirteen', 4), f4)} size={56} cor={V.MUTED} largura={700}>win at least once in 50 years</Big>
       <Big x={1360} y={740} p={pop(s, t('person', 4))} size={100} cor={V.INK}>1 in 14: 7.2%</Big>
-      <Big x={1360} y={850} p={vis(s, t('never', 4), f4)} size={52} cor={V.C1}>never hears it ring</Big>
+      <Big x={1360} y={870} p={vis(s, t('never', 4), f4)} size={60} cor={V.C1}>never hears it ring</Big>
       </Jan>
       <Som nome="tique" t={tLose} volume={0.3} />
       <Som nome="carimbo" t={t('power', 1)} volume={0.4} />
