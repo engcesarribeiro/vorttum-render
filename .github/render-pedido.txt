@@ -1,5 +1,4 @@
-pasta=videos/teste-skill-en
-qualidade=rascunho
+pasta=videos/dilema-100k-5m-en
+qualidade=previa
 vertical=false
-alvo=10
-# teste curto: skill aula-animada baixada do repositório skills (fatias de 10 s para testar o corte)
+# prévia sem voz do VORTTUM 004 (dilema 100 mil x 5 milhões): conferir layout das 10 cenas
