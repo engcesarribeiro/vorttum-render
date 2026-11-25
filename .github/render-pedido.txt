@@ -4,4 +4,4 @@ vertical=false
 fps=60
 alvo=30
 privado=true
-# final 1080p60 do VORTTUM 004, aprovado por César; privado: só artefato da execução, sem ramo renders
+# revisão 2 do final 1080p60 do VORTTUM 004 (margens e legibilidade); privado, só artefato
