@@ -248,7 +248,13 @@ jobs:
           name: ${{ needs.vozes.outputs.nome }}
           path: ${{ needs.vozes.outputs.pasta }}/out/*.mp4
           retention-days: 14
+      - name: Ler se o render é privado
+        id: priv
+        run: |
+          P=$(grep -E "^privado=" .github/render-pedido.txt | head -1 | cut -d= -f2- | tr -d '\r ')
+          echo "privado=${P:-false}" >> "$GITHUB_OUTPUT"
       - name: Publicar no ramo renders (para baixar com git)
+        if: steps.priv.outputs.privado != 'true'
         run: |
           set -e
           mkdir -p /tmp/v && cp ${{ needs.vozes.outputs.pasta }}/out/*.mp4 /tmp/v/
