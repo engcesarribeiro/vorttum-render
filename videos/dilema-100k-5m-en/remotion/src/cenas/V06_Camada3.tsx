@@ -33,7 +33,8 @@ export const V06_Camada3: React.FC<Props> = (props) => {
     <Papel>
       <Jan s={s} a={ini(1) - 0.1} b={fim(1)}>
       {/* fala 1 */}
-      <Big x={960} y={140} p={vis(s, t('much', 1), f1)} size={90} cor={V.MUTED}>not whether, not when: how much?</Big>
+      <Big x={960} y={140} p={vis(s, ini(1) + 0.3, t('much', 1) - 0.1)} size={64} cor={V.MUTED}>so far: whether you win, and when</Big>
+      <Big x={960} y={140} p={vis(s, t('much', 1), f1)} size={90} cor={V.MUTED}>now: how much?</Big>
       <Big x={960} y={330} p={vis(s, t('expected', 1), f1)} size={112} cor={V.INK}>E[wins] = n × p</Big>
       <Big x={960} y={500} p={vis(s, t('million', 1), f1)} size={104} cor={V.INK}>= 2,628,000 × 1 / 1,000,000</Big>
       <Big x={960} y={690} p={pop(s, t('wins', 1, 2))} size={170} cor={V.C1}>= 2.628 wins</Big>
@@ -55,6 +56,7 @@ export const V06_Camada3: React.FC<Props> = (props) => {
       <Jan s={s} a={ini(3) - 0.1} b={fim(3)}>
       {/* fala 3: barras */}
       <Big x={960} y={110} p={vis(s, t('slippery', 3), f3)} size={64} cor={V.INK}>number of wins in 50 years (1 in 1,000,000)</Big>
+      <Big x={960} y={520} p={vis(s, t('receives', 3), t('whole', 3) - 0.1)} size={120} cor={V.C1}>nobody gets 2.6 wins</Big>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <line x1={X0 - 30} y1={Y0} x2={X0 + 6 * (BW + GAP)} y2={Y0} stroke={V.MUTED} strokeWidth={4} opacity={vis(s, tBar, f3)} />
         {vals.map((v, k) => {
@@ -79,7 +81,7 @@ export const V06_Camada3: React.FC<Props> = (props) => {
       </Jan>
       <Jan s={s} a={ini(4) - 0.1} b={fim(4)}>
       {/* fala 4: variante "para na 1ª" */}
-      <Card x={140} y={150} w={1640} h={780} p={vis(s, ini(4), f4)} cor="#EFE6D0"><div /></Card>
+      <Card x={140} y={150} w={1640} h={780} p={vis(s, t('shut', 4), f4)} cor="#EFE6D0"><div /></Card>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <rect x={420} y={800 - 520 * prog(s, t('shut', 4), 0.9)} width={300} height={520 * prog(s, t('shut', 4), 0.9)} fill={V.GOLD} stroke={V.INK} strokeWidth={6} opacity={vis(s, t('shut', 4), f4)} />
         <rect x={1100} y={800 - 520 * 0.0215} width={300} height={520 * 0.0215} fill="#6B4A32" stroke={V.INK} strokeWidth={6} opacity={vis(s, t('forty-six', 4), f4)} />

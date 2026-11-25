@@ -35,7 +35,8 @@ export const V09_Instinto: React.FC<Props> = (props) => {
       <Card x={110} y={80} w={1300} h={110} p={vis(s, t('Kahneman', 1), f1)} cor="#EADCBE">
         <Big x={650} y={55} p={1} size={46} cor={V.INK}>Certainty effect · Kahneman &amp; Tversky, 1979</Big>
       </Card>
-      <Big x={960} y={290} p={vis(s, t('gut', 1), f1)} size={60} cor={V.C1}>why does the gut say “briefcase”?</Big>
+      <Big x={960} y={250} p={vis(s, t('gamble', 1), f1)} size={60} cor={V.GOOD}>the math says: gamble</Big>
+      <Big x={960} y={330} p={vis(s, t('gut', 1), f1)} size={60} cor={V.C1}>why does the gut say “briefcase”?</Big>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <g opacity={vis(s, t('weight', 1) - 0.3, f1)}>
           <polygon points="960,780 880,900 1040,900" fill={V.INK} />
@@ -62,7 +63,8 @@ export const V09_Instinto: React.FC<Props> = (props) => {
       </Jan>
       <Jan s={s} a={ini(2) - 0.1} b={fim(2)}>
       {/* fala 2: a pessoa sozinha na fatia cinza */}
-      <Card x={110} y={110} w={1700} h={840} p={vis(s, ini(2), f2)} cor="#EFE6D0"><div /></Card>
+      <Big x={960} y={480} p={vis(s, t('honestly', 2), t('average', 2) - 0.15)} size={96} cor={V.INK}>the gut is not always wrong</Big>
+      <Card x={110} y={110} w={1700} h={840} p={vis(s, t('average', 2) - 0.3, f2)} cor="#EFE6D0"><div /></Card>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <Pizza cx={620} cy={560} r={310} a={0.928} cor1={V.GOLD} cor2={GRAY} p={vis(s, t('average', 2), f2)} sep={0} />
         <g opacity={vis(s, t('person', 2), f2)}>

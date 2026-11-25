@@ -61,14 +61,16 @@ export const V07_Botao: React.FC<Props> = (props) => {
       ])}
       {/* fala 4: ponto de empate */}
       <Card x={990} y={180} w={800} h={740} p={vis(s, ini(4), f4)}><div /></Card>
-      <Txt x={1040} y={230} p={vis(s, t('equal', 4), f4)} size={40} cor={V.MUTED} serif>set the expected value equal to the sure thing</Txt>
-      <Big x={1390} y={420} p={vis(s, t('equal', 4), f4)} size={52} cor={V.INK} largura={740}>n × p × $5,000,000 = $100,000</Big>
-      <Big x={1390} y={590} p={pop(s, t('hundred', 4, 2))} size={64} cor={V.GOLD} largura={740}>p = 1 / 131,400,000</Big>
-      <Txt x={1040} y={700} p={vis(s, t('Better', 4), f4)} size={44} cor={V.GOOD} serif>better odds: the gamble wins</Txt>
-      <Txt x={1040} y={780} p={vis(s, t('Worse', 4), f4)} size={44} cor={V.C1} serif>worse odds: the briefcase wins</Txt>
-      <Carimbo x={1390} y={300} p={pop(s, t('answer', 4))} size={52} cor={V.GOLD} rot={-3}>BREAK-EVEN</Carimbo>
+      <Big x={1390} y={260} p={vis(s, t('tipping', 4), f4)} size={46} cor={V.MUTED} largura={740} peso={400}>the exact tipping point</Big>
+      <Big x={1390} y={380} p={vis(s, t('equal', 4), f4)} size={46} cor={V.INK} largura={740}>n × p × $5,000,000 = $100,000</Big>
+      <Big x={1390} y={520} p={pop(s, t('hundred', 4, 2))} size={62} cor={V.GOLD} largura={740}>p = 1 / 131,400,000</Big>
+      <Carimbo x={1390} y={640} p={pop(s, t('answer', 4))} size={48} cor={V.GOLD} rot={-3}>BREAK-EVEN</Carimbo>
+      <Txt x={1040} y={730} p={vis(s, t('Better', 4), f4)} size={42} cor={V.GOOD} serif>better odds: the gamble wins</Txt>
+      <Txt x={1040} y={805} p={vis(s, t('Worse', 4), f4)} size={42} cor={V.C1} serif>worse odds: the briefcase wins</Txt>
       {/* fala 5: Powerball */}
       <Card x={990} y={180} w={800} h={740} p={vis(s, ini(5), f5)}><div /></Card>
+      <Big x={1390} y={260} p={vis(s, t('Powerball', 5), t('white', 5) - 0.1)} size={64} cor={V.C1} largura={740}>the Powerball jackpot</Big>
+      <Big x={1390} y={430} p={vis(s, t('prize', 5), t('white', 5) - 0.1)} size={46} cor={V.MUTED} largura={700} peso={400}>odds from the game’s own prize chart</Big>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <g opacity={vis(s, t('white', 5), f5)}>
           {Array.from({length: 69}, (_, k) => (

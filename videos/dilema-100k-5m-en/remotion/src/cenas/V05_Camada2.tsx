@@ -36,7 +36,7 @@ export const V05_Camada2: React.FC<Props> = (props) => {
       <Jan s={s} a={ini(1) - 0.1} b={fim(1)}>
       {/* fala 1 */}
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
-        <g opacity={vis(s, t('average', 1), f1)} transform="translate(420 520)">
+        <g opacity={vis(s, t('when', 1), f1)} transform="translate(420 520)">
           <polygon points="-130,-260 130,-260 20,0 130,260 -130,260 -20,0" fill="#E7DCC0" stroke={V.INK} strokeWidth={7} />
           <polygon points={`-110,${-240 + 220 * areia} 110,${-240 + 220 * areia} 14,-8 -14,-8`} fill={V.GOLD} opacity={1 - areia} />
           <rect x={-8} y={0} width={16} height={260 * areia} fill={V.GOLD} />
@@ -44,6 +44,7 @@ export const V05_Camada2: React.FC<Props> = (props) => {
           <rect x={-170} y={-290} width={340} height={30} fill={V.INK} /><rect x={-170} y={260} width={340} height={30} fill={V.INK} />
         </g>
       </svg>
+      <Big x={960} y={100} p={vis(s, ini(1) + 0.3, f1)} size={60} cor={V.MUTED}>knowing if you win ≠ knowing when</Big>
       <Big x={1200} y={230} p={vis(s, t('million', 1), f1)} size={96} cor={V.INK}>1,000,000 rolls</Big>
       <Big x={1200} y={350} p={vis(s, t('ten', 1, 2), f1)} size={72} cor={V.MUTED}>× 10 minutes each</Big>
       <Big x={1200} y={500} p={pop(s, t('million', 1, 3))} size={84} cor={V.INK}>= 10,000,000 minutes</Big>
@@ -79,13 +80,18 @@ export const V05_Camada2: React.FC<Props> = (props) => {
         <Pessoa x={1500} y={700} k={1.7} cor={V.C1} cartola p={vis(s, t('billionaire', 2), f2, 0.3)} />
       </svg>
       <Card x={560} y={220} w={840} h={150} p={vis(s, t('coffee', 2), f2)} cor={V.SHEET}>
-        <Big x={420} y={75} p={1} size={60} cor={V.INK}>average income in the room</Big>
+        <Big x={420} y={75} p={1} size={52} cor={V.INK}>average income in the room</Big>
       </Card>
       <Big x={1000} y={480 - 40 * Math.sin(Math.min(1, prog(s, t('raises', 2), 0.7)) * Math.PI)} p={vis(s, t('raises', 2), f2)} size={96} cor={V.C1}>↑ jumps</Big>
       </Jan>
       <Jan s={s} a={ini(3) - 0.1} b={fim(3)}>
       {/* fala 3: sem memória */}
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
+        <g opacity={vis(s, ini(3) + 0.2, f3)}>
+          <rect x={X0} y={330} width={50 * PX} height={100} fill={V.SHEET} stroke={V.INK} strokeWidth={5} />
+          <text x={X0} y={470} fontFamily="Latin Modern" fontSize={36} fill={V.MUTED}>0</text>
+          <text x={X0 + 50 * PX} y={470} fontFamily="Latin Modern" fontSize={36} fill={V.MUTED} textAnchor="end">50 years</text>
+        </g>
         <g opacity={vis(s, t('twenty', 3), f3)}>
           <rect x={X0} y={330} width={20 * PX * prog(s, t('twenty', 3), 0.8)} height={100} fill={GRAY} stroke={V.INK} strokeWidth={5} />
           <text x={X0 + 10 * PX} y={398} fontFamily="Latin Modern" fontWeight={700} fontSize={46} fill={V.INK} textAnchor="middle">20 years, no win</text>

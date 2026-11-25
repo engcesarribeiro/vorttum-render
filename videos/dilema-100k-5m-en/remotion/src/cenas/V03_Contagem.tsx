@@ -60,6 +60,7 @@ export const V03_Contagem: React.FC<Props> = (props) => {
       <Jan s={s} a={ini(2) - 0.1} b={fim(2)}>
       {/* fala 2: um bilhete contra uma montanha de bilhetes */}
       <Card x={110} y={120} w={1700} h={840} p={vis(s, ini(2), f2)} cor="#EFE6D0"><div /></Card>
+      <Big x={960} y={330} p={vis(s, ini(2) + 0.3, t('ticket', 2) - 0.15)} size={84} cor={V.C1}>hiding in plain sight</Big>
       <Bilhete x={200} y={420} w={300} h={140} p={pop(s, t('ticket', 2))} texto="1 in 1,000,000" cor={V.C1} rot={-4} />
       <Txt x={200} y={300} p={vis(s, t('ticket', 2), f2)} size={50} serif>one ticket</Txt>
       {grade.map((k) => {
