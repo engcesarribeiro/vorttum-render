@@ -4,4 +4,4 @@ vertical=false
 fps=60
 alvo=30
 privado=true
-# revisão 2 do final 1080p60 do VORTTUM 004 (margens e legibilidade); privado, só artefato
+# revisão 2b do final 1080p60 do VORTTUM 004; privado, só artefato
