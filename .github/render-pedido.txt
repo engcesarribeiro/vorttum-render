@@ -1,4 +1,4 @@
 pasta=videos/dilema-100k-5m-en
 qualidade=rascunho
 vertical=false
-# rascunho 2 com voz do VORTTUM 004: ajustes V02 e V09
+# rascunho 3 com voz do VORTTUM 004: correção V09
