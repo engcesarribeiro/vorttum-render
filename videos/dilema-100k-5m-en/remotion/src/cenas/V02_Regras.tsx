@@ -28,6 +28,8 @@ export const V02_Regras: React.FC<Props> = (props) => {
       <Card x={110} y={90} w={900} h={110} p={vis(s, t('thought', 1), f1)} cor="#EADCBE">
         <Big x={450} y={55} p={1} size={50} cor={V.INK}>A THOUGHT EXPERIMENT</Big>
       </Card>
+      <Big x={960} y={430} p={vis(s, t('rules', 1), t('title', 1) - 0.1)} size={88} cor={V.INK}>rules first, math second</Big>
+      <Big x={960} y={430} p={vis(s, t('title', 1), t('odds', 1) - 0.1)} size={80} cor={V.C1} largura={1500}>the title never says the odds</Big>
       <Big x={960} y={310} p={vis(s, t('odds', 1), f1)} size={110} cor={V.C1}>the odds = ?</Big>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <Botao cx={960} cy={640} r={190} ang={-80 + 160 * (0.5 + 0.5 * Math.sin(Math.max(0, s - t('dial', 1)) * 1.4))}

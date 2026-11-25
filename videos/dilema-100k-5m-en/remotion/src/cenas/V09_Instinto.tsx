@@ -38,7 +38,7 @@ export const V09_Instinto: React.FC<Props> = (props) => {
       <Big x={960} y={250} p={vis(s, t('gamble', 1), f1)} size={60} cor={V.GOOD}>the math says: gamble</Big>
       <Big x={960} y={330} p={vis(s, t('gut', 1), f1)} size={60} cor={V.C1}>why does the gut say “briefcase”?</Big>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
-        <g opacity={vis(s, t('weight', 1) - 0.3, f1)}>
+        <g opacity={vis(s, t('weight', 1) - 0.3, f1)} transform="translate(0 110)">
           <polygon points="960,780 880,900 1040,900" fill={V.INK} />
           <rect x={940} y={420} width={40} height={380} fill={V.INK} />
           <g transform={`rotate(${tiltAng} 960 430)`}>
@@ -56,10 +56,10 @@ export const V09_Instinto: React.FC<Props> = (props) => {
           </g>
         </g>
       </svg>
-      <Big x={460} y={700} p={vis(s, t('sure', 1), f1)} size={64} cor={V.GOLD}>SURE · $100,000</Big>
-      <Big x={460} y={780} p={vis(s, t('sure', 1), f1)} size={40} cor={V.MUTED}>feels bigger than its size</Big>
-      <Big x={1460} y={700} p={vis(s, t('ninety-three', 1), f1)} size={64} cor={V.MUTED}>93% CHANCE</Big>
-      <Big x={1460} y={780} p={vis(s, t('ninety-three', 1), f1)} size={40} cor={V.MUTED}>feels smaller than its size</Big>
+      <Big x={460} y={830} p={vis(s, t('sure', 1), f1)} size={60} cor={V.GOLD}>SURE · $100,000</Big>
+      <Big x={460} y={905} p={vis(s, t('sure', 1), f1)} size={40} cor={V.MUTED}>feels bigger than its size</Big>
+      <Big x={1460} y={830} p={vis(s, t('ninety-three', 1), f1)} size={60} cor={V.MUTED}>93% CHANCE</Big>
+      <Big x={1460} y={905} p={vis(s, t('ninety-three', 1), f1)} size={40} cor={V.MUTED}>feels smaller than its size</Big>
       </Jan>
       <Jan s={s} a={ini(2) - 0.1} b={fim(2)}>
       {/* fala 2: a pessoa sozinha na fatia cinza */}
@@ -74,9 +74,9 @@ export const V09_Instinto: React.FC<Props> = (props) => {
       </svg>
       <Big x={620} y={170} p={vis(s, t('average', 2), f2)} size={50} cor={V.MUTED}>an average over many lives</Big>
       <Big x={620} y={930} p={vis(s, t('one', 2), f2)} size={46} cor={V.INK}>but you only get one</Big>
-      <Card x={1160} y={240} w={540} h={300} p={vis(s, t('debt', 2), f2)} cor="#F3EDE1" rot={3}>
-        <Big x={270} y={90} p={1} size={52} cor={V.C1}>RENT DUE</Big>
-        <Big x={270} y={190} p={1} size={44} cor={V.MUTED}>$100,000 today changes everything</Big>
+      <Card x={1120} y={240} w={640} h={300} p={vis(s, t('debt', 2), f2)} cor="#F3EDE1" rot={3}>
+        <Big x={320} y={90} p={1} size={52} cor={V.C1}>RENT DUE</Big>
+        <Big x={320} y={190} p={1} size={38} cor={V.MUTED} largura={560}>$100,000 today would change everything</Big>
       </Card>
       <Big x={1430} y={650} p={vis(s, t('certainty', 2), f2)} size={50} cor={V.GOOD} largura={620}>certainty has a value the formula does not see</Big>
       <Big x={1430} y={810} p={vis(s, t('rounding', 2), f2)} size={56} cor={V.MUTED} largura={600}>to the average: a rounding error</Big>
