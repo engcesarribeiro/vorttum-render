@@ -84,10 +84,10 @@ export const V07_Botao: React.FC<Props> = (props) => {
           ))}
         </g>
       </svg>
-      <Big x={1395} y={510} p={vis(s, t('white', 5), f5)} size={56} cor={V.INK} largura={740}>5 of 69 white<br />+ 1 of 26 red</Big>
-      <Big x={1395} y={630} p={pop(s, t('ninety-two', 5))} size={60} cor={V.INK} largura={740}>C(69,5) × 26 = 292,201,338</Big>
-      <Big x={1395} y={770} p={vis(s, t('less', 5), f5)} size={56} cor={V.C1} largura={740}>chance of ever winning: 0.90% (1 in 112)</Big>
-      <Big x={1395} y={895} p={vis(s, t('forty-five', 5), f5)} size={56} cor={V.GOLD} largura={740}>expected value ≈ $44,969</Big>
+      <Big x={1395} y={495} p={vis(s, t('white', 5), f5)} size={56} cor={V.INK} largura={740}>5 of 69 white<br />+ 1 of 26 red</Big>
+      <Big x={1395} y={665} p={pop(s, t('ninety-two', 5))} size={60} cor={V.INK} largura={740}>C(69,5) × 26 = 292,201,338</Big>
+      <Big x={1395} y={805} p={vis(s, t('less', 5), f5)} size={56} cor={V.C1} largura={740}>chance of ever winning: 0.90% (1 in 112)</Big>
+      <Big x={1395} y={915} p={vis(s, t('forty-five', 5), f5)} size={56} cor={V.GOLD} largura={740}>expected value ≈ $44,969</Big>
       {/* fala 6: pôster final */}
       <Card x={110} y={150} w={1700} h={800} p={vis(s, ini(6), f6)} cor="#EFE6D0"><div /></Card>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
