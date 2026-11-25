@@ -1,4 +1,4 @@
 pasta=videos/dilema-100k-5m-en
 qualidade=rascunho
 vertical=false
-# rascunho com voz do VORTTUM 004 (dilema 100 mil x 5 milhões): 540p30
+# rascunho 2 com voz do VORTTUM 004: ajustes V02 e V09
