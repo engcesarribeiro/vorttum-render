@@ -1,4 +1,4 @@
 pasta=videos/dilema-100k-5m-en
-qualidade=previa
+qualidade=rascunho
 vertical=false
-# prévia sem voz do VORTTUM 004 (dilema 100 mil x 5 milhões): conferir layout das 10 cenas
+# rascunho com voz do VORTTUM 004 (dilema 100 mil x 5 milhões): 540p30
