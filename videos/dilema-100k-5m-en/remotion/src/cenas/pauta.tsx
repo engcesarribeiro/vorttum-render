@@ -140,8 +140,8 @@ export const Bilhete: React.FC<{x: number; y: number; w?: number; h?: number; p?
   );
 
 /** Botão giratório Bauhaus com rótulo. ang em graus. */
-export const Botao: React.FC<{cx: number; cy: number; r: number; ang: number; p: number; rotulo?: string; cor?: string}> =
-  ({cx, cy, r, ang, p, rotulo, cor = V.GOLD}) => (
+export const Botao: React.FC<{cx: number; cy: number; r: number; ang: number; p: number; rotulo?: string; cor?: string; ponteiro?: number}> =
+  ({cx, cy, r, ang, p, rotulo, cor = V.GOLD, ponteiro = 1}) => (
     <g opacity={Math.min(1, p * 2)}>
       <circle cx={cx + 7} cy={cy + 9} r={r} fill="rgba(42,40,38,0.2)" />
       <circle cx={cx} cy={cy} r={r} fill={V.SHEET} stroke={V.INK} strokeWidth={7} />
@@ -152,9 +152,9 @@ export const Botao: React.FC<{cx: number; cy: number; r: number; ang: number; p:
       })}
       <g transform={`rotate(${ang} ${cx} ${cy})`}>
         <circle cx={cx} cy={cy} r={r * 0.72} fill={cor} stroke={V.INK} strokeWidth={6} />
-        <polygon points={`${cx - 14},${cy - r * 0.2} ${cx + 14},${cy - r * 0.2} ${cx},${cy - r * 0.7}`} fill={V.INK} />
+        <polygon points={`${cx - 14},${cy - r * 0.2} ${cx + 14},${cy - r * 0.2} ${cx},${cy - r * 0.7}`} fill={V.INK} opacity={ponteiro} />
       </g>
-      <circle cx={cx} cy={cy} r={r * 0.12} fill={V.INK} />
+      <circle cx={cx} cy={cy} r={r * 0.12} fill={V.INK} opacity={ponteiro} />
       {rotulo && <text x={cx} y={cy + r + 70} fontFamily={LM} fontWeight={700} fontSize={54} fill={V.INK} textAnchor="middle">{rotulo}</text>}
     </g>
   );
