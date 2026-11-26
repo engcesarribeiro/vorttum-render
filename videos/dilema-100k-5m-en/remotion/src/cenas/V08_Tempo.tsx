@@ -39,7 +39,7 @@ export const V08_Tempo: React.FC<Props> = (props) => {
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
         <g opacity={vis(s, t('briefcase', 1), f1)}>
           <Maleta cx={400} cy={950} k={0.8} p={1} />
-          <Arvore cx={1600} cy={960} k={1.15} p={Math.max(0.04, cresce)} />
+          <Arvore cx={1520} cy={960} k={1.15} p={Math.max(0.04, cresce)} />
         </g>
       </svg>
       <Big x={860} y={215} p={vis(s, t('five', 1), f1)} size={74} cor={V.GOLD}>money grows 5% a year</Big>

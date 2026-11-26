@@ -82,16 +82,16 @@ export const V06_Camada3: React.FC<Props> = (props) => {
       {/* fala 4: variante "para na 1ª" */}
       <Card x={140} y={110} w={1640} h={860} p={vis(s, t('shut', 4), f4)} cor="#EFE6D0"><div /></Card>
       <svg width={W} height={H} style={{position: 'absolute', left: 0, top: 0}}>
-        <rect x={420} y={800 - 520 * prog(s, t('shut', 4), 0.9)} width={300} height={520 * prog(s, t('shut', 4), 0.9)} fill={V.GOLD} stroke={V.INK} strokeWidth={6} opacity={vis(s, t('shut', 4), f4)} />
-        <rect x={1100} y={800 - 520 * 0.0215} width={300} height={520 * 0.0215} fill="#6B4A32" stroke={V.INK} strokeWidth={6} opacity={vis(s, t('forty-six', 4), f4)} />
-        <line x1={300} y1={800} x2={1560} y2={800} stroke={V.MUTED} strokeWidth={4} opacity={vis(s, t('shut', 4), f4)} />
+        <rect x={450} y={800 - 520 * prog(s, t('shut', 4), 0.9)} width={300} height={520 * prog(s, t('shut', 4), 0.9)} fill={V.GOLD} stroke={V.INK} strokeWidth={6} opacity={vis(s, t('shut', 4), f4)} />
+        <rect x={1170} y={800 - 520 * 0.0215} width={300} height={520 * 0.0215} fill="#6B4A32" stroke={V.INK} strokeWidth={6} opacity={vis(s, t('forty-six', 4), f4)} />
+        <line x1={300} y1={800} x2={1620} y2={800} stroke={V.MUTED} strokeWidth={4} opacity={vis(s, t('shut', 4), f4)} />
       </svg>
       <Big x={820} y={190} p={vis(s, t('shut', 4), f4)} size={60} cor={V.INK}>if it stopped at the first win</Big>
-      <Big x={570} y={880} p={vis(s, t('shut', 4), f4)} size={76} cor={V.INK}>≈ $4.64 million</Big>
-      <Big x={1250} y={880} p={vis(s, t('forty-six', 4), f4)} size={76} cor={V.INK}>$100,000</Big>
-      <Big x={1450} y={380} p={pop(s, t('forty-six', 4))} size={150} cor={V.C1}>≈ 46×</Big>
-      <Carimbo x={1450} y={540} p={pop(s, t('knockout', 4))} size={78} cor={V.GOOD}>KNOCKOUT</Carimbo>
-      <Big x={1450} y={680} p={vis(s, t('dial', 4), f4)} size={56} cor={V.MUTED} largura={560}>…but we chose that number</Big>
+      <Big x={600} y={880} p={vis(s, t('shut', 4), f4)} size={76} cor={V.INK}>≈ $4.64 million</Big>
+      <Big x={1320} y={880} p={vis(s, t('forty-six', 4), f4)} size={76} cor={V.INK}>$100,000</Big>
+      <Big x={1400} y={330} p={pop(s, t('forty-six', 4))} size={150} cor={V.C1}>≈ 46×</Big>
+      <Carimbo x={1400} y={540} p={pop(s, t('knockout', 4))} esc0={1.0} size={64} cor={V.GOOD}>KNOCKOUT</Carimbo>
+      <Big x={1400} y={705} p={vis(s, t('dial', 4), f4)} size={56} cor={V.MUTED} largura={760}>…we chose this number</Big>
       </Jan>
       <Som nome="digitar" t={t('expected', 1)} volume={0.35} />
       <Som nome="carimbo" t={t('wins', 1, 2)} volume={0.45} />

@@ -48,12 +48,12 @@ export const Big: React.FC<{x: number; y: number; p: number; size?: number; cor?
 );
 
 /** Carimbo inclinado. */
-export const Carimbo: React.FC<{x: number; y: number; p: number; size?: number; cor?: string; rot?: number; children: React.ReactNode}> =
-  ({x, y, p, size = 70, cor = V.C1, rot = -6, children}) => (
+export const Carimbo: React.FC<{x: number; y: number; p: number; size?: number; cor?: string; rot?: number; esc0?: number; children: React.ReactNode}> =
+  ({x, y, p, size = 70, cor = V.C1, rot = -6, esc0 = 1.5, children}) => (
     <div style={{
       position: 'absolute', left: x, top: y, opacity: Math.min(1, p * 3), border: `7px solid ${cor}`, borderRadius: 12,
       padding: '6px 26px', fontFamily: LM, fontWeight: 700, fontSize: size, color: cor, whiteSpace: 'pre',
-      transform: `translate(-50%, -50%) rotate(${rot}deg) scale(${1.5 - 0.5 * p})`,
+      transform: `translate(-50%, -50%) rotate(${rot}deg) scale(${esc0 - (esc0 - 1) * p})`,
     }}>{children}</div>
   );
 
